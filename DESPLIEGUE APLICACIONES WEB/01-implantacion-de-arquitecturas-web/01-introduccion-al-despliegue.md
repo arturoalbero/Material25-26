@@ -27,6 +27,9 @@ flowchart LR
     D --> CD[CI/CD]
 ```
 
+Las aplicaciones web funcionan siguiendo el **modelo cliente-servidor**, en el cual una parte del programa se ejecuta en el cliente y la otra en el servidor.
+
+
 ### 1.2 Fases comunes en un proceso de despliegue
 
 Aunque varía según la tecnología y complejidad de la aplicación, el proceso suele incluir:
@@ -124,9 +127,9 @@ El modelo TCP/IP es un conjunto de protocolos que permiten la comunicación entr
 
 ```mermaid
 flowchart TD
-C1[Capa 1 de acceso al medio físico (Ethernet, dirección MAC)] --> C2[Capa 2 de Internet, enlace lógico (IP, ICMP)]
-C2 --> C3[Capa 3 de transporte (TCP y UDP) ]
-C3 --> C4[Capa 4 de aplicaciones (HTTP, HTTPS, FTP, etc..)]
+C1[Capa 1 de acceso al medio físico: Ethernet, dirección MAC...] --> C2[Capa 2 de Internet, enlace lógico: IP, ICMP...]
+C2 --> C3[Capa 3 de transporte: TCP y UDP ]
+C3 --> C4[Capa 4 de aplicaciones: HTTP, HTTPS, FTP, etc..]
 ```
 
 
@@ -180,23 +183,114 @@ Esta es la capa que interactúa directamente con el usuario y las aplicaciones. 
 
 * **FTP (File Transfer Protocol):** Es el protocolo estándar para la transferencia de archivos entre un cliente y un servidor en una red. FTP permite a los usuarios subir, descargar, borrar y gestionar archivos en un servidor remoto. Es un protocolo antiguo pero todavía se usa en muchos escenarios de transferencia de archivos. Su puerto es el 21 para conexiones de control y el 20 para conexiones de datos.
 
-## 3. Arquitecturas web
+## 3. Perfiles de trabajo en el desarrollo web
 
-### 3.1. Backend, FrontEnd y FullStack
+En el desarrollo web, los perfiles laborales se dividen en tres: Front-end, Back-End y Full-Stack.
+
+**Front-end** es la parte de la aplicación que interactúa con los usuarios y también es conocida como "el lado del cliente". Básicamente, es todo lo que vemos en la pantalla cuando accedemos a un sitio web o aplicación. Los lenguajes de este entorno, siempre hablando de entorno web, son HTML5, CSS3 y JavaScript. Es frecuente el uso de librerías como AJAX para la comunicación asíncrona con el servidor, de forma que se puedan obtener ciertos datos sin necesidad de actualizar la página completa. Hay multitud de frameworks que facilitan el trabajo front-end, como Angular, React, Vue, etc.
+
+**Back-end** se refiere al interior de las aplicaciones que viven en el servidor y al que a menudo se le llama "lado del servidor". Este servidor recibe peticiones desde el cliente, que se procesan y permiten acceder a los distintos repositorios de datos (ficheros, bases de datos, etc.). Finalmente, se devuelve una respuesta al front-end. Los lenguajes más habituales del back-end son Java, Php, Python, C#, Ruby, etc. Hay multitud de frameworks que facilitan el trabajo en back-end, como Spring (Java), ASP.Net (C#), Django (Python), Node.js(Javascript), Laravel (PHP) o Symfony(PHP). 
+
+Se conoce como **Full-Stack** a aquel perfil laboral en el cual el empleado trabaja tanto en front end como en back end.
+
+Para profundizar en los conceptos, aquí tienes una explicación más detallada de cada punto, manteniendo una estructura clara y concisa.
+
+## 4. Arquitecturas web
 
 ### 3.2. Aplicaciones Web
 
+Una **aplicación web** es un sistema de software que se ejecuta en un servidor y al cual los usuarios acceden a través de un navegador web. Su arquitectura se fundamenta en el modelo **cliente-servidor**. El **cliente**, que es el navegador, envía solicitudes HTTP a un servidor. El **servidor** procesa estas solicitudes, ejecuta la lógica de negocio y, a menudo, interactúa con una base de datos para recuperar o almacenar información. Finalmente, el servidor envía una respuesta al cliente, que puede ser código HTML, CSS y JavaScript para renderizar la interfaz de usuario. Este modelo permite que la aplicación sea universalmente accesible desde cualquier dispositivo con un navegador, sin necesidad de instalación.
+
+
 ### 3.3. Aplicaciones API/REST
 
-### 3.4. Aplicaciones monolíticas
+Una **API (Interfaz de Programación de Aplicaciones)** es un conjunto de reglas y protocolos que permiten a dos o más aplicaciones comunicarse entre sí. **REST (Representational State Transfer)** es un estilo arquitectónico para el diseño de APIs que se basa en el protocolo HTTP. Las **API RESTful** utilizan los verbos HTTP estándar (como `GET` para obtener datos, `POST` para crear, `PUT` para actualizar y `DELETE` para eliminar) para manipular recursos. A diferencia de las aplicaciones web tradicionales que devuelven HTML para ser renderizado, las APIs RESTful suelen devolver datos en formatos ligeros como JSON o XML, lo que las hace ideales para la comunicación entre diferentes tipos de clientes (aplicaciones móviles, aplicaciones de escritorio, otros servicios) y el servidor.
+
+```mermaid
+graph TD
+    A[Cliente] -->|GET /productos/123| B[Servidor API];
+    B -->|Consulta a BD| C{Base de Datos};
+    C -->|Datos de Producto| B;
+    B -->|Respuesta JSON| A;
+```
+
+### 3.4. Aplicaciones Monolíticas
+
+Una **aplicación monolítica** es un sistema de software donde todos los componentes funcionales, como la interfaz de usuario, la lógica de negocio y la capa de acceso a datos, están acoplados en una única base de código y se despliegan como una sola unidad. Este enfoque presenta ventajas en el inicio del proyecto, como una gestión más simple del despliegue y una comunicación interna más rápida entre componentes. 
+
+Sin embargo, los **monolitos** pueden volverse difíciles de mantener a gran escala, ya que un cambio en una pequeña parte del código requiere la compilación y el despliegue de toda la aplicación. La escalabilidad también es un desafío, ya que para aumentar la capacidad de una función específica, es necesario escalar la aplicación completa.
+
+```mermaid
+graph TD
+    subgraph "Monolito"
+        direction LR
+        A[Interfaz de Usuario] --> B[Lógica de Negocio]
+        B --> C[Acceso a Datos]
+    end
+    C --> D[Base de Datos] 
+```
+
+En la actualidad, es frecuente ver otro tipo de arquitecturas.
 
 ### 3.5. Microservicios
+
+La **arquitectura de microservicios** descompone una aplicación en una colección de servicios pequeños, independientes y acoplados de forma débil. Cada **microservicio** se centra en una funcionalidad de negocio específica y se comunica con otros servicios a través de APIs. Esta arquitectura ofrece mayor **resiliencia** (si un servicio falla, el resto puede seguir funcionando), **escalabilidad** (los servicios pueden escalarse individualmente según la demanda) y **agilidad** (los equipos pueden desarrollar y desplegar servicios de forma autónoma). Sin embargo, la complejidad de gestión y el despliegue de múltiples servicios pueden ser mayores.
+
+```mermaid
+graph LR
+    A[Cliente] --> B(API Gateway);
+    B --> C[Servicio de Usuarios];
+    B --> D[Servicio de Pedidos];
+    B --> E[Servicio de Pagos];
+    C --> F{BD Usuarios};
+    D --> G{BD Pedidos};
+    E --> H{BD Pagos};
+```
 
 ## 4. Modelos
 
 ### 4.1. Modelo Vista Controlador - MVC
 
-### 4.2. Arquitectura de microservicios
+El **Modelo Vista Controlador (MVC)** es un patrón de diseño que separa una aplicación en tres componentes interconectados para lograr una clara separación de responsabilidades:
 
-### 4.3. Arquitecturas limpias
+  * **Modelo**: Contiene la lógica de negocio y los datos de la aplicación. Es independiente de la interfaz de usuario.
+  * **Vista**: Es la capa de presentación. Muestra los datos del modelo al usuario y captura la interacción del usuario.
+  * **Controlador**: Actúa como intermediario. Recibe las entradas del usuario a través de la Vista, las procesa, interactúa con el Modelo para actualizar el estado de los datos, y luego selecciona la Vista adecuada para mostrar el resultado.
+
+Este patrón mejora la **organización del código**, la **reutilización de componentes** y la **facilidad de prueba**, ya que cada componente puede ser probado de forma independiente.
+
+```mermaid
+graph LR
+    A[Usuario] -->|Interactúa| B(Vista);
+    B -->|Envía Entrada| C(Controlador);
+    C -->|Actualiza| D{Modelo};
+    D -->|Notifica Cambios| B;
+    D -->|Pide Datos| C;
+    C -->|Selecciona| B;
+```
+
+### 4.2. Arquitectura de Microservicios
+
+Como se detalló en el punto anterior, la **arquitectura de microservicios** es un modelo que organiza una aplicación como un conjunto de servicios granulares e interconectados. Cada servicio se enfoca en una funcionalidad de negocio específica y puede ser desarrollado, desplegado y escalado de forma independiente. Este enfoque contrasta con el monolítico y es ideal para aplicaciones grandes y complejas que requieren una alta disponibilidad, escalabilidad y una rápida evolución.
+
+### 4.3. Arquitecturas Limpias (Clean Architecture)
+
+Las **Arquitecturas Limpias**, popularizadas por Robert C. Martin ("Uncle Bob"), son un conjunto de principios de diseño que organizan el código en capas concéntricas para lograr la **independencia de frameworks, bases de datos e interfaces de usuario**. La regla fundamental es la **regla de dependencia**: las dependencias siempre deben apuntar hacia el interior.
+
+  * **Capa Interna (Entidades y Casos de Uso)**: Contiene la lógica de negocio central, independiente de cualquier tecnología externa.
+  * **Capas Externas (Adaptadores e Interfaces, Frameworks)**: Contienen la lógica de presentación, las bases de datos y los frameworks. Estas capas dependen de las capas internas, pero no al revés.
+
+El objetivo es crear sistemas robustos, flexibles y altamente **testeables**, ya que la lógica de negocio puede ser probada sin necesidad de componentes de bases de datos, APIs web o interfaces de usuario.
+
+```mermaid
+graph TD
+    subgraph "Arquitectura Limpia"
+        direction TB
+        A[Entidades]
+        B[Casos de Uso]
+        C[Adaptadores de Interfaz]
+        D[Frameworks & Drivers]
+        D --> C --> B --> A
+    end
+```
 
