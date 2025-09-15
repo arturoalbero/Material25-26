@@ -73,15 +73,34 @@ Spring Boot es un módulo dentro del ecosistema Spring Framework que facilita la
 
 ### Estereotipos
 
-- @Component
-- @Controller
-- @Service
-- @Repository
-- @Bean
+* **@Component**
+  Estereotipo genérico para marcar una clase como un **componente gestionado por Spring**. Es la anotación base que puede usarse cuando no encaja específicamente en `@Service`, `@Controller` o `@Repository`.
+
+* **@Controller**
+  Marca una clase como un **controlador de Spring MVC**, que maneja solicitudes HTTP y devuelve respuestas (puede ser vistas o JSON/XML si se combina con `@ResponseBody`).
+
+* **@Service**
+  Indica que una clase representa la **lógica de negocio o servicios de la aplicación**. Es un especialización de `@Component` pensada para organizar mejor el código.
+
+* **@Repository**
+  Marca una clase como un **componente de acceso a datos (DAO)**. Además, Spring traduce automáticamente las excepciones específicas de la base de datos a excepciones genéricas de Spring.
+
+* **@Bean**
+  Se usa dentro de una clase anotada con `@Configuration` para **registrar un bean manualmente en el contenedor** de Spring.
+
 
 ### Scopes
 
-- Sesion Singleton
-- Prototype
-- Request
-- Session
+* **Singleton** (por defecto)
+  Se crea **una sola instancia** del bean en todo el contenedor de Spring, y se comparte entre todas las dependencias que lo usen.
+
+* **Prototype**
+  Cada vez que se solicita, Spring crea **una nueva instancia** del bean.
+
+* **Request** (en aplicaciones web)
+  Se crea **una instancia por cada petición HTTP**.
+
+* **Session** (en aplicaciones web)
+  Se crea **una instancia por cada sesión de usuario** y se mantiene mientras dure la sesión.
+
+
