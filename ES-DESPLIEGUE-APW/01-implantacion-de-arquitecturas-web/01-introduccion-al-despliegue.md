@@ -89,10 +89,10 @@ Una SPA es una aplicación web que interactúa con el usuario de forma dinámica
 
 En una SPA, nunca se recarga la página, sino que el contenido se reescribe de forma asíncrona. Hay una gran cantidad de frameworks, como Angular o Vue.js, que tienen este enfoque.
 
-* Frontend en React (SPA) desplegado en Netlify o Vercel.
+* Frontend en React (SPA) desplegado en [Netlify](https://www.netlify.com/) o [Vercel](https://vercel.com/).
 * Backend (API REST en Node.js o Django) desplegado en un VPS o contenedor Docker.
-* Comunicación entre capas mediante fetch/Axios.
-* Configuración de variables de entorno y seguridad CORS.
+* Comunicación entre capas mediante [fetch/Axios](https://keepcoding.io/blog/fetch-o-axios/).
+* Configuración de variables de entorno y seguridad [CORS](https://developer.mozilla.org/es/docs/Web/HTTP/Guides/CORS).
 
 ## 1.5 Repercusión del despliegue
 
