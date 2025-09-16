@@ -79,6 +79,3 @@ Se trabajan los RA4, RA5 y RA6.
 | 27/01/2026 | RA6                      | a, b                               | Identificación de grupos de interés. Análisis de aspectos ASG materiales.   |
 | 03/02/2026 | RA6                      | c, d, e                            | Acciones, métricas de evaluación. Elaboración de informe de sostenibilidad. |
 
----
-
-¿Quieres que te prepare este cronograma en **formato tabla Word/Excel** (docx o xlsx) para que lo tengas listo para usar directamente en clase o entregar como programación oficial?

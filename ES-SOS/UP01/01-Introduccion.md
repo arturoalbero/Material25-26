@@ -12,8 +12,8 @@ A estas tres dimensiones a veces se las menciona por las siglas ASG.
 
 > **Actividad – Debate breve:**
 >
-> * Pregunta: *En el sector informático, ¿qué problemas ambientales, sociales o de gobernanza os vienen a la mente?*
-> * Ejemplo orientador: consumo energético de centros de datos, condiciones laborales en la producción de dispositivos, privacidad y ética de los datos.
+> *En el sector informático, ¿qué problemas ambientales, sociales o de gobernanza os vienen a la mente?*
+> * Por ejemplo: consumo energético de centros de datos, condiciones laborales en la producción de dispositivos, privacidad y ética de los datos.
 
 
 ## 2. Desarrollo sostenible
