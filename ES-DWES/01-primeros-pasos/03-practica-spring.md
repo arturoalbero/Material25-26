@@ -24,3 +24,20 @@ Crea un segundo proyecto a partir de https://start.spring.io con las mismas cara
 - enlaces-externos.html con enlaces relevantes para la página web. Puedes añadir los de su página de Wikipedia e imslp.org, así como de algún artículo que encuentres por internet.
 
 El contenido de la página puede estar en castellano, aunque puedes usar un chatbot o un traductor para traducirlo al inglés.
+
+## Ejercicio 3: Repaso de Java
+
+Realiza las siguientes aplicaciones de consola:
+
+> Se desea desarrollar un programa que gestione los dispositivos domóticos de un edificio. Para ello tendremos un ArrayList que contenga, en principio, 3 elementos: uno para el termostato de la calefacción, otro para el ascensor y otro más para el dial de la radio del hilo musical. En un futuro, podríamos tener más elementos.
+>
+> El termostato tiene una fecha de útlima revisión, un valor entero en grados centígrados: mínimo 15, máximo 80 y la temperatura inicial es 20. El ascensor tiene una planta en la que se encuentra, de 0 a 8. La planta inicial es 0. Por último, el dial de radio va desde 88.0 hasta 104.0, avanzando de décima en décima, siendo el valor inicial 88.0.
+>
+> De cada elemento, y los futuros que aparezcan, se debe conseguir que sean capaces de realizar las siguientes funciones:
+> - subir(), incrementa en una unidad el elemento domótico. Devuelve true si la operación se realiza con éxito, false si ocurre algún problema (por llegar al máximo).
+> - bajar(), decrementa en una unidad el elemento domótico. Devuelve true si la operación se realiza con éxito, false si ocurre algún problema (por llegar al máximo).
+> - reset(), devuelve al elemento domótico a su situación original.
+> - verEstado(), devuelve un String con el tipo de elemento domótico, así como su estado actual
+> Además, el termostato debe incluir un método, revisar(), para fijar la fecha de la revisión a la fecha actual.
+>
+> Una vez definido el sistema, crea un programa que inicie un ArrayList con una instancia de cada uno de los 3 dispositivos y luegoo, mediante un menú, permita hacer todas las operaciones (0 para salir, 1 para subir un dispositivo, 2 para bajar un dispositivo, 3 para resetear un dispositivo y 4 para revisar el termostato)

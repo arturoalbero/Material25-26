@@ -355,3 +355,13 @@ Por último, modificamos de la siguiente manera el HTML que habíamos creado par
 ```
 Observa que los paquetes instalados en las dependencias se encuentran en la carpeta `External Libraries`:
 ![alt text](image-4.png)
+
+## Changing the port of the Spring Boot Application
+
+The default port for Spring Boot applications is 8080, but it can be changed using several methods. The most common approach is to modify the application.properties or application.yml file located in the src/main/resources directory. In application.properties, add the line `server.port=9090` to set the port to 9090.
+In application.yml, use the syntax server: port: 9090 for the same result.
+
+Alternatively, you can change the port via command-line arguments when running the JAR file using java -jar myapp.jar --server.port=9090. This method is useful for temporary changes or different environments without modifying configuration files.
+
+> **Activity:**
+> Modify your project in order to include one or more webjars, and change the default port.
