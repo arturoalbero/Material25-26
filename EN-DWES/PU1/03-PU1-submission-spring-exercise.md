@@ -10,9 +10,9 @@ Submit both projects, as well as a report containing screenshots of the entire p
 * Possible issues encountered.
 * Documentation on the use of different resources available as an annex, if applicable (for example, the use of a chatbot to translate from Spanish to English).
 
-## Exercise 1: Static Website with VSC
+## Exercise 1: Static Website with the built-in spring boot initializr
 
-Create a Spring Boot project using the VSC assistant or the IntelliJ assistant. Include the dependencies starter spring-Web, starter-Thymeleaf, and DevTools, in Java 25, packaged as a jar. Configure it to listen on port 9000 and to only contain an index.html page with the heading "Hello World". Run the application and verify in the browser that it works correctly.
+Create a Spring Boot project using the [**VSC spring boot intializr**](https://code.visualstudio.com/docs/java/java-spring-boot) or the [IntelliJ assistant](https://www.jetbrains.com/help/idea/your-first-spring-application.html#create-new-spring-boot-project). Include the dependencies starter spring-Web, starter-Thymeleaf, and DevTools, in Java 25, packaged as a jar. Configure it to listen on port 9000 and to only contain an index.html page with the heading "Hello World". Run the application and verify in the browser that it works correctly.
 
 ## Exercise 2: Static Website with start.spring.io
 
