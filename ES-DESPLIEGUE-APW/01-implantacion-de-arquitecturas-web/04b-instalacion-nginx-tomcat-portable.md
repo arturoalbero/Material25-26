@@ -18,13 +18,17 @@ Es recomendable abrir en VS CODE la carpeta en la que vamos a trabajar, para mod
 ```
 C:\Users\[USUARIO]\Documents\servidores_portables\nginx[version]\
 ```
+(Puedes usar el nombre que viene por defecto)
+
 Para comprobar que has bajado la versión de Windows, métete en la carpeta y asegúrate de que está el archivo .exe.
 
-* **Tomcat portátil**: descarga Apache Tomcat (zip) desde [https://tomcat.apache.org/download-10.cgi](https://tomcat.apache.org/download-10.cgi) (elige *Core: zip*). Puedes elegir cualquier versión, en este caso el enlace te lleva a las descargas de la versión 10, pero también están disponibles la 9 y la 11. Extrae en:
+* **Tomcat portátil**: descarga Apache Tomcat (zip) desde [https://tomcat.apache.org/download-10.cgi](https://tomcat.apache.org/download-10.cgi) (elige *Core: zip*). Puedes elegir cualquier versión, en este caso el enlace te lleva a las descargas de la versión 10, pero también están disponibles la 9 y la 11. Extrae en una carpeta, por ejemplo:
 
 ```
 C:\Users\[USUARIO]\Documents\servidores_portables\tomcat\
 ```
+
+(Puedes usar el nombre que viene por defecto, que será apache-tomcat o algo así)
 
 ## 2. Configuración de Nginx (web server)
 
