@@ -27,6 +27,8 @@ El contenido de la página puede estar en castellano, aunque puedes usar un chat
 
 ## Ejercicio 3: Repaso de Java
 
+### Domótica v.1 - Repaso de clases e interfaces
+
 Realiza las siguientes aplicaciones de consola:
 
 > Se desea desarrollar un programa que gestione los dispositivos domóticos de un edificio. Para ello tendremos un ArrayList que contenga, en principio, 3 elementos: uno para el termostato de la calefacción, otro para el ascensor y otro más para el dial de la radio del hilo musical. En un futuro, podríamos tener más elementos.
@@ -40,4 +42,28 @@ Realiza las siguientes aplicaciones de consola:
 > - verEstado(), devuelve un String con el tipo de elemento domótico, así como su estado actual
 > Además, el termostato debe incluir un método, revisar(), para fijar la fecha de la revisión a la fecha actual.
 >
-> Una vez definido el sistema, crea un programa que inicie un ArrayList con una instancia de cada uno de los 3 dispositivos y luegoo, mediante un menú, permita hacer todas las operaciones (0 para salir, 1 para subir un dispositivo, 2 para bajar un dispositivo, 3 para resetear un dispositivo y 4 para revisar el termostato)
+> Una vez definido el sistema, crea un programa que inicie un ArrayList con una instancia de cada uno de los 3 dispositivos y luegoo, mediante un menú, permita hacer todas las operaciones (0 para salir, 1 para subir un dispositivo, 2 para bajar un dispositivo, 3 para resetear un dispositivo y 4 para revisar el termostato) y luego seleccionar sobre qué elemento queremos trabajar (verificando que sea un valor entre 0 y el tamaño del ArrayList -1).
+>
+> El menú, además de las opciones, nos mostrará siempre el estado de los dispositivos
+
+### Domótica con operaciones CRUD
+
+**Operaciones CRUD:**
+
+- C - Create (Insert)
+- R - Read (Select)
+- U - Update
+- D - Delete
+
+#### Domótica v.2 - Ficheros
+
+> Haz una segunda versión del programa, pero que permita almacenar y cargar los elementos domóticos desde un fichero de texto tipo .csv (comma separated values) incluido en los resources del proyecto.
+>
+> Añade una opción que permita añadir un elemento domótico del tipo que sea, otra que permita borrarlo y otra que permita editarlo.
+
+#### Domótica v.3 - Base de datos
+
+> Haz una versión alternativa del programa anterior, pero que funcione con una base de datos SQLite (o cualquier otra) en lugar del fichero. Simplemente debes reescribir los métodos que se encargaban de leer y escribir datos en el fichero para que lo hagan en la base de datos.
+
+- [Tutorial SQLite](https://www.sqlitetutorial.net/sqlite-java/)
+- [Repositorio de Maven](https://central.sonatype.com/artifact/org.xerial/sqlite-jdbc)

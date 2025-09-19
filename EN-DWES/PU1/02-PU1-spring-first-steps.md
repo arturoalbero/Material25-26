@@ -306,7 +306,7 @@ This application has no explicit mapping for /error, so you are seeing this as a
 Wed Sep 17 10:50:54 CEST 2025
 There was an unexpected error (type=Not Found, status=404).
 
-````
+```
 
 > Now, close the project and create an `index.html` file in the /static folder.  
 
