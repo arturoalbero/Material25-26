@@ -1,5 +1,11 @@
 # Tecnologías de virtualización: Virtualización y Contenedores
 
+> Información extraída de:
+>
+> * [AWS - ¿Qué es la virtualización?](https://aws.amazon.com/es/what-is/virtualization/)
+> * [Docker - Documentación oficial](https://docs.docker.com/)
+> * [Kubernetes - Documentación oficial](https://kubernetes.io/docs/home/)
+
 ## ¿Qué es la virtualización?
 
 La virtualización es una tecnología que permite crear representaciones digitales de servidores, almacenamiento, redes y otros recursos físicos.
@@ -150,16 +156,3 @@ Imagina que una aplicación web está compuesta por varios microservicios en con
 * **Kubernetes** (el estándar de facto).
 * **Docker Swarm** (integrado en Docker, más sencillo).
 * **Apache Mesos** (más flexible, usado en entornos grandes).
-
-¿Quieres que te prepare un **esquema visual en Markdown** para representar de manera gráfica cómo funciona la orquestación de contenedores dentro de un cluster?
-
-
-## Fuentes
-
-* [AWS - ¿Qué es la virtualización?](https://aws.amazon.com/es/what-is/virtualization/)
-* [Docker - Documentación oficial](https://docs.docker.com/)
-* [Kubernetes - Documentación oficial](https://kubernetes.io/docs/home/)
-
----
-
-¿Quieres que te prepare también una **versión más orientada a presentaciones** (con frases más cortas y esquemas destacados), o prefieres mantener este estilo más detallado y explicativo?
