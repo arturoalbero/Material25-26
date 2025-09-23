@@ -7,7 +7,7 @@ Para trabajar con Spring, un framework de desarrollo web en entorno servidor que
 IntelliJ tiene dos versiones, una gratuita llamada Community Edition y otra de pago, llamada Ultimate, a la que se puede acceder de forma gratuita con la licencia de estudiante. Para solicitar una licencia de estudiante, debes ir a [**la página web habilitada para la solicitud**](https://www.jetbrains.com/es-es/academy/student-pack/) y adjuntarles un documento que acredite que estás estudiando un ciclo superior de informática (la matrícula, el carnet de estudiante, etc.).
 
 En ambas versiones de IntelliJ se puede usar Spring, pero la versión Ultimate tiene una serie de ventajas de calidad de vida para desarrollar los programas.
-![alt text](image.png)
+![alt text](./img/image.png)
 
 Al instalar un IDE, es importante deshabilitar la compleción de texto usando machine learning, para evitar que las sugerencias de código de Visual Studio Code o IntelliJ nos distraigan de lo que realmente queremos escribir. Intellisense, por otro lado, es muy útil. Intellisense es la herramienta que, dada una letra, nos sugiere una serie de elementos relacionados en nuestro proyecto (clases de java, variables, etc.). En IntelliJ viene por defecto y en VSC hay que instalar la extensión del lenguaje específico que queramos usar.
 
@@ -19,7 +19,7 @@ Al instalar un IDE, es importante deshabilitar la compleción de texto usando ma
 
 [Spring](https://spring.io/projects/spring-framework) es un framework Open Source que facilita la creación de aplicaciones en Java, Kotlin y Groovy, principalmente para el Back-End. Se compone de herramientas y utilidades que generan aplicaciones completas descargando al desarrollador de la gestión de aspectos internos de comportamiento y generando código automático para tareas estándar, siendo las más importantes: el acceso a base de datos, la gestión de la seguridad de la aplicación y la generación de la API (Application Programming Interface).
 
-![alt text](spring-framework-runtime.png)
+![alt text](./img/spring-framework-runtime.png)
 
 Puedes ver más sobre Spring Framework en su [overview oficial](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/overview.html).
 
@@ -141,7 +141,7 @@ Por último, es conveniente configurar tanto IntelliJ como VSC para que soporten
 
 Podemos crear un proyecto de Spring de tres formas. La primera de ellas es a través del inicializador de VSC o de IntelliJ Ultimate. La segunda es a través de [start.spring.io](https://start.spring.io/), que es un formulario en el que podemos generar un proyecto vacío con la configuración que queramos. La tercera es copiar un proyecto ya existente y modificarlo.
 
-![alt text](image-1.png)
+![alt text](./img/image-1.png)
 
 En esta imagen, podemos ver un ejemplo de cómo usar el inicializador de Spring. Al darle a generar nos creará un proyecto y ese será el que deberemos abrir en nuestro IDE.
 
@@ -253,7 +253,7 @@ En la página web [mvnrepository.com](https://mvnrepository.com/) tienes disponi
 
 Buscamos la dependencia en el buscador y hacemos click en ella. Una vez dentro, seleccionamos la versión de nuestro SpringBoot y nos aparecerá el texto que debemos copiar en nuestro archivo pom.xml.
 
-![alt text](image-2.png)
+![alt text](./img/image-2.png)
 
 ## Contenido Estático
 
@@ -320,7 +320,7 @@ Ambos casos tienen desventajas. En el primero, dependes de los servidores de CDN
 
 Spring ofrece una tercera forma, **WebJars**. Un WebJar nos permite trabajar con los recursos estáticos como si fueran dependencias de Maven, por lo que tenemos la ventaja de descargarlo en nuestro servidor, pero además la versión se controla de forma automática y todo se ejecuta a través de Maven, por lo que resulta transparente al desarrollador. Un WebJar es una dependencia más. Podemos acceder a los webjars a través de [webjars.org](https://www.webjars.org/).
 
-![alt text](image-3.png)
+![alt text](./img/image-3.png)
 
 En la web podemos elegir el formato de la dependencia. Seleccionamos Maven y buscamos una que nos interese, por ejemplo Bootstrap5.  También necesitaremos la dependencia [webjars-locator](https://mvnrepository.com/artifact/org.webjars/webjars-locator) del repositorio oficial de maven. Copiamos el texto en la sección de dependencias de nuestro pom.xml y recargamos el proyecto (en IntelliJ, click derecho sobre el archivo pom.xml, Maven->Sync Project).
 ```xml
@@ -354,7 +354,7 @@ Por último, modificamos de la siguiente manera el HTML que habíamos creado par
 </html>
 ```
 Observa que los paquetes instalados en las dependencias se encuentran en la carpeta `External Libraries`:
-![alt text](image-4.png)
+![alt text](./img/image-4.png)
 
 ## Changing the port of the Spring Boot Application
 
