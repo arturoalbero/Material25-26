@@ -1,6 +1,125 @@
-# Actividad Guiada: Docker desglosado
+# Introducción a la virtualización
 
 > **Criterios de evaluación:** 1e, 1f, 1i
+
+## Virtualización
+
+La virtualización es una tecnología que permite crear representaciones digitales de servidores, almacenamiento, redes y otros recursos físicos.
+
+El software especializado (hipervisor) imita las funciones del hardware físico para que varias **máquinas virtuales** (VMs) puedan ejecutarse en paralelo dentro de un mismo servidor físico.
+
+```mermaid
+graph TD
+  A[Servidor físico] -->|Hipervisor| B[VM 1 - Windows]
+  A -->|Hipervisor| C[VM 2 - Linux]
+  A -->|Hipervisor| D[VM 3 - iOS]
+```
+
+Los servidores físicos consumen electricidad, ocupan espacio, requieren refrigeración y mantenimiento. Además, suelen infrautilizarse: gran parte de su capacidad queda ociosa.
+
+La virtualización soluciona esto permitiendo que un mismo servidor físico ejecute múltiples entornos independientes, lo que mejora la eficiencia y reduce costes.
+
+## Máquinas virtuales y el papel del hipervisor
+
+Una **máquina virtual** es un sistema definido por software, independiente del resto, pero alojado dentro de un servidor físico. El equipo físico se llama **host**, y las máquinas virtuales se conocen como **invitados**.
+
+El **hipervisor** es la capa que hace posible este aislamiento y reparto de recursos.
+Existen dos grandes tipos:
+
+* **Hipervisor tipo 1 (bare metal)**: corre directamente sobre el hardware. Alta eficiencia y usado en entornos empresariales.
+>[**KVM en Linux**](https://es.wikipedia.org/wiki/Kernel-based_Virtual_Machine).
+* **Hipervisor tipo 2 (hosted)**: se instala sobre un sistema operativo existente. Es más sencillo y práctico para usuarios individuales o pruebas.
+> [**VMware Workstation**](https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion).
+
+
+## Tipos de virtualización
+
+La virtualización puede responder a diversos tipos según las necesidades del sistema:
+
+* **Virtualización de servidores**: divide un servidor físico en varios virtuales.
+> [Microsoft Hyper-V](https://learn.microsoft.com/es-es/windows-server/virtualization/hyper-v/overview)
+* **Virtualización de almacenamiento**: combina recursos de diferentes dispositivos y los gestiona como una unidad virtual.
+> [IBM Spectrum Virtualize](https://www.ibm.com/es-es/products/spectrum-virtualize-for-public-cloud)
+* **Virtualización de redes**: centraliza switches, routers y firewalls en un plano virtual (ej. SDN, NFV).
+> [Cisco ACI](https://www.cisco.com/site/uk/en/products/networking/cloud-networking/application-centric-infrastructure/index.html)
+* **Virtualización de datos**: crea una capa que abstrae el origen y formato de los datos para integrarlos de manera flexible.
+> [Denodo Platform](https://www.denodo.com/es/denodo-platform)
+* **Virtualización de aplicaciones**: permite que software diseñado para un sistema operativo se ejecute en otro.
+> [Citrix Virtual Apps](https://docs.citrix.com/es-es/citrix-virtual-apps-desktops/technical-overview.html)
+* **Virtualización de escritorios**: ofrece escritorios virtuales accesibles desde dispositivos remotos, útiles para empresas con gran diversidad de usuarios.
+> [Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/overview)
+
+
+## Virtualización y computación en la nube
+
+La computación en la nube consiste en suministrar recursos bajo demanda a través de Internet, con pago por uso.
+
+La nube se apoya en la virtualización, pero da un paso más: el usuario no administra directamente el hardware subyacente, sino que accede a recursos gestionados por el proveedor.
+
+
+## Virtualización y contenedores
+
+Los contenedores son otra forma de aislar y ejecutar aplicaciones, pero con un enfoque más ligero.
+
+Mientras que las máquinas virtuales requieren un sistema operativo completo por cada instancia, los contenedores comparten el **kernel** del host y solo incluyen lo estrictamente necesario para la aplicación (código, librerías, dependencias).
+
+* Una **máquina virtual** es como un **apartamento en un bloque**. Cada piso tiene paredes, instalaciones propias y aislamiento total.
+* Un **contenedor** es como una **habitación dentro de una casa compartida**. Cada habitación tiene lo necesario para vivir, pero comparte instalaciones básicas como agua, electricidad y cimientos.
+
+Esto explica por qué los contenedores consumen menos recursos y se inician más rápido que las VMs.
+
+## Docker
+
+[Docker](https://www.docker.com/) es la plataforma más extendida para crear y gestionar contenedores.
+
+Permite empaquetar aplicaciones con todas sus dependencias, garantizando portabilidad y consistencia entre entornos de desarrollo, pruebas y producción.
+
+
+## Kubernetes
+
+[Kubernetes](https://kubernetes.io/) es un sistema de **orquestación de contenedores**.
+Gestiona automáticamente el despliegue, la escalabilidad y la disponibilidad de aplicaciones distribuidas en múltiples nodos.
+
+Características destacadas:
+
+* Automatiza el escalado según la demanda.
+* Tolera fallos redistribuyendo cargas cuando un nodo falla.
+* Facilita actualizaciones continuas sin interrumpir el servicio.
+
+```mermaid
+graph TD
+  A[Cluster Kubernetes] --> B[Nodo 1]
+  A --> C[Nodo 2]
+  B --> D[Pod con 2 contenedores]
+  C --> E[Pod con 3 contenedores]
+```
+
+Un **Pod** es la unidad mínima de ejecución en Kubernetes, y puede contener uno o varios contenedores que comparten red y almacenamiento.
+
+### Orquestación de contenedores
+
+La **orquestación de contenedores** es el proceso de **automatizar la gestión del ciclo de vida de los contenedores** cuando se ejecutan en producción o en entornos distribuidos.
+
+Incluye tareas como:
+
+* **Despliegue**: lanzar contenedores en los servidores o nodos adecuados.
+* **Escalado**: aumentar o reducir automáticamente el número de contenedores según la carga de trabajo.
+* **Balanceo de carga**: distribuir el tráfico de red entre contenedores para evitar sobrecargas.
+* **Monitorización y salud**: reiniciar contenedores fallidos y mantener la aplicación disponible.
+* **Actualizaciones continuas (rolling updates)**: aplicar nuevas versiones sin interrumpir el servicio.
+
+
+> Imagina que una aplicación web está compuesta por varios microservicios en contenedores (autenticación, base de datos, frontend, API). Si el tráfico aumenta, la orquestación añade automáticamente más contenedores de frontend para atender a los usuarios y, si uno falla, lo reemplaza en segundos sin intervención manual.
+
+**Herramientas más usadas para orquestación:**
+
+* **Kubernetes** (el estándar de facto).
+* **Docker Swarm** (integrado en Docker, más sencillo).
+* **Apache Mesos** (más flexible, usado en entornos grandes).
+
+---
+
+# Introducción a Docker
 
 Este apartado es un **tutorial** para aprender a dominar Docker en su totalidad. Este documento trabaja tomando como referencia el siguiente vídeo de youtube:
 
@@ -16,21 +135,48 @@ De esta forma, se consigue una mayor portabilidad y se mejora la posibilidad de 
 
 Los contenedores de Docker se almacenan en repositorios, ya sean privados o públicos, como dockerhub, que es el repositorio oficial.
 
-Para unificar las herramientas de desarrollo de un equipo, un contenedor almacena todas las dependecias necesarias. Se construyen sobre una imagen de Linux. De esta forma, se evitan errores relacionados con compatibilidad y dependencias, al tenerlas almacenadas en imágenes. Por lo tanto, los contenedores son un tipo de virtualización. 
+Para unificar las herramientas de desarrollo de un equipo, un contenedor almacena todas las dependecias necesarias. Se construyen sobre una imagen de Linux. De esta forma, se evitan errores relacionados con compatibilidad y dependencias, al tenerlas almacenadas en imágenes. Por lo tanto, **los contenedores son un tipo de virtualización**. 
 
-Para entender la diferencia entre una máquina virtual y un contenedor, debemos saber que un ordenador se divide en diferentes capas: la capa de hardware, el kernel y la capa de aplicaciones. Con una máquina virtual, se virtualizan tanto el kernel como la capa de aplicaciones. El contenedor, por su parte, solo virtualiza la capa de aplicaciones, empleando el kernel del sistema operativo anfitrión (Linux o Mac OSX) o, en el caso de windows, WSL2 (Windows Subsystem for Linux).
+Para entender la diferencia entre una máquina virtual y un contenedor, debemos saber que **un ordenador se divide en diferentes capas**: la capa de hardware, el kernel y la capa de aplicaciones. Con una máquina virtual, se virtualizan tanto el kernel como la capa de aplicaciones. El contenedor, por su parte, solo virtualiza la capa de aplicaciones, empleando el kernel del sistema operativo anfitrión (Linux o Mac OSX) o, en el caso de windows, WSL2 (Windows Subsystem for Linux).
+
+```mermaid
+flowchart TD
+subgraph Ordenador
+    HARDWARE
+    KERNEL
+    APP[CAPA DE APLICACIONES]
+end
+HARDWARE ==> KERNEL
+KERNEL ==> APP
+CONTENEDOR -.VIRTUALIZA.->APP
+MV[MÁQUINA VIRTUAL]-.VIRTUALIZA.->KERNEL
+MV-.VIRTUALIZA.->APP
+
+```
 
 Al virtualizar solamente la capa de aplicaciones, los contenedores son más rápidos y ocupan menos que las máquinas virtuales, por lo que son más apropiados para el desarrollo.
 
 ### Instalar Docker
-Para instalar Docker debes ir a su página web y descargar Docker Desktop. Docker Desktop incluye herramientas como Docker-compose y CLI (la interfaz línea de comandos).
+Para instalar Docker debes ir a su [página web](https://www.docker.com/products/docker-desktop/) y descargar Docker Desktop. Docker Desktop incluye herramientas como Docker-compose y CLI (la interfaz línea de comandos). También incluye el WSL2.
 
 ## Manejo de imágenes
-Para manejar Docker, emplearemos la línea de comandos. Para que funcione, debemos tener ejecutándose Docker Desktop, programa que habilita el uso de CLI.
+
+Para manejar Docker, emplearemos la línea de comandos. Para que funcione, debemos tener ejecutándose Docker Desktop, programa que habilita el uso de CLI. Docker dispone en sus versiones más nuevas de un terminal integrado:
+
+![alt text](./imgs/docker-01.png)
+
+Una imagen de Docker es una plantilla de solo lectura que contiene todo lo necesario para ejecutar una aplicación, incluyendo el código, las bibliotecas, las dependencias y el entorno de ejecución.
+
+Se compone de múltiples capas que permiten un almacenamiento eficiente y la reutilización de componentes.
+
+Estas imágenes se crean a partir de un Dockerfile, un archivo de texto que contiene las instrucciones para construir la imagen.
+
+Una imagen actúa como una instantánea o esquema que se utiliza para crear instancias de contenedores, que son las versiones ejecutables de dichas imágenes.
 
 ```bash
 $ docker images
 ```
+
 Este comando muestra todas las imágenes descargadas. Nos muestra los siguientes campos:
 - **Repository**: Nombre de la imagen.
 - **Tag**: Etiqueta de la imagen.
@@ -60,6 +206,7 @@ $ docker image rm node:lts-alpine3.19
 En este caso, borraremos la imagen de `node` etiquetada con `18` que habíamos descargado antes.
 
 ## Manejo de contenedores
+
 Los contenedores son el elemento principal de Docker y se crean empleando una imagen como base.
 
 ```bash
@@ -107,7 +254,7 @@ Es recomendable usar nombres personalizados, ya que facilita el uso de los conte
 
 ## Port Mapping
 
-En telemática y redes informáticas, los puertos son como ventanas virtuales que permiten que una computadora se conecte con varias otras al mismo tiempo. Cada ventana está numerada del 0 al 65,535 y sirve para dirigir la información entrante al programa correcto que está esperándola.
+En telemática y redes informáticas, los puertos son como ventanas virtuales que permiten que una computadora se conecte con varias otras al mismo tiempo. Cada ventana está numerada del **0 al 65535** y sirve para dirigir la información entrante al programa correcto que está esperándola.
 
 El puerto que aparecía cuando ejecutábamos el comando `$ docker ps` y teníamos un contenedor corriendo era un puerto interno del contenedor, pero cerrado y no accesible desde nuestro equipo. Para poder acceder a un puerto de un contenedor, debemos mapearlo a uno de nuestro equipo.
 
@@ -117,7 +264,7 @@ $ docker create -p27017:27017 mongo
 
 Con este comando, mapeamos el puerto 27017 del contenedor a nuestro puerto 27017. Es una práctica común mapear los puertos internos del contenedor al mismo número en nuestro equipo y, en caso de no poderse, a un número similar.
 
-En la instrucción `-p27017:27017`, el primer puerto es el de nuestra máquina y el segundo el del contenedor. El nombre extendido del puerto de nuestra máquina es, en realidad, `0.0.0.0:27017` o `localhost:27017`.
+En la instrucción `-p27017:27017`, **el primer puerto es el de nuestra máquina y el segundo el del contenedor.** El nombre extendido del puerto de nuestra máquina es, en realidad, `0.0.0.0:27017` o `localhost:27017`.
 
 Además del comando anterior, también podemos no especificar un puerto de nuestro equipo y que Docker lo asigne arbitrariamente usando `-p27017`. Sin embargo, es preferible asignar los puertos de manera manual.
 
@@ -132,7 +279,7 @@ En el primer caso, vemos los logs del contenedor `mimongo` en el momento dado en
 
 ## Docker Run
 
-Docker Run es un comando que sirve para crear y ejecutar un contenedor en un solo paso. Es decir, es una combinación de los comandos `pull`, `create` y `start`. Todos los parámetros anteriores son compatibles.
+**Docker Run es un comando que sirve para crear y ejecutar un contenedor en un solo paso.** Es decir, es una combinación de los comandos `pull`, `create` y `start`. Todos los parámetros anteriores son compatibles.
 
 ```bash
 $ docker run mongo
@@ -152,7 +299,7 @@ $ docker run --name mimongo -p27017 -d mongo
 
 Por último, con este comando estamos creando y ejecutando un contenedor de nombre `mimongo` basado en la imagen `mongo` y, además, estamos mapeando el puerto interno 27017 del contenedor a nuestro puerto 27017.
 
-El comando `$ docker run` siempre crea un contenedor nuevo cuando se ejecuta. Si queremos ejecutar un contenedor ya creado, debemos usar `$ docker start` y el nombre o la id del contenedor.
+> El comando `$ docker run` siempre crea un contenedor nuevo cuando se ejecuta. Si queremos ejecutar un contenedor ya creado, debemos usar `$ docker start` y el nombre o la id del contenedor.
 
 ## Variables de entorno y cómo conectarse a un contenedor
 
@@ -162,9 +309,9 @@ En node.js existe una librería llamada mongoose que nos permite conectarnos a b
 mongoose.connect('mongodb://nombre:password@localhost:27017/miapp?authSource=admin');
 ```
 
-En esta instrucción, le estamos diciendo al objeto mongoose que se conecte a `mongoddb` usando como nombre `nombre` y como password `password`. La @ sirve para separar esos datos de dónde vamos a conectarnos, en este caso a `localhost:27017' que es nuestro equipo en su puerto 27017. Finalmente, el URI nos indica a qué parte del programa nos conectamos, en esta caso `miapp` es la aplicación y después de `?` se colocan los parámetros de configuración, `authSource=admin`.
+En esta instrucción, le estamos diciendo al objeto mongoose que se conecte a `mongoddb` usando como nombre `nombre` y como password `password`. La @ sirve para separar esos datos de dónde vamos a conectarnos, en este caso a `localhost:27017` que es nuestro equipo en su puerto 27017. Finalmente, el URI nos indica a qué parte del programa nos conectamos, en esta caso `miapp` es la aplicación y después de `?` se colocan los parámetros de configuración, `authSource=admin`.
 
-Para poder realizar correctamente esta conexión, debemos haber configurado las **variables de entorno** del contenedor. Cada imagen tiene sus propias variables de entorno, que debemos consultar en el mismo repositorio. En el caso de la imagen de mongo, solamente necesitamos configurar las siguientes variables de entorno para que funcione todo:
+Para poder realizar correctamente esta conexión, debemos haber configurado las **variables de entorno** del contenedor. **Cada imagen tiene sus propias variables de entorno, que debemos consultar en el mismo repositorio**. En el caso de la imagen de mongo, solamente necesitamos configurar las siguientes variables de entorno para que funcione todo:
 
 ```
 MONGO_INITDB_ROOT_USERNAME
@@ -184,7 +331,7 @@ El argumento `-e`indica que lo que viene a continuación es una variable de ento
 
 ## Dockerfile, o cómo crear imágenes personalizadas
 
-Los archivos dockerfile sirven para construir imágenes personalizadas. Dentro de él se escriben instrucciones para crear imágenes que ejecutarán nuestro código, basadas generalmente en otras imágenes.
+**Los archivos dockerfile sirven para construir imágenes personalizadas.** Dentro de él se escriben instrucciones para crear imágenes que ejecutarán nuestro código, basadas generalmente en otras imágenes.
 
 ```dockerfile
 FROM node:lts-alpine3.19
@@ -194,12 +341,13 @@ EXPOSE 3000
 CMD ["node", "/home/app/index.js"]
 ```
 
-Suponiendo que index.js es un archivo que hemos creado nosotros, el anterior archivo dockerfile hace lo siguiente:
+Suponiendo que `index.js` es un archivo que hemos creado nosotros, el anterior archivo dockerfile hace lo siguiente:
 - `FROM node:lts-alpine3.19`: Le indica a Docker cuál es la imagen sobre la que creamos nuestra imagen propia.
 - `RUN mkdir -p /home/app`: Crea directorio llamado "app" dentro del directorio "/home". La opción -p le indica al comando mkdir que cree el directorio y cualquier directorio padre que aún no exista.
 - `COPY . /home/app`: Copia el contenido de la dirección `.` de nuestro ordenador en la dirección `/home/app` de la imagen. `.` representa el directorio en el que se encuentra el archivo dockerfile.
 - `EXPOSE 3000`: Expone el puerto 3000, de forma similar a como si hiciéramos `-p3000:3000` en los comandos vistos en los apartados anteriores. 
 - `["node", "/home/app/index.js"]`: Ejecuta dentro de la imagen el comando `node /home/app/index.js`. Esto permite que nuestro código se ejecute en la imagen.
+
 Con estas instrucciones, puedes probar a ejecutar tu propio código javascript en un contenedor de node, en lugar de tener que descargarte una versión de node en tu ordenador. 
 
 Para montar la imagen, empleamos el siguiente comando:
@@ -241,19 +389,19 @@ Para que un contenedor pueda conectarse a otro contenedor, necesitamos definir u
 $ docker network ls
 ```
 
-Este comando lista todas las redes de docker.
+- Este comando lista todas las redes de docker.
 
 ```bash
 $ docker network create mired
 ```
 
-Crea una red interna de docker con el nombre `mired`.
+- Este comando crea una red interna de docker con el nombre `mired`.
 
 ```bash
 $ docker network rm mired
 ```
 
-Borra la red interna de docker llamada `mired`.
+- Este comando borra la red interna de docker llamada `mired`.
 
 Para conectarse entre sí, los contenedores de una misma red se comunican a través de su nombre. Para ello, debemos añadir el argumento `--network` a la creación de cada contenedor. Supongamos que tenemos nuestra imagen personalizada `miapp` creada del paso anterior:
 
@@ -305,6 +453,8 @@ app.listen(3000);
 
 Se trata de una aplicación `javascript` que usa los módulos `express` y `mongoose`, este último para conectarse a `mimongo`.
 
+> Usamos `JavaScript` porque **MongoDB** maneja sus datos en documentos BSON, muy similares a objetos JSON, lo que encaja naturalmente con este lenguaje. `Mongoose` es una librería de `JavaScript` que actúa como un ODM (Object Data Modeling), facilitando el acceso a MongoDB y permitiendo definir esquemas, validaciones y consultas de manera más estructurada.
+
 Para usar `mongo`, primero se crea un esquema para la base de datos y después se crea el modelo. A través del modelo se hacen todas las peticiones, desde la creación y guardado con `save()` en la base de datos hasta la consulta con `find()`. En este caso, dicha consulta ocurrirá cuando accedamos a `http://localhost:3000/`. 
 
 Para lanzarlo bien, debemos ejecutar, aparte del los comandos para lanzar el contenedor de mongo, los siguientes cada vez que hagamos un cambio en nuestro archivo `index.js`:
@@ -320,9 +470,9 @@ $ docker start app
 
 ## Docker Compose
 
-Como se ha podido observar en las líneas de terminal empleadas en el ejemplo anterior, hasta ahora, para poder emplear un contenedor de docker de forma efectiva hemos tenido que realizar una gran cantidad de pasos. Sin embargo, todo ese proceso se puede simplicar empleando el comando docker-compose y un archivo de configuración de tipo `.yml` que llamaremos 'docker-compose.yml`.
+Como se ha podido observar en las líneas de terminal empleadas en el ejemplo anterior, hasta ahora, para poder emplear un contenedor de docker de forma efectiva hemos tenido que realizar una gran cantidad de pasos. Sin embargo, todo ese proceso se puede simplicar empleando el comando docker-compose y un archivo de configuración de tipo `.yml` que llamaremos `docker-compose.yml`.
 
-El lenguaje **yml**(pronunciado yámel) se emplea para crear archivos de configuración. En este lenguaje, como ocurre en otros como **python** una indentación adecuada es necesaria para que se ejecute correctamente. Vigila, por lo tanto, los espacios.
+El lenguaje **yml**(pronunciado yámel) se emplea para crear archivos de configuración. En este lenguaje, como ocurre en otros como **python**, una indentación adecuada es necesaria para que se ejecute correctamente. Vigila, por lo tanto, los espacios.
 
 ```yml
 version: "3.9"
@@ -363,7 +513,7 @@ Esta línea comienza un bloque que define los servicios que se ejecutarán como 
         build: .
 ```
 
-Con estas líneas, se define el servicio `app`, que se construirá a partir del Dockerfile presente en el directorio actual (`.`). Este servicio se ejecutará en un contenedor y representará la aplicación.
+Con estas líneas, se define el servicio `app`, que **se construirá a partir del Dockerfile presente en el directorio actual (`.`)**. Este servicio se ejecutará en un contenedor y representará la aplicación.
 ```yml
         ports:
             - "3000:3000"
@@ -527,5 +677,11 @@ Supongamos que quieres ejecutar un contenedor de MySQL y persistir los datos de 
 
 Algunas imágenes oficiales ya llevan incluida la creación de volúmenes anónimos (sin nombre) cuando ejecutamos su archivo Dockerfile, y esto es una práctica cada vez más frecuente. Si no estamos seguros, cuando ejecutemos por primera vez el Docker Run podemos comprobar si se ha creado un volumen nuevo (y qué nombre tiene) o bien a través de la línea de comandos o a través de la aplicación Docker Desktop.
 
+Muchas de las acciones que hemos visto en este tutorial se pueden realizar desde la interfaz gráfica *Docker Desktop*, pero conviene saber cómo funcionan. La interfaz gráfica es especialmente útil para lanzar y detener contenedores ya creados, así como para borrarlos. 
+
+Por su parte, un volumen no se puede borrar si está asociado a un contenedor. Por lo tanto, para borrar un volumen hay que desvincularlo de su contenedor asociado (o borrar primero el contenedor) y después borrar el volumen.
+
 > **Actividad**
-> Crea una conexión a tu servidor corriendo en Docker desde DBeaver u otro editor SQL. [Puedes descargar DBeaver aquí](https://dbeaver.io/).
+> Crea y documente el proceso de creación de un contenedor Docker con una base de datos MySQL. Usa docker-compose.
+>
+> Lanza el contenedor y crea una conexión a tu servidor corriendo en Docker desde DBeaver u otro editor SQL. [Puedes descargar DBeaver aquí](https://dbeaver.io/).
