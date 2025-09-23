@@ -382,5 +382,3 @@ Alternatively, you can change the port via command-line arguments when running t
 
 > **Activity:**
 > Modify your project in order to include one or more webjars, and change the default port.
-
-
