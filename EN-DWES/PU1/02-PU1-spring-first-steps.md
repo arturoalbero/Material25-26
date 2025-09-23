@@ -7,7 +7,7 @@ To work with Spring, a web development framework in a server environment that us
 IntelliJ has two versions, a free one called Community Edition and a paid one called Ultimate, which can be accessed for free with a student license. To request a student license, you must go to [**the website enabled for the request**](https://www.jetbrains.com/es-es/academy/student-pack/) and attach a document that proves you are studying a higher-level computer science course (the enrollment form, student card, etc.).
 
 Spring can be used in both versions of IntelliJ, but the Ultimate version has several quality-of-life advantages for developing programs.
-![alt text](image.png)
+![alt text](./img/image.png)
 
 When installing an IDE, it is important to disable text completion using machine learning, to avoid code suggestions from Visual Studio Code or IntelliJ distracting us from what we really want to write. Intellisense, on the other hand, is very useful. Intellisense is the tool that, given a letter, suggests a series of related elements in our project (Java classes, variables, etc.). It comes by default in IntelliJ, and in VSC you need to install the extension of the specific language you want to use.
 
@@ -20,7 +20,7 @@ When installing an IDE, it is important to disable text completion using machine
 
 [Spring](https://spring.io/projects/spring-framework) is an open-source framework that facilitates the creation of applications in Java, Kotlin, and Groovy, mainly for the back end. It consists of tools and utilities that generate complete applications by offloading developers from managing internal behavior aspects and generating automatic code for standard tasks, the most important being: database access, application security management, and API (Application Programming Interface) generation.
 
-![alt text](spring-framework-runtime.png)
+![alt text](./img/spring-framework-runtime.png)
 
 You can learn more about Spring Framework in its [official overview](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/overview.html).
 
@@ -146,7 +146,7 @@ Finally, it is advisable to configure both IntelliJ and VSC to support GIT. This
 
 We can create a Spring project in three ways. The first is through the initializer in VSC or IntelliJ Ultimate. The second is through [start.spring.io](https://start.spring.io/), which is a form where we can generate an empty project with the configuration we want. The third is to copy an existing project and modify it.
 
-![alt text](image-1.png)
+![alt text](./img/image-1.png)
 
 In this image, we can see an example of how to use the Spring initializer. Clicking generate will create a project, and that will be the one we should open in our IDE.
 
@@ -260,7 +260,7 @@ On the website [mvnrepository.com](https://mvnrepository.com/), you have availab
 
 We search for the dependency in the search bar and click on it. Once inside, we select the version of our SpringBoot, and it will show the text we must copy into our `pom.xml` file.
 
-![alt text](image-2.png)
+![alt text](./img/image-2.png)
 
 ## Static Content
 
@@ -334,7 +334,7 @@ Both cases have disadvantages. In the first, you depend on CDN servers and must 
 
 Spring offers a third way: **WebJars**. A WebJar allows us to work with static resources as if they were Maven dependencies, so we have the advantage of downloading it to our server, but the version is automatically managed, and everything runs through Maven, making it transparent to the developer. A WebJar is just another dependency. We can access WebJars at [webjars.org](https://www.webjars.org/).
 
-![alt text](image-3.png)
+![alt text](./img/image-3.png)
 
 On the website, we can choose the dependency format. We select Maven and search for one we are interested in, for example, Bootstrap5. We will also need the [webjars-locator](https://mvnrepository.com/artifact/org.webjars/webjars-locator) dependency from the official Maven repository. We copy the text into the dependencies section of our `pom.xml` and reload the project (in IntelliJ, right-click on the `pom.xml` file → Maven → Sync Project).
 
@@ -371,7 +371,7 @@ Finally, we modify the HTML we had created as follows to include the installed l
 ```
 
 Notice that the packages installed as dependencies are found in the `External Libraries` folder:
-![alt text](image-4.png)
+![alt text](./img/image-4.png)
 
 ## Changing the port of the Spring Boot Application
 
