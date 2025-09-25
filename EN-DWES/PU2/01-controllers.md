@@ -151,7 +151,7 @@ public String showHome(Model model){
 > **Activity**
 > Create a Spring Boot application that uses a single template. In it, using Thymeleaf, you must edit the text of a tag to perform mathematical operations and display them in the browser.
 >
-> For example, if you enter localhost/1/+/2, it should display the number 3 in the browser.
+> For example, if you enter localhost/1/+/2, it should display the number 3 in the browser. In order to do so, don't forget to use the annotation `@PathVariable`.
 >
 > Implement the operations +, -, x, and /, and if a division by 0 is attempted, return the message "Error, division by 0".
 >
