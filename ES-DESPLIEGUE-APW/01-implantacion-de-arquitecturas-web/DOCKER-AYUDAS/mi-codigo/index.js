@@ -39,5 +39,6 @@ app.listen(3000, ()=> console.log('escuchando'))
 //PARA PROBAR
 /*
 - npm init -y
-- npm install para instalar las dependencias de package.json (también puedes instalarlas una a una especificando el nombre, se agregan al package.json)
+- npm install para instalar las dependencias de package.json (también puedes instalarlas una a una especificando el nombre, se agregan al package.json) en la carpeta node_modules (si no existe, la crea)
 - node index.js
+NOTA: Cuando subas a git, crea un archivo .gitignore que ignore la carpeta node_modules
