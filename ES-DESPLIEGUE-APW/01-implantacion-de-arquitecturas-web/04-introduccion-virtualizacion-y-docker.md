@@ -2,7 +2,7 @@
 
 > **Criterios de evaluación:** 1e, 1f, 1i
 
-## Virtualización
+## 1. Virtualización
 
 La virtualización es una tecnología que permite crear representaciones digitales de servidores, almacenamiento, redes y otros recursos físicos.
 
@@ -19,7 +19,7 @@ Los servidores físicos consumen electricidad, ocupan espacio, requieren refrige
 
 La virtualización soluciona esto permitiendo que un mismo servidor físico ejecute múltiples entornos independientes, lo que mejora la eficiencia y reduce costes.
 
-## Máquinas virtuales y el papel del hipervisor
+### 1.1 Máquinas virtuales y el papel del hipervisor
 
 Una **máquina virtual** es un sistema definido por software, independiente del resto, pero alojado dentro de un servidor físico. El equipo físico se llama **host**, y las máquinas virtuales se conocen como **invitados**.
 
@@ -32,7 +32,7 @@ Existen dos grandes tipos:
 > [**VMware Workstation**](https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion).
 
 
-## Tipos de virtualización
+### 1.2 Tipos de virtualización
 
 La virtualización puede responder a diversos tipos según las necesidades del sistema:
 
@@ -50,14 +50,14 @@ La virtualización puede responder a diversos tipos según las necesidades del s
 > [Azure Virtual Desktop](https://learn.microsoft.com/en-us/azure/virtual-desktop/overview)
 
 
-## Virtualización y computación en la nube
+### 1.3 Virtualización y computación en la nube
 
 La computación en la nube consiste en suministrar recursos bajo demanda a través de Internet, con pago por uso.
 
 La nube se apoya en la virtualización, pero da un paso más: el usuario no administra directamente el hardware subyacente, sino que accede a recursos gestionados por el proveedor.
 
 
-## Virtualización y contenedores
+### 1.4 Virtualización y contenedores
 
 Los contenedores son otra forma de aislar y ejecutar aplicaciones, pero con un enfoque más ligero.
 
@@ -68,14 +68,14 @@ Mientras que las máquinas virtuales requieren un sistema operativo completo por
 
 Esto explica por qué los contenedores consumen menos recursos y se inician más rápido que las VMs.
 
-## Docker
+### 1.5 Docker
 
 [Docker](https://www.docker.com/) es la plataforma más extendida para crear y gestionar contenedores.
 
 Permite empaquetar aplicaciones con todas sus dependencias, garantizando portabilidad y consistencia entre entornos de desarrollo, pruebas y producción.
 
 
-## Kubernetes
+### 1.6 Kubernetes
 
 [Kubernetes](https://kubernetes.io/) es un sistema de **orquestación de contenedores**.
 Gestiona automáticamente el despliegue, la escalabilidad y la disponibilidad de aplicaciones distribuidas en múltiples nodos.
@@ -96,7 +96,7 @@ graph TD
 
 Un **Pod** es la unidad mínima de ejecución en Kubernetes, y puede contener uno o varios contenedores que comparten red y almacenamiento.
 
-### Orquestación de contenedores
+#### 1.6.1 Orquestación de contenedores
 
 La **orquestación de contenedores** es el proceso de **automatizar la gestión del ciclo de vida de los contenedores** cuando se ejecutan en producción o en entornos distribuidos.
 
@@ -119,7 +119,7 @@ Incluye tareas como:
 
 ---
 
-# Introducción a Docker
+## 2. Introducción a Docker (Parte I)
 
 Este apartado es un **tutorial** para aprender a dominar Docker en su totalidad. Este documento trabaja tomando como referencia el siguiente vídeo de youtube:
 
@@ -127,10 +127,20 @@ Este apartado es un **tutorial** para aprender a dominar Docker en su totalidad.
 
 > **Actividad**
 > Realiza una memoria de todo el proceso, hasta configurar tu servidor MySQL en Docker.
+>
+> Para ello, es recomendable que crees una carpeta donde adjuntes los archivos que utilizarás.
+>
+> De la memoria se evalúa tanto el contenido como la capacidad para comunicar el contenido de forma organizada, por lo tanto:
+> - **No descuides la presentación**. Una portada y un índice adecuados ayudan a organizar el contenido.
+> - **Incluye capturas con explicaciones del proceso**. No seas ni excesivamente parco en palabras ni tampoco demasiado extenso.
+> - **Cuida el texto** de las explicaciones, ya que es donde demuestras que sabes lo que estás haciendo. En estos casos, es más importante saber qué estás haciendo que el hecho de haberlo hecho.
+> - **Documenta no solo los éxitos, sino también las dificultades** y las posibles fuentes externas que hayas consultado para realizar alguna actividad. No consultes fuentes externas a no ser que sea estrictamente necesario.
+> - **Incluye la carpeta con los archivos trabajados**. Esta carpeta es el proyecto en sí, donde se demuestra que has hecho lo que has expuesto en la memoria. Puedes duplicar la carpeta por cada fase, si necesitaras hacer varias versiones (por ejemplo, cuando conectes dos contenedores de Docker).
 
-## Contenedor
+### 2.1 Contenedor
 
 Los contenedores son una forma de empaquetar una aplicación y todas sus dependencias.
+
 De esta forma, se consigue una mayor portabilidad y se mejora la posibilidad de compartir la aplicación en diferentes equipos, facilitando el desarrollo y despliegue de aplicaciones.
 
 Los contenedores de Docker se almacenan en repositorios, ya sean privados o públicos, como dockerhub, que es el repositorio oficial.
@@ -156,20 +166,26 @@ MV-.VIRTUALIZA.->APP
 
 Al virtualizar solamente la capa de aplicaciones, los contenedores son más rápidos y ocupan menos que las máquinas virtuales, por lo que son más apropiados para el desarrollo.
 
-### Instalar Docker
-Para instalar Docker debes ir a su [página web](https://www.docker.com/products/docker-desktop/) y descargar Docker Desktop. Docker Desktop incluye herramientas como Docker-compose y CLI (la interfaz línea de comandos). También incluye el WSL2.
+> **IMPORTANTE**: Docker está separado en dos aplicaciones distintas, por un lado el proceso `Docker Engine` que es el que hace toda la *magia* y, por otro, la interfaz gráfica `Docker Desktop`, que se comunica con `Docker Engine` para permitirnos hacer casi todas las acciones con una interfaz gráfica. 
+>
+>Aun así, para crear un contenedor es más cómodo usar solo `Docker Engine` a través de la interfaz CLI. En Linux, `Docker Engine` funciona a través de KVM -hypervisor de tipo I-.
 
-## Manejo de imágenes
+#### 2.2 Instalar Docker
+Para instalar Docker debes ir a su [página web](https://www.docker.com/products/docker-desktop/) y descargar Docker Desktop. Docker Desktop incluye Docker y herramientas como Docker-compose y CLI (la interfaz línea de comandos). También incluye el WSL2.
+
+### 2.3 Manejo de imágenes
 
 Para manejar Docker, emplearemos la línea de comandos. Para que funcione, debemos tener ejecutándose Docker Desktop, programa que habilita el uso de CLI. Docker dispone en sus versiones más nuevas de un terminal integrado:
 
 ![alt text](./imgs/docker-01.png)
 
-Una imagen de Docker es una plantilla de solo lectura que contiene todo lo necesario para ejecutar una aplicación, incluyendo el código, las bibliotecas, las dependencias y el entorno de ejecución.
+**Una imagen de Docker es una plantilla de solo lectura que contiene todo lo necesario para ejecutar una aplicación**, incluyendo el código, las bibliotecas, las dependencias y el entorno de ejecución.
 
 Se compone de múltiples capas que permiten un almacenamiento eficiente y la reutilización de componentes.
 
-Estas imágenes se crean a partir de un Dockerfile, un archivo de texto que contiene las instrucciones para construir la imagen.
+Estas imágenes se crean a partir de un Dockerfile, un archivo de texto que contiene las instrucciones para construir la imagen. Para las imágenes oficiales no necesitamos el archivo, pero sí si queremos construir imágenes personalizadas.
+
+> **IMPORTANTE**: El archivo Dockerfile se llama así, `Dockerfile`. No es una raíz o un tipo de archivos, sino un archivo concreto.
 
 Una imagen actúa como una instantánea o esquema que se utiliza para crear instancias de contenedores, que son las versiones ejecutables de dichas imágenes.
 
@@ -178,6 +194,7 @@ $ docker images
 ```
 
 Este comando muestra todas las imágenes descargadas. Nos muestra los siguientes campos:
+
 - **Repository**: Nombre de la imagen.
 - **Tag**: Etiqueta de la imagen.
 - **Image Id**: Identificador de la imagen.
@@ -189,7 +206,9 @@ $ docker pull node
 $ docker pull node:lts-alpine3.19
 ```
 
-En el primer caso, descarga la imagen de `node` etiquetada como `latest`. En el segundo caso, descarga la imagen de `node` etiquetada como `lts-alpine3.19`. En ambos casos, descargará el contenido del repositorio en caso de que no haya sido descargado previamente. El contenido de las imágenes está dividido en módulos para hacer más eficiente la descarga de imágenes, ya que diferentes imágenes pueden compartir algunos módulos, o la misma imagen podría estar etiquetada de diferentes formas (cosa que suele ocurrir con aquella etiquetada con `latest`).
+En el primer caso, descarga la imagen de `node` etiquetada como `latest`. En el segundo caso, descarga la imagen de `node` etiquetada como `lts-alpine3.19`. En ambos casos, descargará el contenido del repositorio en caso de que no haya sido descargado previamente. 
+
+El contenido de las imágenes está dividido en módulos para hacer más eficiente la descarga de imágenes, ya que diferentes imágenes pueden compartir algunos módulos, o la misma imagen podría estar etiquetada de diferentes formas (cosa que suele ocurrir con aquella etiquetada con `latest`).
 
 En ocasiones, es necesario especificar la plataforma (especialmente si no se corresponde con la nuestra). Por ejemplo, si estamos usando un Macbook Air con el procesador M1 y queremos descargar una imagen de `mysql` debemos emplear el siguiente comando:
 
@@ -203,9 +222,13 @@ Para borrar una imagen que hayamos descargado, empleamos el siguiente comando:
 $ docker image rm node:lts-alpine3.19
 ```
 
+También podemos borrarlas desde el editor gráfico `Docker Desktop`.
+
 En este caso, borraremos la imagen de `node` etiquetada con `18` que habíamos descargado antes.
 
-## Manejo de contenedores
+> **Actividad**: Descarga las dos imágenes de node, comprueba que se han descargado bien y borra los archivos con rm.
+
+### 2.4 Manejo de contenedores
 
 Los contenedores son el elemento principal de Docker y se crean empleando una imagen como base.
 
@@ -252,7 +275,9 @@ El primer comando sirve para detener la ejecución del contenedor llamado `mimon
 
 Es recomendable usar nombres personalizados, ya que facilita el uso de los contenedores.
 
-## Port Mapping
+> **Actividad**: Realiza todos los pasos hasta aquí. Crea un contenedor, lánzalo con su id, comprueba que funciona, páralo y bórralo. Luego haz lo mismo pero con un contenedor con un nombre personalizado.
+
+### 2.5 Port Mapping
 
 En telemática y redes informáticas, los puertos son como ventanas virtuales que permiten que una computadora se conecte con varias otras al mismo tiempo. Cada ventana está numerada del **0 al 65535** y sirve para dirigir la información entrante al programa correcto que está esperándola.
 
@@ -277,7 +302,15 @@ $ docker logs --follow mimongo
 
 En el primer caso, vemos los logs del contenedor `mimongo` en el momento dado en el que ejecutamos el comando. En el segundo caso, el terminal se queda escuchando los logs internos del contenedor `mimongo`.
 
-## Docker Run
+> **Actividad:** Crea un contenedor `mongo` y conéctate a él con VSCODE. Para ello, descarga la extensión `mongodb for Visual Studio Code` y crea una conexión (en este caso sin usuario ni contraseña).
+![alt text](imgs/04-img-01.png)
+![alt text](imgs/04-img-02.png)
+>
+> Usa la opción openform.
+>
+> También puedes acceder a http://localhost:27017 para comprobar que está corriendo.
+
+### 2.6 Docker Run
 
 **Docker Run es un comando que sirve para crear y ejecutar un contenedor en un solo paso.** Es decir, es una combinación de los comandos `pull`, `create` y `start`. Todos los parámetros anteriores son compatibles.
 
@@ -299,9 +332,36 @@ $ docker run --name mimongo -p27017 -d mongo
 
 Por último, con este comando estamos creando y ejecutando un contenedor de nombre `mimongo` basado en la imagen `mongo` y, además, estamos mapeando el puerto interno 27017 del contenedor a nuestro puerto 27017.
 
-> El comando `$ docker run` siempre crea un contenedor nuevo cuando se ejecuta. Si queremos ejecutar un contenedor ya creado, debemos usar `$ docker start` y el nombre o la id del contenedor.
+> El comando `$ docker run` siempre crea un contenedor nuevo cuando se ejecuta. Si queremos ejecutar un contenedor ya creado, debemos usar `$ docker start` y el nombre o la id del contenedor. En estos casos, puedes usar la interfaz gráfica.
 
-## Variables de entorno y cómo conectarse a un contenedor
+### 2.7 Variables de entorno y cómo conectarse a un contenedor
+
+#### 2.7.1 Crear un proyecto en NODE usando npm
+
+Para esta demostración vamos a usar `javascript` sencillo. Sin embargo, debes tener instalado node.js, que incluye el gestor de paquetes npm (node package manager). `npm` es similar a Maven.
+
+Para iniciar un proyecto node, tienes que ir a la carpeta donde quieras crearlo y ejecutar el comando:
+
+```bash
+$ npm init
+```
+Esto creará un proyecto de node. Si no quieres editar ningún parámetro, puedes añadir el argumento -y (para que le diga a todo que sí) y editarlo más adelante en el archivo package.json que habrá creado.
+
+Por defecto, las aplicaciones node creadas de este modo se lanzan a través del archivo index.js creado en el raíz.
+
+Para ejecutarlo, escribe `node index.js`. `npm` permite trabajar con dependencias. Las dependencias las podemos añadir directamente en el package.json o instalarlas por separado. **Se instalan en una carpeta llamada node_modules, que se aconseja incluir siempre en el archivo .gitignore**.
+
+Si las tienes añadidas en el package.json (por ejemplo, si bajas un proyecto de internet), antes de ejecutar nada debes ejecutar el comando `npm install`. Si no, para instalar `mongoose` y `express`, que son las que vamos a usar en este ejemplo, debes realizar los siguientes comandos:
+```bash
+$ npm install mongoose
+$ npm install express
+```
+Si dejas el archivo package.json abierto en VS CODE mientras ejecutas estas instrucciones, puedes ver cómo se añaden solas las dependencias.
+
+>**Actividad:** Prepara el proyecto javascript, con las dependencias mongoose y express, y añade la carpeta node_modules al archivo .gitignore (si no existe, créalo) si estás usando git (solo tienes que añadir una línea con la ruta relativa -desde el raíz del repositorio-).
+
+
+#### 2.7.2 Variables de entorno y cómo conectarse a un contenedor desde código
 
 En node.js existe una librería llamada mongoose que nos permite conectarnos a bases de datos mongo. Imagina la siguiente instrucción de javascript:
 
@@ -318,7 +378,7 @@ MONGO_INITDB_ROOT_USERNAME
 MONGO_INITDB_ROOT_PASSWORD
 ```
 
-Para ello, empleamos el siguiente comando:
+Para ello, empleamos el siguiente comando (sin saltos de línea):
 
 ```bash
 $ docker create -p27017:27017 --name mimongo 
@@ -329,7 +389,9 @@ mongo
 
 El argumento `-e`indica que lo que viene a continuación es una variable de entorno. Para inicializarlas, colocamos su nombre, el signo = y el valor que queremos asignarle. Recuerda que las variables de entorno se colocan antes de la imagen. Aunque en el ejemplo estén en diferentes líneas, se trata de un solo comando.
 
-## Dockerfile, o cómo crear imágenes personalizadas
+> **Actividad:** Para comprobar que podemos establecer la conexión, lanza el contenedor y crea una nueva conexión en la extensión de VS CODE, esta vez con la contraseña y el password adecuados. En la sección avanzada del formulario puedes añadir los datos de conexión.
+
+### 2.8 Dockerfile, o cómo crear imágenes personalizadas
 
 **Los archivos dockerfile sirven para construir imágenes personalizadas.** Dentro de él se escriben instrucciones para crear imágenes que ejecutarán nuestro código, basadas generalmente en otras imágenes.
 
@@ -340,6 +402,7 @@ COPY . /home/app
 EXPOSE 3000
 CMD ["node", "/home/app/index.js"]
 ```
+>**IMPORTANTE:** Recuerda que el archivo Dockerfile es un archivo llamado así. No tiene raíz ni se le puede cambiar el nombre.
 
 Suponiendo que `index.js` es un archivo que hemos creado nosotros, el anterior archivo dockerfile hace lo siguiente:
 - `FROM node:lts-alpine3.19`: Le indica a Docker cuál es la imagen sobre la que creamos nuestra imagen propia.
@@ -356,6 +419,9 @@ Para montar la imagen, empleamos el siguiente comando:
 $ docker build -t miapp:1 .
 ```
 
+En caso exitoso, debería aparecer algo similar a esto:
+![alt text](imgs/04-img-03.png)
+
 El comando `$ docker build` construye la imagen usando el archivo dockerfile como referencia. El argumento `-t` sirve para etiquetar la imagen. En este caso, `miapp` es el nombre que le damos a la imagen y `1` la etiqueta que le asignamos. Finalmente, el '.' sirve para indicarle dónde está el archivo dockerfile, en este caso, indica el directorio actual.
 
 Para probar que esto funciona bien, vamos a usar el siguiente código (archivo index.js):
@@ -371,19 +437,24 @@ app.get('/', function(req, res) {
 app.listen(3000);
 ```
 
-En este caso, necesitamos el módulo `express` que instalaremos con la orden `$ npm install express` en el directorio raíz. 
+En este caso, necesitamos el módulo `express` que instalaremos con la orden `$ npm install express` en el directorio raíz.
+
+> **Actividad**: Prueba a ejecutar este código con node y conectarte a http://localhost:3000 para comprobar que el programa funciona.
 
 Para ejecutar el código a través de la imagen de docker, debemos introducir la siguiente instrucción:
 
 ```bash
-$ docker run -p 3000:3000 miapp:1
+$ docker run -p3000:3000 miapp:1
 ```
 
 De esta forma, comunicaremos el puerto expuesto dentro de docker usando `EXPOSE 3000` con el puerto 3000 de nuestra máquina. Al ir al navegador y conectarnos a `http://localhost:3000/` obtendremos como respuesta `hello world`.
 
-## Redes internas de docker
+> **Actividad**: Prueba a lanzar el contenedor y conectarte a http://localhost:3000 para comprobar que el programa funciona. El resultado debería ser el mismo que antes.
 
-Para que un contenedor pueda conectarse a otro contenedor, necesitamos definir una red interna. Docker genera algunas de forma automática, aunque si no usamos `docker-compose` deberemos especificarlas de forma manual.
+## 3. Introducción a Docker (Parte 2)
+### 3.1 Redes internas de docker
+
+Para que un contenedor pueda conectarse a otro contenedor, necesitamos definir una red interna. Docker genera algunas de forma automática, aunque si no usamos `docker-compose` deberemos especificarlas de forma manual. Veremos `docker-compose` más adelante.
 
 ```bash
 $ docker network ls
@@ -468,7 +539,7 @@ $ docker create -p3000:3000 --name app --network mired miapp:1
 $ docker start app
 ```
 
-## Docker Compose
+### 3.2 Docker Compose
 
 Como se ha podido observar en las líneas de terminal empleadas en el ejemplo anterior, hasta ahora, para poder emplear un contenedor de docker de forma efectiva hemos tenido que realizar una gran cantidad de pasos. Sin embargo, todo ese proceso se puede simplicar empleando el comando docker-compose y un archivo de configuración de tipo `.yml` que llamaremos `docker-compose.yml`.
 
@@ -568,27 +639,26 @@ Es importante borrar todo lo creado cuando se realizen cambios, antes de volver 
 
 De esta manera se integran todos los comandos anteriores en solamente dos, lo que facilita el trabajo con contenedores de docker. Sin embargo, la información interna de estos contenedores no es persistente, lo que significa que lo que guardemos en la base de datos `mimongo` se borrará al detener la ejecución del contenedor. Además, para poder hacer pruebas en el archivo `index.js` tenemos que estar alternando entre `down` y `up` constantemente. Para solucionar estos dos inconvenientes, tenemos a nuestra disposición la herramienta `volumes`.
 
-## Volúmenes
+## 4. Introducción a Docker (Parte 3)
+
+### 4.1 Volúmenes
 
 Los volúmenes en Docker son un mecanismo para persistir datos fuera del sistema de archivos de un contenedor. Esto es especialmente útil para bases de datos, archivos de configuración o cualquier dato que deba sobrevivir a la eliminación o reinicio de un contenedor. Los volúmenes permiten compartir datos entre el host y los contenedores, o entre múltiples contenedores.
 
-### Tipos de volúmenes
+### 4.2 Tipos de volúmenes
 
 1. **Volúmenes con nombre**:
-   - Son gestionados por Docker y se almacenan en un directorio específico del host (generalmente en `/var/lib/docker/volumes` en Linux).
-   - Son ideales para persistir datos de manera independiente al ciclo de vida de los contenedores.
+Son gestionados por Docker y se almacenan en un directorio específico del host (generalmente en `/var/lib/docker/volumes` en Linux).
 
 2. **Bind mounts**:
-   - Permiten mapear un directorio o archivo específico del host a un directorio o archivo dentro del contenedor.
-   - Útiles cuando necesitas acceso directo a archivos del host o para desarrollo.
+Permiten mapear un directorio o archivo específico del host a un directorio o archivo dentro del contenedor.
 
 3. **Tmpfs mounts**:
-   - Almacenan datos en la memoria RAM del host.
-   - Son temporales y se eliminan cuando el contenedor se detiene.
+Almacenan datos en la memoria RAM del host. Estos ignifica que son temporales y se eliminan cuando el contenedor se detiene.
 
-### Creación y uso de volúmenes
+### 4.3 Creación y uso de volúmenes
 
-#### Crear un volumen con nombre
+#### 4.3.1 Crear un volumen con nombre
 
 Para crear un volumen con nombre, usa el siguiente comando:
 
@@ -596,11 +666,11 @@ Para crear un volumen con nombre, usa el siguiente comando:
 docker volume create mi_volumen
 ```
 
-Esto creará un volumen llamado `mi_volumen` que podrás usar en tus contenedores.
+Esto crea un volumen llamado `mi_volumen`, disponible para usar en los contenedores.
 
-#### Usar un volumen en un contenedor
+#### 4.3.2 Usar un volumen en un contenedor
 
-Para usar un volumen en un contenedor, utiliza el argumento `-v` o `--mount` en el comando `docker run`. Por ejemplo:
+Para usar un volumen en un contenedor se utiliza el argumento `-v` o `--mount` en el comando `docker run`. Por ejemplo:
 
 ```bash
 docker run -d --name mi_contenedor -v mi_volumen:/ruta/en/contenedor nginx
@@ -610,9 +680,9 @@ En este caso:
 - `mi_volumen` es el nombre del volumen.
 - `/ruta/en/contenedor` es la ruta dentro del contenedor donde se montará el volumen.
 
-#### Usar bind mounts
+#### 4.3.3 Usar bind mounts
 
-Para mapear un directorio del host a un contenedor, usa:
+El bind mount permite mapear un directorio de nuestro ordenador a un volumen de Docker. De esta manera, podemos hacer cambios sin necesidad de crear y borrar el contenedor. Para mapear un directorio del host a un contenedor, usa:
 
 ```bash
 docker run -d --name mi_contenedor -v /ruta/en/host:/ruta/en/contenedor nginx
@@ -621,16 +691,18 @@ Aquí:
 - `/ruta/en/host` es la ruta absoluta en el host.
 - `/ruta/en/contenedor` es la ruta dentro del contenedor.
 
-### Gestión de volúmenes a través de Docker CLI
+> **Actividad:** Crea un contenedor nginx y cópiale tu página web estática en su carpeta \html\ usando bind mount.
 
-#### Listar volúmenes
+#### 3.3.3 Gestión de volúmenes a través de Docker CLI
+
+##### Listar volúmenes
 
 Para ver todos los volúmenes creados en tu sistema, usa:
 ```bash
 docker volume ls
 ```
 
-#### Inspeccionar un volumen
+##### Inspeccionar un volumen
 
 Para obtener detalles sobre un volumen específico, usa:
 ```bash
@@ -638,7 +710,7 @@ docker volume inspect mi_volumen
 ```
 Esto mostrará información como la ubicación del volumen en el host y su configuración.
 
-#### Eliminar un volumen
+##### Eliminar un volumen
 
 Para eliminar un volumen que ya no necesitas, usa:
 ```bash
@@ -646,34 +718,7 @@ docker volume rm mi_volumen
 ```
 Si el volumen está en uso por un contenedor, primero debes detener y eliminar el contenedor.
 
-### Ejemplo práctico: Persistencia de datos en MySQL
-
-Supongamos que quieres ejecutar un contenedor de MySQL y persistir los datos de la base de datos en un volumen.
-
-1. Crea un volumen para MySQL:
-   ```bash
-   docker volume create mysql_data
-   ```
-
-2. Ejecuta el contenedor de MySQL usando el volumen:
-   ```bash
-   docker run -d --name mysql_db -e MYSQL_ROOT_PASSWORD=contraseña -v mysql_data:/var/lib/mysql -p 3306:3306 mysql
-   ```
-   Aquí:
-   - `mysql_data` es el volumen que almacenará los datos de MySQL.
-   - `/var/lib/mysql` es la ruta dentro del contenedor donde MySQL guarda sus datos.
-
-3. Verifica que los datos persisten:
-   - Detén y elimina el contenedor:
-     ```bash
-     docker stop mysql_db
-     docker rm mysql_db
-     ```
-   - Vuelve a crear el contenedor con el mismo volumen:
-     ```bash
-     docker run -d --name mysql_db -e MYSQL_ROOT_PASSWORD=contraseña -v mysql_data:/var/lib/mysql -p 3306:3306 mysql
-     ```
-   - Los datos de la base de datos seguirán intactos.
+### 3.5 Cierre
 
 Algunas imágenes oficiales ya llevan incluida la creación de volúmenes anónimos (sin nombre) cuando ejecutamos su archivo Dockerfile, y esto es una práctica cada vez más frecuente. Si no estamos seguros, cuando ejecutemos por primera vez el Docker Run podemos comprobar si se ha creado un volumen nuevo (y qué nombre tiene) o bien a través de la línea de comandos o a través de la aplicación Docker Desktop.
 
@@ -684,4 +729,4 @@ Por su parte, un volumen no se puede borrar si está asociado a un contenedor. P
 > **Actividad**
 > Crea y documente el proceso de creación de un contenedor Docker con una base de datos MySQL. Usa docker-compose.
 >
-> Lanza el contenedor y crea una conexión a tu servidor corriendo en Docker desde DBeaver u otro editor SQL. [Puedes descargar DBeaver aquí](https://dbeaver.io/).
+> Lanza el contenedor y crea una conexión a tu servidor corriendo en Docker desde DBeaver u otro editor SQL (como la extensión de VS CODE). [Puedes descargar DBeaver aquí](https://dbeaver.io/).
