@@ -452,6 +452,9 @@ De esta forma, comunicaremos el puerto expuesto dentro de docker usando `EXPOSE 
 > **Actividad**: Prueba a lanzar el contenedor y conectarte a http://localhost:3000 para comprobar que el programa funciona. El resultado debería ser el mismo que antes.
 
 ## 3. Introducción a Docker (Parte 2)
+
+> **NOTA:** Una vez arrancado Docker Desktop, puedes usar los comandos de Docker desde cualquier terminal del ordenador, no solamente desde el terminal integrado en Docker (que, de hecho, originalmente no existía). Prueba a lanzar comandos desde cmd, powershell, etc.
+
 ### 3.1 Redes internas de docker
 
 Para que un contenedor pueda conectarse a otro contenedor, necesitamos definir una red interna. Docker genera algunas de forma automática, aunque si no usamos `docker-compose` deberemos especificarlas de forma manual. Veremos `docker-compose` más adelante.
