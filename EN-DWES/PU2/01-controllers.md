@@ -6,6 +6,14 @@
 
 The controller is the class responsible for receiving requests in our application. They will be received through the HTTP protocol in the case of web pages we create, or through other types of devices.
 
+
+
+### Creating Controllers in Spring. Mapping.
+
+To create a controller in Spring, we must create a simple class (`Plain Old Java Object -> POJO`) and annotate it with `@Controller`.
+
+The next step is to create different methods in that class and associate them with the different HTTP requests (URLs) that we will receive and to which the controller will respond. The most common requests are GET, POST, PUT, and DELETE, although there are more.
+
 ```mermaid
 flowchart
 HTTP --> GET
@@ -14,12 +22,6 @@ HTTP --> DELETE
 HTTP --> UPDATE
 HTTP --> ETC.
 ```
-
-### Creating Controllers in Spring. Mapping.
-
-To create a controller in Spring, we must create a simple class (`Plain Old Java Object -> POJO`) and annotate it with `@Controller`.
-
-The next step is to create different methods in that class and associate them with the different HTTP requests (URLs) that we will receive and to which the controller will respond. The most common requests are GET, POST, PUT, and DELETE, although there are more.
 
 So, each method in the controller must know which URL and command it should respond to. To do this, we annotate the controller with `@RequestMapping`, passing the URL and the command as parameters, or, since Spring 4.3, by using its derived annotations `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, etc., where the HTTP command is implicit in the annotation, and only the URL is required.
 
