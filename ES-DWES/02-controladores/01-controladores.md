@@ -84,6 +84,14 @@ public class ProductosController{
 ```
 En el ejemplo anterior, usamos la anotación `@PathVariable` para indicar que el parámetro definido a continuación (en este caso `Long id`) está sacado del @GetMapping (lo que está entre {}). El nombre ha de ser el mismo.
 
+## Contenido estático y contenido dinámico
+
+En **Spring Boot con Thymeleaf** hay que separar claramente **plantillas** de **recursos estáticos**:
+
+* En `src/main/resources/templates/` van **solo las vistas Thymeleaf** (`.html`). Estas son procesadas en el servidor antes de enviarse al navegador.
+
+* En `src/main/resources/static/` van los **recursos estáticos**: **CSS, JS, imágenes, fuentes, etc.** Estos archivos **no los procesa Thymeleaf**, sino que Spring Boot los sirve directamente al navegador. Por ejemplo, un archivo en `src/main/resources/static/css/styles.css` será accesible en el navegador en `http://localhost:8080/css/styles.css`.
+
 > **Actividad:**
 > Toma el proyecto anterior y desarrolla una clase de tipo `@Controller` que contenga diferentes @GetMapping con las rutas que quieras que devuelvan las vistas solicitadas.
 > a) ¿Tienes que cambiar la ubicación de las vistas? ¿Por qué?

@@ -223,18 +223,29 @@ Spring Boot servirá el archivo desde `static/css/styles.css`.
 No usamos directamente `href="/css/styles.css"` porque, si la app tiene **context path** distinto a `/`, el navegador no encontrará el archivo.
 * `th:href` ajusta automáticamente la ruta según dónde esté desplegada la app.
 
----
 
 > **ACTIVIDAD:**
-> Construye un nuevo proyecto, pero toma como referencia el proyecto de Frédéric Chopin. Añade contenido dinámico pasándole la información a las plantillas mediante un model y representándolo con etiquetas Thymeleaf. La página de inicio puede tener el año actual, por ejemplo @2025, tomado de la fecha del sistema del servidor. Para ello puedes usar el método estático `LocalDate.now()`.
+> Crea un nuevo proyecto basado en Frédéric Chopin. Pasa datos dinámicos a las plantillas de Thymeleaf usando un `Model`.
 >
-> A la hora de rediseñar la página, deberemos hacer cosas como, por ejemplo, en la página del repertorio añadir las piezas a una lista (puedes crear una clase o un record PiezaMusical con la información necesaria (título, compositor, año de estreno, instrumentación)) para pasárselo al servidor. Más adelante, este tipo de información la tendremos almacenada en el servidor de bases de datos.
+> * La página de inicio puede mostrar el año actual (p. ej., @2025) utilizando `LocalDate.now()`.
+> * En la página de repertorio, lista las piezas utilizando una clase o un record `MusicalPiece` con título, compositor, año e instrumentación.
+> * Más adelante, estos datos se guardarán en una base de datos.
 >
-> Procura adaptar, en la medida de lo posible, todas las vistas.
+> Adapta todas las vistas siempre que sea posible.
 >
-> Recuerda añadir en `application.properties` la propiedad `spring.thymeleaf.cache=false` y el atributo `xlms` de la etiqueta html.
+> Tu ejercicio debe cumplir los siguientes requisitos:
 >
-> Utiliza th:href y th:src en lugar de los atributos HTML href y src respectivamente.
+> * **Crear un modelo de datos para guardar la información sobre las Piezas Musicales**. Puedes usar clases, records, arrays o algo similar. Ten en cuenta que necesitas usar una Colección basada en este tipo de datos (por lo tanto, clases o records serán más fáciles).
+> * **Usar fragmentos** para el `<head>`. Utiliza al menos una vez la etiqueta `<th:block>`.
+> * **Usar el operador Elvis** para comprobar si un valor es nulo o no.
+> * Usar al menos una vez una condición y una iteración.
+>
+>   * Por ejemplo, como condición podrías aplicar una clase CSS diferente si una pieza musical es una *pieza para piano solo* o un *concierto para piano*.
+>   * Por supuesto, el lugar más sencillo para implementar la iteración es al listar las piezas musicales.
+> * Configurar `spring.thymeleaf.cache=false` en `application.properties` y el atributo `xmlns` en la etiqueta `<html>`.
+> * **Usar `th:href` y `th:src`** en lugar de los atributos HTML `href` y `src`.
+>
+> Tendrás que explicar cómo has hecho todo esto en la memoria que entregarás junto con el proyecto.
 
 <details>
 <summary><b>Actividades anteriores<b></summary>
