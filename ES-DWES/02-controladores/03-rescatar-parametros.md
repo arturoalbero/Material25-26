@@ -142,6 +142,7 @@ En **Spring Boot con Thymeleaf** hay que separar claramente **plantillas** de **
 > - Añade BootStrap en su versión agnóstica (esto es, se define la versión empleada en el *pom.xml* mediante `webjars-locator`).
 > - Adapta el menú para hacer reconstrucciones de URL usando @{}
 > - Agrupa las diferentes clases en paquetes, como por ejemplo `controllers`, `services`, etc.
+> - Agrupa los recursos estáticos de forma correcta (dentro de `/static`, crea una carpeta para fotos, para los archivos css, para los js, etc.)
 > - Crea páginas de error personalizadas.
 > - Elimina el mapping de los enlaces externos y crea una clase que implemente la interfaz `WebMvcConfigurer` para sustituirla.
 
