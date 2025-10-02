@@ -183,6 +183,27 @@ What Thymeleaf does is process the expression into a text string. Since Thymelea
 
 The same works with the path. Whether it’s worth doing it this way is another matter...
 
+Another way to achieve this effect is through JavaScript:
+
+```html
+<body>
+    Id:<input id="ident" type="text">
+    Size:<input id="size" type="text">
+    <button onclick="sendLink()">Link</button>
+
+    <script>
+        function sendLink(){
+            let txt1 = document.querySelector("#ident").value;
+            let txt2 = document.querySelector("#size").value;
+            window.location.href = "/product/" + txt1 + "/" + txt2;
+        }
+    </script>
+</body>
+```
+
+The JavaScript function `window.location.href` sends the assigned URL to the server. In this case, we build it by concatenating strings, which can be either literals or variables. This behavior is similar to that of forms, which we will see later. The difference between this kind of request (or links using `<a>` tags) and forms is that the first ones use the GET method of the HTTP protocol, while forms usually use the POST method (technically, we specify the method to be used).
+
+
 ## Static Content vs. Dynamic Content
 
 In **Spring Boot with Thymeleaf** we must clearly separate **templates** from **static resources**:
@@ -200,6 +221,9 @@ In **Spring Boot with Thymeleaf** we must clearly separate **templates** from **
 > * **Group classes into packages**, e.g., `controllers`, `services`, etc. Separate `MusicalPiece` from the `Controller`, even if there’s only one class per package.
 > * **Organize static resources** correctly (inside `/static`, with subfolders for images, CSS, JS, etc.).
 > * **Implement the URL `/repertoire/{instrumentation}/{piece_id}` dynamically** to access pieces individually in a dedicated view. The view should show only the selected piece with all its details and audio link. Do one version using query parameters (`?`) and another using path variables.
+> - **Create an alternative version using `<input>`** and javascript to send the parameters to the view.
+>
+> Each one of the alternative versions of the exercises may be a different view. For instance, `selectPieceParameterView`, `selectPiecePathView` and `selectPieceJSView`. 
 
 <details>
 <summary><b>Here are the activity instructions</b></summary>

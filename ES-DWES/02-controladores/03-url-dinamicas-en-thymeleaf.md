@@ -159,7 +159,27 @@ Como sabemos, el hecho de usar una etiqueta `th` no nos impide usar otras, queda
 <a th:href="@{/product(id=${myId})}" > Enlace al producto <span th:text="${myId}">*</span></a>
 ```
 
-Realmente, lo que hace thymeleaf es convertir el mensaje procesado en una cadena de texto. En Thymeleaf podemos usar el operador `+` para concatenar cadenas de texto, por lo que `<a th:href="@{/product(id=${myId}, size=${mySize})}">enlace</a>` podría haberse escrito como `<a th:href="@{'/product?id=' + '${myId}' + '&size=' + ${mySize}}>enlace</a>`. Lo mismo podríamos hacer con el path. Otra cosa diferente es que merezca la pena hacerlo así...   
+Realmente, lo que hace thymeleaf es convertir el mensaje procesado en una cadena de texto. En Thymeleaf podemos usar el operador `+` para concatenar cadenas de texto, por lo que `<a th:href="@{/product(id=${myId}, size=${mySize})}">enlace</a>` podría haberse escrito como `<a th:href="@{'/product?id=' + '${myId}' + '&size=' + ${mySize}}>enlace</a>`. Lo mismo podríamos hacer con el path. Otra cosa diferente es que merezca la pena hacerlo así...
+
+Otra forma de conseguir este efecto es a través de javascript:
+
+```html
+<body>
+    Id:<input id="ident" type="text">
+    Size:<input id="size" type="text">
+    <button onclick="enviarEnlace()">Enlace</button>
+
+    <script>
+        function enviarEnlace(){
+            let text1 = document.querySelector("#ident").value;
+            let text2 = document.querySelector("#size").value;
+            window.location.href = "/product/" + txt1 + "/" + txt2;
+        }
+    </script>
+</body>
+```
+
+La función JavaScript `window.location.href` envía al servidor la URL asignada. En este caso, la componemos por concatenación de cadenas que pueden ser tanto literales como variables. Sería un comportamiento similar a los formularios que veremos más adelante. La diferencia entre este envío, o el envío de las etiquetas `<a>`, con respecto al de los formularios es que los primeros emplean el método GET del protocolo HTTP, mientras que en los formularios se suele emplear el método POST (técnicamente, indicamos nosotros el método a emplear).
 
 
 ## Contenido estático y contenido dinámico
@@ -179,6 +199,9 @@ En **Spring Boot con Thymeleaf** hay que separar claramente **plantillas** de **
 > - **Agrupa las diferentes clases en paquetes**, como por ejemplo `controllers`, `services`, etc. En este caso, separa `MusicalPiece` del `Controller`, aunque solo haya una clase por paquete.
 > - **Agrupa los recursos estáticos** de forma correcta (dentro de `/static`, crea una carpeta para fotos, para los archivos css, para los js, etc.)
 > - **Implementa la URL `/repertorio/{instrumentacion}/{id_pieza}` de forma dinámica** para acceder a las piezas por separado en una vista creada a tal efecto. En la vista aparecerá solamente la pieza seleccionada, con todos su datos y el enlace al audio. Haz una versión usando las sustituciones mediante parámetros (con `?`) y otra en la dirección (como está indicado en el ejemplo).
+> - **Crea una versión alternativa usando `<input>`** y javascript para enviar los parámetros de la vista.
+>
+> Cada una de las versiones alternativas de los ejercicios puede ser una vista diferente. Por ejemplo, `selectPieceParameterView`, `selectPiecePathView` y `selectPieceJSView`.
 
 <details>
 <summary><b>Aquí tienes los enunciados de la actividad</b></summary>
