@@ -1,4 +1,4 @@
-# Rescatar parámetros de las URL
+# URLs dinámicas en Thymeleaf
 
 ## Rescatar parámetros de las URL
 
@@ -113,6 +113,11 @@ Además, tenemos también las siguientes:
 * **URL relativas al servidor**: Son relativas al servidor global y no al contexto. Se antepone el caracter `~`(En teclado español, `Alt gr + ñ`) a la dirección `@{~/quienes-somos/}`.
 * **URL relativas al protocolo**: Sirven para enlazar con recursos externos, como hojas de estilos o scripts y se antepone una barra `/` a la dirección. Por ejemplo, `@{//cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js}"`.
 
+Podemos usar estas expresiones no solo con th:href, sino en cualquier lugar:
+```html
+<form th:action="@{/formulario/procesar}">
+```
+
 > **NOTA**: Ten en cuenta las siguientes definiciones: 
 > * URL -> Uniform Resource Locator
 > * URI -> Uniform Resource Identificator
@@ -120,13 +125,42 @@ Además, tenemos también las siguientes:
 
 ## Añadir parámetros URL en la vista
 
+Podemos añadir parámetros en *la parte consulta* de una URL con `@{}`, poniendo los parámetros entre paréntesis.
+```html
+<a th:href="@{/product(id=3)}">
+```
+Que una vex procesado quedaría como `<a href="/product?id=3">`. Si son varios parámetros, los separamos por comas `<a th:href="@{/product(id=3, size='big')}">` y se procesa para quedar `<a href="/product?id=3&size=big">`.
+
+> **NOTA:** De aquí podemos extrapolar que existen algunos caracteres reservados a la hora de construir URL,como pueden ser `/`, `&`, etc. Investiga cuales son para no incluirlos en las direcciones o parámetros que crees.
+
+Por otro lado, podemos hacer lo mismo con los parámetros (no se pueden añadir varios parámetros si no están separados por `/`) siendo `<a th:href="@{/product/{id}/{size}(id = 3, size = 'big')}>` procesado como `<a href="/product/3/big">`.
+
 ## Expresiones en las URL en la vista
 
-## URL dinámicas con JavaScript
+La potencia de las URL dinámicas viene dada porque, además de lo que acabamos de ver, podemos incluir variables dinámicas, tomadas del modelo que recibe la vista, en tiempo de ejecución.
 
-## Interfaz WebMvcConfigurer
+Supongamos la URL `<a th:href="@{/product/(id=3,size='big')}">` pero, ahora, la escribiremos teniendo en cuenta que los valores *id* y *size* no los conocemos previamente, sino que se obtienen en tiempo de ejecución:
 
-## Páginas de error personalizadas
+```html
+<a th:href="@{/product(id=${myId}, size=${mySize})}>
+```
+> **RECORDATORIO:**
+> * `${}` **Expresiones de variable** para variables obtenidas del modelo.
+> * `@{}` **Expresiones de enlace** para direcciones que procesa thymeleaf.
+> * `~{}` **Expresiones de fragmento** para referenciar a fragmentos de la plantilla reutilizables.
+
+De la misma forma, podemos usar operadores condicionales `<a th:href="@{/product(id=${myId} , size ${mySize>100} ? 'big' : 'small' )}">`.
+
+También podemos enviar de la misma manera los parámetros en la parte path `<a th:href="@{/product/{id}/{size}(id = ${myId}, size = ${mySize})}">`.
+
+Como sabemos, el hecho de usar una etiqueta `th` no nos impide usar otras, quedando el ejemplo del enlace anterior, de forma completa, de la siguiente manera:
+
+```html
+<a th:href="@{/product(id=${myId})}" > Enlace al producto <span th:text="${myId}">*</span></a>
+```
+
+Realmente, lo que hace thymeleaf es convertir el mensaje procesado en una cadena de texto. En Thymeleaf podemos usar el operador `+` para concatenar cadenas de texto, por lo que `<a th:href="@{/product(id=${myId}, size=${mySize})}">enlace</a>` podría haberse escrito como `<a th:href="@{'/product?id=' + '${myId}' + '&size=' + ${mySize}}>enlace</a>`. Lo mismo podríamos hacer con el path. Otra cosa diferente es que merezca la pena hacerlo así...   
+
 
 ## Contenido estático y contenido dinámico
 
@@ -138,13 +172,13 @@ En **Spring Boot con Thymeleaf** hay que separar claramente **plantillas** de **
 
 
 > **ACTIVIDAD:** Vamos a volver con la actividad de Frédéric Chopin y le vamos a realizar los siguientes cambios:
-> - Si en la página de inicio, en la URL, se le pasa el parámetro ?usuario=XXX mostrará el mensaje de bienvenida con un texto personalizado para ese usuario pero, si no se le pasa nada, será un mensaje genérico. Haz una primera versión sin Optional y una segunda con Optional.
-> - Añade BootStrap en su versión agnóstica (esto es, se define la versión empleada en el *pom.xml* mediante `webjars-locator`).
-> - Adapta el menú para hacer reconstrucciones de URL usando @{}
-> - Agrupa las diferentes clases en paquetes, como por ejemplo `controllers`, `services`, etc.
-> - Agrupa los recursos estáticos de forma correcta (dentro de `/static`, crea una carpeta para fotos, para los archivos css, para los js, etc.)
-> - Crea páginas de error personalizadas.
-> - Elimina el mapping de los enlaces externos y crea una clase que implemente la interfaz `WebMvcConfigurer` para sustituirla.
+> - **Crea un mensaje de bienvenida** usando parámetros. Si en la página de inicio, en la URL, se le pasa el parámetro ?usuario=XXX mostrará el mensaje de bienvenida con un texto personalizado para ese usuario pero, si no se le pasa nada, será un mensaje genérico. Haz una primera versión sin Optional y una segunda con Optional.
+> - **Añade BootStrap** en su versión agnóstica (esto es, se define la versión empleada en el *pom.xml* mediante `webjars-locator`). 
+> - **Mejora los estilos de la página** usando Bootstrap. Añádelo en el fragmento de la cabecera.
+> - **Adapta el menú** para hacer reconstrucciones de URL usando @{}
+> - **Agrupa las diferentes clases en paquetes**, como por ejemplo `controllers`, `services`, etc. En este caso, separa `MusicalPiece` del `Controller`, aunque solo haya una clase por paquete.
+> - **Agrupa los recursos estáticos** de forma correcta (dentro de `/static`, crea una carpeta para fotos, para los archivos css, para los js, etc.)
+> - **Implementa la URL `/repertorio/{instrumentacion}/{id_pieza}` de forma dinámica** para acceder a las piezas por separado en una vista creada a tal efecto. En la vista aparecerá solamente la pieza seleccionada, con todos su datos y el enlace al audio. Haz una versión usando las sustituciones mediante parámetros (con `?`) y otra en la dirección (como está indicado en el ejemplo).
 
 <details>
 <summary><b>Aquí tienes los enunciados de la actividad</b></summary>
