@@ -90,6 +90,54 @@ my-project/
 
 As you can see in the diagram before, we can add a folder in the folder `resources` to store private data. The private data is data accesible by our application in an internal level. In contrast, the static data stored in the `static` folder is accesible by everyone having the URL of the resource. We can use as many private resources as needed.
 
+In order to access the resource, click in the file to copy the relative path and open a data stream to read it, like the following one:
+
+```java
+    public static List<String []> readCSV(String path){
+        List<String []> list = null; //we need to initialize it to null because the Scanner may fail
+        try(Scanner io = new Scanner(new File(path))){
+            list = new ArrayList<>();
+            while(io.hasNextLine())
+                list.add(io.nextLine().split(";")); //the ";" is the separator of the csv
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return list;
+    }
+
+```
+This code reads a file using `Scanner` in a try-catch-with-resources formula. Then, it creates a List of each array of strings you extract from a csv file separated by `;`. Like this one:
+
+```csv
+Wolfgang Amadeus Mozart;Viena;1791
+Gustav Mahler;Viena;1913
+```
+
+So, the first array will be something like `{"Wolfgang Amadeus Mozart", "Viena", "1791"}`. Then, you can call this method (or a similar one) like this in the `@Controller`:
+
+```java
+@GetMapping("/")
+    public String mainView(Model model){
+
+        model.addAttribute("list", 
+            CSVUtil.readCSV("src/main/resources/data/composer.csv"));
+        return "indexView";
+    }
+```
+
+As you can see, we have to specify the relative path of the file we are accessing. In order to process this file, your html `indexView.html` in your  `/templates` folder should be something like this:
+
+```html
+<p th:each="composer : ${list}">
+    <span th:each="item : ${composer}">
+        <span th:text="${item}">*</span>-
+    </span>
+</p>
+```
+
+If you use classes or records (and you should use them), you can access to each attribute of the element using the `.` separator. However, you will need an extra method to parse the array of strings into an object.
+
+
 With this in mind, we can now create our project for learning outcome 2.
 
 ## Assessable Assignment: My Favorite Composers
