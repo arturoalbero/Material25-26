@@ -86,6 +86,10 @@ my-project/
  └─ pom.xml                                          # Maven dependencies
 ```
 
+## Other resources
+
+As you can see in the diagram before, we can add a folder in the folder `resources` to store private data. The private data is data accesible by our application in an internal level. In contrast, the static data stored in the `static` folder is accesible by everyone having the URL of the resource. We can use as many private resources as needed.
+
 With this in mind, we can now create our project for learning outcome 2.
 
 ## Assessable Assignment: My Favorite Composers
