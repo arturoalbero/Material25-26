@@ -91,8 +91,8 @@ Los retos actuales no pueden abordarse de manera aislada: requieren cooperación
 > 
 > Dispones de un día de preparación y un día de exposición. Puedes consultar [**el portal *Gafas de FOL***](https://gafasdefol.com/ra2-sasp/) para obtener más información sobre el resultado de aprendizaje.
 >
-> * [Lienzo DAFO](ES-SOS/UP02/02-lienzo-DAFOsostenibilidad.pdf)
-> * [Lienzo Acción-Reacción](ES-SOS/UP02/03-lienzo-accionreaccion.pdf)
-> * [Lienzo Gestión-De-Recursos](ES-SOS/UP02/04-lienzo-gestionderesiduos.pdf)
+> * [Lienzo DAFO](ES-SOS/UP02/02-lienzo-DAFOsostenibilidad.pdf). [Explicación sobre lo que es un DAFO (FODA en castellano).](https://es.wikipedia.org/wiki/An%C3%A1lisis_FODA)
+> * [Lienzo Acción-Reacción](ES-SOS/UP02/03-lienzo-accionreaccion.pdf). Podéis adaptar los apartados a la empresa seleccionada.
+> * [Lienzo Gestión-De-Recursos](ES-SOS/UP02/04-lienzo-gestionderesiduos.pdf). Podéis adaptar los apartados a la empresa seleccionada.
 
 
