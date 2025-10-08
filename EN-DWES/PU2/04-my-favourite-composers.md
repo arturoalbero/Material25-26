@@ -232,3 +232,6 @@ For each composer, we store, in addition to their name, a brief biography, their
   - Don't forget to **document the code using javadoc**. You can use the integrated tools in the IDE to help you with the documentation, but always review that what you write is correct.
   - The project was planned using **`@PathVariable`**. 
     - **As and advanced feature (optional)**, you can modify it (or make an alternative version) using **`@RequestParam`** as an **ENRICHMENT ACTIVITY**. Document the process.
+
+> **AMPLIATION ACTIVITY**
+> The second deliver of the activity, the optional one, consists on creating a version that primarily uses `@RequestParam` instead of `@PathVariable`, uses the checkboxes to check parameters of the composers in the searchComposersView, enhances the visual appearence of the front-end using bootstrap, css or another techniques from other modules and whichever improvement you consider relevant to the current state of the project. Keep in mind we will work later in it using forms to insert and update data, and we will also make the data more spring-like in the following assestments.
