@@ -159,7 +159,7 @@ Ahora que ya sabemos usar Docker, vamos a explorar cómo aplicarlo al despliegue
 Resumen de lo que debes entregar:
 
 * Una memoria donde documentes el uso de los volúmenes, especialmente para *bindear* un volumen a la carpeta html de nginx. En la memoria, explica las ventajas de trabajar así.
-* Una memoria
+* Debe incluir las respuestas a todas las preguntas de las actividades.
 
 
 
