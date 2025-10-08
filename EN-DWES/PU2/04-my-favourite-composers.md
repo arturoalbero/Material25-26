@@ -137,6 +137,75 @@ As you can see, we have to specify the relative path of the file we are accessin
 
 If you use classes or records (and you should use them), you can access to each attribute of the element using the `.` separator. However, you will need an extra method to parse the array of strings into an object.
 
+## Use of the singleton pattern for data persistency
+
+One simple way to achieve data persistency in your application, but not the most spring-like approach, is to use of the singleton pattern.
+
+In the singleton pattern, we create a singleton class that stores all the information we want to share between all the classes. A singleton class is a class of which only one instance can be alive at a time. In order to do so, we have several ways to implement it but the easier approach is the "lazy initialization".
+
+A lazy initialization is an initialization that occurs at the very last moment, when the instance is needed. In order to do so, we make the constructor of the class private and it is called by the getter of the instance. Following the example of before, we could create a singleton class like this:
+
+```java
+public class MiSingleton {
+    //THE INSTANCE OF THE CLASS. NOTICE THE STATIC, very important
+    private static MiSingleton instance = null;
+
+    //---//
+    //THE DATA WE NEED TO SHARE
+    private List<String []> dataList;
+
+    //THE GETTER OF THE INSTANCE. NOTICE THE STATIC, very important
+    public static MiSingleton getInstance(){
+        if(instance == null){
+            instance = new MiSingleton();
+        }
+        return instance;
+    }
+//THE PRIVATE CONSTRUCTOR
+    private MiSingleton(){
+        initialize();
+    }
+//AN AUXILIAR METHOD WE WILL USE TO THE INITIALIZATION OF THE DATA.
+/* 
+IN THE ASSESMENT, FIRST YOU WILL HARD CODE HERE THE COMPOSERS AND LATER YOU WILL REPLACE THAT CODE FOR A MORE ELEGANT WAY TO INITIALIZE THE DATA THROUGH FILES AND PARSING
+*/
+    private void initialize(){
+        dataList = CSVUtil.readCSV("src/main/resources/data/composer.csv");
+    }
+
+//GETTER OF THE DATA WE NEED TO SHARE AMONG THE CLASSES
+    public List<String[]> getDataList() {
+        return this.dataList;
+    }
+
+}
+```
+
+So, in the controller, we will first retrieve the instance of the singleton and then get the data we need, like this:
+
+```java
+    @GetMapping("/")
+    public String mainView(Model model){
+        MiSingleton instance = MiSingleton.getInstance();
+        model.addAttribute("list", 
+            instance.getDataList());
+        return "indexView";
+    }
+```
+
+
+Thanks to the Singleton pattern, the data is initialized only once during the application's lifecycle, ensuring that all components share the same data instance. Spring has its own ways to manage data persistency, but are a bit more advanced.
+
+> **NOTE:** This approach is not Thread-safe, which means that in a concurrent environment, you could have more than one instance due to the interaction of different threads with the method `getInstance()`. In order to prevent this, you can add the keyword `synchronized` to the method:
+>```java
+>public static synchronized MiSingleton getInstance() {
+>    if (instance == null) {
+>        instance = new MiSingleton();
+>    }
+>    return instance;
+>}
+>```
+>
 
 With this in mind, we can now create our project for learning outcome 2.
 
