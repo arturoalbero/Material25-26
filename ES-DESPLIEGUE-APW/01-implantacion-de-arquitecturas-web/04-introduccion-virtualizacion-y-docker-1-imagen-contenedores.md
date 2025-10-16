@@ -264,7 +264,7 @@ Este comando nos devuelve una tabla similar a la que obteníamos con `$ docker i
 $ docker create --name mimongo mongo
 ```
 
-En este caso, creará una imagen basada en mongo y llamada `mimongo`. Para ejecutarla, podemos usar `$ docker start` y añadir al final el nombre o la id del contenedor.
+En este caso, creará un contenedor basado en la imagen de mongo y llamado `mimongo`. Para ejecutarlo, podemos usar `$ docker start` y añadir al final el nombre o la id del contenedor.
 
 ```bash
 $ docker stop mimongo
