@@ -1,4 +1,4 @@
-## My Favourite Composers 2.0
+# My Favourite Composers 2.0
 
 Enhance "My Favourite Composer" with the following features:
 * A **form for adding new composers**, which validates that the dates are correct.

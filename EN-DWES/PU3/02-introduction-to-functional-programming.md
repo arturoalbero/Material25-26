@@ -4,7 +4,7 @@
 
 The functional programming paradigm is a declarative paradigm. This means that what we do when programming, instead of giving instructions about how the program should behave (imperative paradigm), is define a reality (in the case of the functional paradigm, through mathematical functions) and then the program, transparently to the programmer, is responsible for resolving that reality. The relational calculus used in the SQL language is also declarative.
 
-The functional paradigm is based on the concept of anonymous functions. In reality, a function is a piece of code stored in a variable (its header), and that code is accessible to the rest. When we call a function, what we do is invoke its name and attach parameters to it. Anonymous functions are the same, but they are not stored until the moment of execution. Since they have no “name” (the header), they are called anonymous.
+The functional paradigm is based on the concept of anonymous functions. In reality, a function is a piece of code stored in a variable (its header), and that code is accessible to the rest. When we call a function, what we do is invoke its name and attach parameters to it. Anonymous functions are similar, but they lack a formal declaration or a specific class name. They are defined in place and are not accessed via a traditional method signature (header), making them 'nameless' or anonymous.
 
 ## 2. Anonymous Functions
 
@@ -197,6 +197,67 @@ public interface Function<T, R> {
 }
 ```
 
+#### 4.3 Flat Map
+
+Sometimes you need to map a compound collection into a List. A compound collection is one in which each element of the collection is a collection itself. For instance, a list of lists, a map in which the value parts are lists, a list of objects in which one attribute is a collection, etc.
+
+When you transform these kind of collections into a simpler one (usually a list), what you are doing is something called **"flat mapping"**. This is because the process flattens the structure, changing a nested structure (like a List of Lists) into a single-level structure (a simple List). You are transforming a 'box of boxes' into a single large collection of items. So you will change something like this:
+```mermaid
+graph LR
+    subgraph list
+        1[element 1]
+        2[element 2]
+    end
+3[element 3]
+4[element 4]
+5[element 5]
+1 --> 3
+3 --> 4
+2 --> 5
+
+```
+Into something more like this:
+```mermaid
+flowchart TD
+1[element 1]
+2[element 2]
+3[element 3]
+4[element 4]
+5[element 5]
+1-->3
+3-->4
+4-->2
+2-->5
+```
+
+In order to apply flat mapping in Java, we use streams and the function flatMap.
+```java
+List<List<String>> listOfLists = List.of(List.of("Hola", "Mundo"), List.of("Me Duele", "La vida"));
+
+List<String> list = listOfLists.stream().flatMap(l->l.stream()).toList();
+```
+
+In this example, we have a List of Lists of Strings and what we do is to apply the function flatMap so for each list `l` of the listOfLists, we obtain the `stream`. It is important to transform the collection into a stream to continue using the stream features. Finally, we obtain a list from the stream using `toList()`, a method we will discuse later in the collectors part.
+
+In a more complex example, we have a class that contains a collection, like this one:
+
+```java
+class Team {
+    String name;
+    List<Player> players;
+    public List<Player> getPlayers() { return players; }
+}
+```
+So, if we want to get a List comprised of the players, we should use something like this:
+
+```java
+List<Team> teams = List.of( /* ... */ );
+List<Player> allPlayers = teams.stream().flatMap(team -> team.getPlayers().stream()).toList();
+```
+So, we extract from `team` a list of all its players, we transform it into a stream and then, for each team, we apply the flat mapping, so we end up having a list of all the players in every team.
+
+
+
 ### 4.4. Collector Functions
 
 The third most common operation is `collect`. Unlike the previous ones, it is a terminal function that does not return another stream, but rather a result. Generally, we use `collect` at the end of each stream to return a common data type (such as a list, an integer, etc.).
@@ -384,4 +445,6 @@ With this very simple example, you can already appreciate the *magic* and *appea
 > Improve the practice from the previous programming unit (My Favourite Composer) as follows:
 >
 > * Optimize the code that handles collections using **functional programming**.
-> 
+>
+> * You can improve your data distribution mimicking this ER schema made using `crow's foot notation`
+> ![bd](./myfavouritecomposerERoct-PU3.png)
