@@ -264,10 +264,12 @@ The third most common operation is `collect`. Unlike the previous ones, it is a 
 
 Unlike `filter` and `map`, `collect` functions are much more complex. Therefore, we usually use predefined `Collectors`:
 
-* `Collectors.toList()`: Returns a `Collector` that transforms the stream into a list. It can be shortened to `toList()`. There is also a `toSet()` version.
+* `Collectors.toList()`: Returns a `Collector` that transforms the stream into a mutable list. 
+    * If you use `toList()` outside the `collect` methdo(and without the `Collectors`), you will end up having an inmutable list (one that cannot be changed). This is useful when you only need the list for reading data. There is also a `toSet()` version.
 * `Collectors.joining(String separator)`: Returns a `Collector` that transforms the stream into a String via the `toString` method. It joins all elements of the stream into one, separated by the character passed as the `separator` argument.
 * `Collectors.counting()`: Returns the number of elements. It can be shortened with the `count()` method.
 
+> **IMPORTANT TIP**: if you need an inmutable list, use toList(). On the other hand, if you need to modify the list later, use Collectors.toList().
 ```java
 List<String> listaStrings = List.of("Juan", "Pepe", "Verónica", "Laura", "Marcos");
 
@@ -445,6 +447,10 @@ With this very simple example, you can already appreciate the *magic* and *appea
 > Improve the practice from the previous programming unit (My Favourite Composer) as follows:
 >
 > * Optimize the code that handles collections using **functional programming**.
->
-> * You can improve your data distribution mimicking this ER schema made using `crow's foot notation`
+>   * User Collections.sort to sort composers and Musical Pieces by its name
+>   * Use of filters, maps and Collectors to manage the collections in the views
+>   * A view called **allMusicalPiecesView** in which you present each musical piece (composer - piece - links). You will obtain it using flatMap (instead of using the data in the file musicalPieces.csv, which is a better option actually, but this is just for the sake of practice).
+> * Create a view called **listComposersView** which will consist of a list of links with all the composers added to the application.
+> * You can improve your data distribution mimicking this ER schema made using `crow's foot notation`. This is a provisional ER which will be improved in the future.
 > ![bd](./myfavouritecomposerERoct-PU3.png)
+> * Try to add more composers like [Dimitri Shostakovich](https://es.wikipedia.org/wiki/Dmitri_Shostak%C3%B3vich), [Claude Debussy](https://es.wikipedia.org/wiki/Claude_Debussy), [Johann Sebastian Bach](https://es.wikipedia.org/wiki/Johann_Sebastian_Bach), [Hans Zimmer](https://es.wikipedia.org/wiki/Hans_Zimmer), [John Williams](https://es.wikipedia.org/wiki/John_Williams_(compositor)), [Alexandre Desplat](https://es.wikipedia.org/wiki/Alexandre_Desplat), [Arvo Pärt](https://es.wikipedia.org/wiki/Arvo_P%C3%A4rt), [Ludovico Einaudi](https://es.wikipedia.org/wiki/Ludovico_Einaudi), [Claudio Monteverdi](https://es.wikipedia.org/wiki/Claudio_Monteverdi), [Hildegard von Bingen](https://es.wikipedia.org/wiki/Hildegarda_de_Bingen), [Sergei Prokofiev](https://es.wikipedia.org/wiki/Sergu%C3%A9i_Prok%C3%B3fiev), [Manuel de Falla](https://es.wikipedia.org/wiki/Manuel_de_Falla), [Isaac Albéniz](https://es.wikipedia.org/wiki/Isaac_Alb%C3%A9niz), [Vicente Martín y Soler](https://es.wikipedia.org/wiki/Vicente_Mart%C3%ADn_y_Soler), [Joaquín Rodrigo](https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Rodrigo) or [Ludwig van Beethoven](https://es.wikipedia.org/wiki/Ludwig_van_Beethoven). 
