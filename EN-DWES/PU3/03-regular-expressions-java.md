@@ -257,4 +257,4 @@ What happens is:
 > Create a program that, given a list of possible email addresses, **uses `stream().filter()` and a regular expression** to keep only the **valid** emails (those that have `@` and a correct domain).
 
 > **ACTIVITY**:
-> Improve the practice from the previous programming unit (My Favourite Composer) with regular expressions, specifically **searchComposerView** so that it allows searching with partial names using **regular expressions**. For example, if you include *Franz Liszt* and *Franz Peter Schubert* and search for *Franz*, both should appear.
+> Improve the practice from the previous programming unit (My Favourite Composer) with regular expressions, specifically **searchComposerView** so that it allows searching with partial names using **regular expressions**. For example, if you include [*Franz Liszt*](https://es.wikipedia.org/wiki/Franz_Liszt) and [*Franz Peter Schubert*](https://es.wikipedia.org/wiki/Franz_Schubert) and search for *Franz*, both should appear. If you type `schu`, both *Franz Schubert* and [*Robert Schumann*](https://es.wikipedia.org/wiki/Robert_Schumann) should appear.
