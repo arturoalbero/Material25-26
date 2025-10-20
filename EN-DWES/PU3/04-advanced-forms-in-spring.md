@@ -1,0 +1,2 @@
+> **ACTIVITY:**
+> Add **forms to EDIT** existing composers and/or pieces. Keep in mind that it should allow reassigning pieces to other composers (but not duplicating them). Modify the `.csv` files accordingly.

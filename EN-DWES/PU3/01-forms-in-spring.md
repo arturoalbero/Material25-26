@@ -218,7 +218,4 @@ We can also use enumerations, returning to the previous gender example:
 > * For each musical piece, add a list of alternative names. For example, Beethoven’s *Piano Sonata No. 14 in C-sharp minor, Op. 27 No. 2 Quasi una fantasia* is also known as *Sonata No. 14 in C-sharp minor*, *Clair de lune*, or *Moonlight Sonata*.
 
 > **ACTIVITY:**
-> Add **forms to EDIT** existing composers and/or pieces. Keep in mind that it should allow reassigning pieces to other composers (but not duplicating them). Modify the `.csv` files accordingly.
-
-> **ACTIVITY:**
 > Verify that, with the forms we have created, the “My Favourite Composers” webpage works correctly as specified in the previous programming unit’s practice statement.
