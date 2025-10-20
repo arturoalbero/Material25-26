@@ -1,16 +1,14 @@
 ## 3.3 - Regular Expressions
 
-Information extracted from [this webpage](https://nachoiborraies.github.io/java/md/en/03d).
+Information extracted from [this webpage](https://nachoiborraies.github.io/java/md/en/03d). It's later expandend adding a section about combining regular expressions and functional programming.
 
 ## Using Regular Expressions
 
-A **regular expression** (or **regex**, in its abbreviated form) is a sequence of special characters that allows us to detect patterns in texts.
+A **regular expression** (or **regex**, in its abbreviated form) is a sequence of special characters that allows us to detect patterns in texts. It is not meant for humans but for computers, so even if they appear to be very strange, a computer is capable of detect any text pattern if the regex is well defined.
 
 For example, an identification number formed by 8 digits and one capital letter, or an email that contains an `@`.
 
 Using regular expressions, we can easily detect these patterns in a given text, or also **enforce a text to comply with a format** when entered by the user.
-
------
 
 ## 1\. Basic Regular Expression Syntax
 
@@ -18,6 +16,8 @@ To work with regular expressions in Java, we need to use the classes from the `j
 
   * **`Pattern`** → allows defining a regular expression pattern.
   * **`Matcher`** → allows checking if a text matches a given pattern.
+
+> **TIP:** Actually, we can use regular expressions in more ways than these and the String class, for instance, has several methods that use regex. However, `Pattern` and `Matcher` work very well for the general use of regex.
 
 ### 1.1. `Pattern` Class
 
@@ -248,9 +248,10 @@ java8
 
 What happens is:
 
-  * `Pattern.compile(".*\\d.*")` defines a regular expression that means “contains at least one digit”.
+  * `Pattern.compile(".*\\d.*")` defines a regular expression that means “contains at least one digit”. 
+    * `.*` means *any character may appear 0 or more times*, `\\d` (the escaped `\d`) means *one digit* and, at the end, it appears again the `.*`.
   * `stream().filter(...)` evaluates each string using `matcher().matches()`.
-  * `collect(Collectors.toList())` collects the matches into a new list.
+  * `collect(Collectors.toList())` collects the matches into a new mutable list.
 
 > **ACTIVITY**:
 > Create a program that, given a list of possible email addresses, **uses `stream().filter()` and a regular expression** to keep only the **valid** emails (those that have `@` and a correct domain).
