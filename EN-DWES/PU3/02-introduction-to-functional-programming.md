@@ -239,6 +239,8 @@ List<String> list = listOfLists.stream().flatMap(l->l.stream()).toList();
 
 In this example, we have a List of Lists of Strings and what we do is to apply the function flatMap so for each list `l` of the listOfLists, we obtain the `stream`. It is important to transform the collection into a stream to continue using the stream features. Finally, we obtain a list from the stream using `toList()`, a method we will discuse later in the collectors part.
 
+> **TIP**: The static method List.of() returns an inmutable list. If you need to change the values in the future, you should create the list with a regular constructor such as `new ArrayList<>()` and then add the values with its built-in methods.
+
 In a more complex example, we have a class that contains a collection, like this one:
 
 ```java
