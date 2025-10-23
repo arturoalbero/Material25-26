@@ -108,7 +108,7 @@ En este punto, vamos a trasladar todo lo que hemos hecho hasta ahora usando Dock
 
 i) Se han utilizado tecnologías de virtualización en el despliegue de servidores web en la nube y en contenedores.
 
-j) Se han instalado, configurado y utilizado conjuntos de herramientas de gestión de logs, permitiendo su monitorización, consolidación y análisis en tiempo real.
+
 
 h) Se han realizado los ajustes necesarios para la implantación de aplicaciones en el servidor web.
 
@@ -121,3 +121,7 @@ sudo certbot --nginx -d midominio.com -d www.midominio.com
 ```
 
 Este proceso valida que el dominio apunta a nuestro servidor, genera los certificados, configura NGINX automáticamente para HTTPS y programa la renovación automática cada 90 días.
+
+## Herramientas para la gestión de logs
+
+j) Se han instalado, configurado y utilizado conjuntos de herramientas de gestión de logs, permitiendo su monitorización, consolidación y análisis en tiempo real.
