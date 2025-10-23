@@ -66,7 +66,9 @@ Y usamos `docker build -t mi-nginx:1 .` para construir la imagen. Después, hace
 
 > **Actividad**: Crea una carpeta donde tengas un archivo dockerfile con la configuración de la imagen y crea un docker-compose.yml para especificar tanto el cambio del archivo de configuración como el bindeo del contenido estático.
 
-> **NOTA** Cada vez que cambias la configuración en NGINX, para que se haga efectiva, hay que recargar el servidor. Si lo usas en tu ordenador, debes usar el comando `nginx -s reload`.
+> **NOTA** Cada vez que cambias la configuración en NGINX, para que se haga efectiva, hay que recargar el servidor. Si lo usas en tu ordenador, debes usar el comando `nginx -s reload`. En Docker tienes dos opciones:
+> - Apagar y encender el contenedor de forma manual
+> - Usar el comando `Docker exec [nombre-contenedor][comando]`, en este caso concreto `Docker exec mi-nginx nginx -s reload`.
 
 ## Construyendo un nginx.conf desde 0
 
