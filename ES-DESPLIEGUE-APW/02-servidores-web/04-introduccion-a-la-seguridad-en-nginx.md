@@ -41,9 +41,11 @@ location /private/ {
 ```
 La localización `/private/` se configura para que permita acceder a cualquier ordenador perteneciente a la red privada `192.168.1.0/24`, pero impida el acceso a todos los demás, que recibirán un error `403 Forbidden`.
 
-Tanto `allow` como `deny` admiten como valor la palabra `all`, una red (como en el ejemplo) o una IP de un equipo concreto.
+Tanto `allow` como `deny` admiten como valor la palabra `all`, una red (como en el ejemplo) o una IP de un equipo concreto. Es conveniente aplicar antes los apply que los deny.
 
-> **ACTIVIDAD:** Abre tres equipos de clase, averigua las IP de los tres equipos y, en uno de ellos, lanza un servidor NGINX con contenido estático, como el de las actividades anteriores. Modifica el archivo de configuración para conseguir los siguientes efectos:
+Cuando usamos NGINX dentro de Docker (o cualquier otra imagen), la IP, los mensajes se comunican con el contenedor a través de una red interna creada de forma automática, estableciendo como origen del mensaje la IP `192.168.65.1`. Por lo tanto, para poder hacer las pruebas correctamente, debemos lanzar NGINX sin usar Docker, como hicimos en la práctica de la Unidad de Programación 1.
+
+> **ACTIVIDAD:** Abre tres equipos de clase, averigua las IP de los tres equipos y, en uno de ellos, lanza un servidor NGINX con contenido estático, como el de las actividades anteriores, pero sin usar Docker. Modifica el archivo de configuración para conseguir los siguientes efectos:
 > - Impide el acceso de una localización concreta a uno de los equipos y permíteselo al resto.
 > - Permite el acceso de una localización concreta a uno de los equipos y permíteselo al resto.
 > - Impide el acceso a la red local. De esta manera, solo podrás acceder al contenido con el ordenador servidor que tenga el `localhost`.
@@ -63,25 +65,45 @@ Finalmente, en el bloque `location` de la localización que queremos restringir 
 auth_basic "Mensaje de seguridad - Autenticación requerida";
 auth_basic_user_file /etc/nginx/.htpasswd;
 ```
-Gracias a Docker, no es necesario instalar nada. Podemos usar un contenedor temporal con Apache HTTPD, que ya trae el programa que necesitamos (htpasswd). Con este comando, añadimos un suario y extraemos el archivo `.htpasswd` del contenedor, que se borra al completar la operación.
+
+**Gracias a Docker, no es necesario instalar nada.** Podemos usar un contenedor temporal con Apache HTTPD, que ya trae el programa que necesitamos (htpasswd). Con este comando, añadimos un suario y extraemos el archivo `.htpasswd` del contenedor, que se borra al completar la operación.
 
 ```bash
-docker run -rm httpd:alpine htpasswd -nb alumno123 clave123 > .htpasswd
+docker run --rm httpd:alpine htpasswd -nb alumno123 clave123 > .htpasswd
 ```
+> **CONSEJO:** Ejecuta este comando usando como carpeta raíz la misma carpeta donde tenemos almacenado el `nginx.conf` que vamos a bindear.
 
 El parámetro `-nb` lo que hace es:
 - `-n` no modifica el archivo, solo imprime la línea en pantalla
 - `-b` Permite pasar la contraseña por línea de comando
 
+Puedes mirar el resto de parámetros de [`htpasswd` en la documentación oficial](https://httpd.apache.org/docs/current/es/programs/htpasswd.html).
+
 No hace falta crear un archivo `.htpasswd` porque httpd lo trae creado de serie, vacío y listo para rellenarse.
+
+> **CONSEJO:** Aunque cómodo, este método en ocasiones tiene un problema: añade un salto de línea extra al final del archivo. Revísalo para comprobarlo y borra el salto de línea extra si es necesario.
 
 De esta forma, extraemos dicho archivo `.htpasswd` en la carpeta donde lancemos el comando, y ya se habrá añadido el usuario `alumno123` con la contraseña `clave123`.
 
-Para agregar un nuevo usuario al mismo archivo `.htpasswd`, ejecutamos el mismo comando sin `-c`, por ejemplo:
+Observa el archivo `.htpasswd`:
+```bash
+alumno123:$apr1$eECVVovP$lT2DuowtRBqwoZsoPKDgy/
+
+```
+
+> **ACTIVIDAD**
+> Despliega un servidor con un bloque `location restringido/ {}` que requiera autenticación.
+> Comprueba qué pasa con un log-in correcto y con un log-in incorrecto.
+
+Si necesitamos agregar un nuevo usuario al mismo archivo `.htpasswd`, podemos ejecutar el siguiente comando.
 
 ```bash
-docker run -rm httpd:alpine htpasswd -nb usuario2 clave2 > temp && temp .htpasswd
+docker run --rm httpd:alpine htpasswd -nb usuario2 clave2 >> .htpasswd
 ```
+
+> **ACTIVIDAD**
+> Añade más usuarios autenticados y prueba los diferentes accesos.
+
 <details>
 <summary>
 
@@ -95,10 +117,7 @@ docker run -rm httpd:alpine htpasswd -nb usuario2 clave2 > temp && temp .htpassw
 > Por ejemplo, una imagen Alpine puede ocupar alrededor de 5.59 MB, mientras que una imagen Ubuntu puede ocupar hasta 64.21 MB, lo que representa una diferencia de aproximadamente 12 veces más.
 </details>
 
-En este caso, lo que hacemos es volcar el contenido a un archivo temporal `temp` para no sobreescribir nuestro archivo y, después, lo movemos a `.htpasswd` para añadirlo al final. Repetimos este proceso para añadir tantos usuarios como queramos.
-
-
-Si volvemos a ejecutar este comando sobre un usuario ya existente, se reescribirá la clave.
+Para editar la clave, debemos borrar primero el usuario y después añadirlo con una clave nueva.
 
 > **ACTIVIDAD:** Restringe una de las location de tu servidor web para que solo se pueda acceder con un usuario registrado.
 > - Registra a 3 usuarios diferentes
@@ -106,5 +125,4 @@ Si volvemos a ejecutar este comando sobre un usuario ya existente, se reescribir
 > - Intenta acceder con un usuario no registrado
 > - Repite los pasos desde un ordenador externo, conectándote a distancia.
 
-> **CONSEJO PARA HACERLO EN CASA:** Para probar esta práctica en tu casa solamente necesitas un ordenador con los puertos abiertos que requieras (80 y 443) que hará de servidor. Este ordenador es el que ejecutará el contenedor nginx de Docker. Necesitarás saber su IP en la red local (puedes consultarla con ipconfig en Windows) y, en un terminal distinto (tu móvil, una consola con navegador, una tablet, etc...) accede al navegador y escribe la dirección IP de tu ordenador como dominio, más la URI a la que quieras acceder.
 
