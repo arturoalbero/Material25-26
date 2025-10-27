@@ -1,7 +1,7 @@
 
 # Certificados digitales e introducción al despliegue en red
 
-## Certificados digitales y HTTPS en NGINX
+## 1. Certificados digitales y HTTPS en NGINX
 
 El protocolo HTTPS permite establecer una conexión cifrada entre el servidor y el cliente, garantizando:
 - Confidencializad: Los datos bajan cifrados.
@@ -19,7 +19,7 @@ Los navegadores confían solo en certificados firmados por una autoridad certifi
 
 En entornos de pruebas, también podemos generar certificados autofirmados (**self-signed**).
 
-### Creación de un certificado autofirmado
+### 1.1. Creación de un certificado autofirmado
 
 Podemos usar un contenedor temporal de OpenSSL (ya incluido en muchas imágenes Linux) para generar el certificado. 
 
@@ -102,7 +102,7 @@ Ahora, vista `localhost` y verás un aviso de seguridad, porque el certificado e
 > Crea un certificado autofirmado con tus datos; configura NGINX para servir contenido seguro mediante HTTPS; verifica el certificado desde el navegador, dándole a `ver Detalles del certificado`; crea una redirección automática de http:// a https:// y comprueba la diferencia de comportamiento al acceder por http y https.
 
 
-## Introducción al despliegue en red
+## 2. Introducción al despliegue en red
 
 En este punto, vamos a trasladar todo lo que hemos hecho hasta ahora usando Docker a un servidor web real. Hay muchas opciones disponibles, pero vamos a emplear el servicio `koyeb`, que dispone de una opción gratuita. Lo primero que haremos será registrarnos en `koyeb` (podemos hacerlo con nuestra cuenta de github). Nada más comenzar, nos da acceso a un plan Pro, pero el que vamos a usar más adelante es el plan Free.
 
@@ -112,7 +112,7 @@ i) Se han utilizado tecnologías de virtualización en el despliegue de servid
 
 h) Se han realizado los ajustes necesarios para la implantación de aplicaciones en el servidor web.
 
-## Certificados en un entornos real con Let's Encrypt
+## 3. Certificados en un entornos real con Let's Encrypt
 
 En servidores públicos, puedes usar **Certbot** para obtener certificados gratuitos y automáticos de *Let's Encrypt*. Para ello, necesitamos lanzar en el servidor, suponiendo que es un servidor Linux, los siguientes comandos:
 ```bash
@@ -122,6 +122,6 @@ sudo certbot --nginx -d midominio.com -d www.midominio.com
 
 Este proceso valida que el dominio apunta a nuestro servidor, genera los certificados, configura NGINX automáticamente para HTTPS y programa la renovación automática cada 90 días.
 
-## Herramientas para la gestión de logs
+## 4. Herramientas para la gestión de logs
 
 j) Se han instalado, configurado y utilizado conjuntos de herramientas de gestión de logs, permitiendo su monitorización, consolidación y análisis en tiempo real.
