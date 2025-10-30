@@ -9,6 +9,7 @@ Desplegar un programa con forma de Html dinámico realizado con Spring Boot y Ja
 ### Preparar la aplicación de Spring Boot
 
 El primer paso es asegurarnos de que la aplicación funciona correctamente al estar empaquetada en un único archivo jar. Esto es fácilmente lograble si hemos usado Maven como herramienta de construcción de proyectos Java asegurándonos de que hemos incluido el plugin siguiente en el fichero pom.xml
+
 ```html
 <project attr="...">
    <!-- .... -->
@@ -22,7 +23,8 @@ El primer paso es asegurarnos de que la aplicación funciona correctamente al es
    </build>
 </project>
 ```
-Indicar la versión del plugin es opcional si nuestro proyecto tiene como parent el proyecto paraguas de Spring Boot denominado spring-boot-starter-parent. Si no lo tienes puede incluir el siguiente fragmento, normalmente al principio del fichero pom.xml, después de project:
+Indicar la versión del plugin es opcional si nuestro proyecto tiene como `parent` el proyecto paraguas de Spring Boot denominado ``spring-boot-starter-parent. Si no lo tienes puede incluir el siguiente fragmento, normalmente al principio del fichero pom.xml, después de project:
+
 ```html
 <parent>
     <groupId>org.springframework.boot</groupId>

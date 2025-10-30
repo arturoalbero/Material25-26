@@ -41,9 +41,14 @@ alumno123:$apr1$eECVVovP$lT2DuowtRBqwoZsoPKDgy/
 
 ```
 
+Para hacer pruebas con contraseñas, es una buena idea **usar el navegador en modo privado o oculto**, porque si no el inicio de sesión se quedará almacenado.
+
+
 > **ACTIVIDAD**
 > Despliega un servidor con un bloque `location restringido/ {}` que requiera autenticación.
 > Comprueba qué pasa con un log-in correcto y con un log-in incorrecto.
+
+>**NOTA** Cuidado con la codificación, a veces se codifica en **UTF16** y aparecen caracteres raros. Si no funciona, comprueba el log del contenedor para asegurarte de que todo va bien.
 
 Si necesitamos agregar un nuevo usuario al mismo archivo `.htpasswd`, podemos ejecutar el siguiente comando.
 
@@ -73,7 +78,7 @@ Para editar la clave, debemos borrar primero el usuario y después añadirlo con
 > - Registra a 3 usuarios diferentes
 > - Intenta acceder con cada uno de ellos
 > - Intenta acceder con un usuario no registrado
-> - Repite los pasos desde un ordenador externo, conectándote a distancia.
+
 
 
 ## 2. Mecanismos de control de acceso al servidor
@@ -121,10 +126,7 @@ Tanto `allow` como `deny` admiten como valor la palabra `all`, una red (como en 
 
 **Cuando usamos NGINX dentro de Docker (o cualquier otra imagen), la IP, los mensajes se comunican con el contenedor a través de una red interna creada de forma automática**, estableciendo como origen del mensaje la IP `192.168.65.1`. Por lo tanto, para poder hacer las pruebas correctamente, **debemos lanzar NGINX sin usar Docker**, como hicimos en la práctica de la Unidad de Programación 1.
 
-> **ACTIVIDAD:** Abre tres equipos de clase, averigua las IP de los tres equipos y, en uno de ellos, lanza un servidor NGINX con contenido estático, como el de las actividades anteriores, pero sin usar Docker. Modifica el archivo de configuración para conseguir los siguientes efectos:
-> - Impide el acceso de una localización concreta a uno de los equipos y permíteselo al resto.
-> - Permite el acceso de una localización concreta a uno de los equipos y permíteselo al resto.
-> - Impide el acceso a la red local. De esta manera, solo podrás acceder al contenido con el ordenador servidor que tenga el `localhost`.
+
 
 
 
