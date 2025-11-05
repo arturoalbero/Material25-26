@@ -12,7 +12,7 @@ Este resultado de aprendizaje cuenta con los siguientes **criterios de evaluaci�
 
 Para poder alcanzar estos criterios de evaluación, debemos conocer los objetivos de desarrollo sostenible (ODS), que podemos consultar en [**este enlace a la página web oficial de las naciones unidas**](https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/).
 
-## Actividad 1
+## Actividad
 
 Haz una presentación sobre cada ODS, atendiendo a la información oficial, y relaciónalo con la actividad profesional de un egresado en un ciclo de la familia de informática y comunicaciones (como Desarrollo de Aplicaciones Multimedia o Sistemas Micro Informáticos). En la presentación debes explicar: 
 - En qué consiste el ODS.
@@ -21,8 +21,15 @@ Haz una presentación sobre cada ODS, atendiendo a la información oficial, y re
 - En qué estado se encuentra actualmente. 
 - Su relación con la actividad profesional de un egresado de un ciclo de la familia de informática.
 
-Toda esta información está disponible en la página oficial de las naciones unidas. Menciónala.
+Toda esta información está disponible en la página oficial de las naciones unidas. Menciónala. La exposición debe durar 15 minutos, y debes tratar 5 o 6 ODS, por lo que hay que ser breve e ir a lo importante. 2-3 minutos por ODS como máximo para la exposición.
 
-## Actividad 2
+## Reparto de los ODS
 
-Debate cuáles son los ODS más relacionados con tu futura actividad profesional como egresado de un ciclo de la familia de informática.
+|GRUPO | ODS 
+|---|---
+| GRUPO 1 | 1, 4, 7, 10, 13, 16
+| GRUPO 2 | 2, 5, 8, 11, 14, 17
+| GRUPO 3 | 3, 6, 9, 12, 15
+
+
+
