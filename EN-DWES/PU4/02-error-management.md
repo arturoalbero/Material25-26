@@ -131,11 +131,9 @@ This variable can serve for any type of message we want to include (we could cal
 
 Although the global variable approach is simple and useful for small projects, it can cause problems in larger projects. Spring MVC controllers are singletons by default. That means a single controller instance handles many concurrent requests. If the error message is stored in a field (`private String txtError`), **this variable is shared across all requests and users**. Two users, A and B, may trigger errors almost simultaneously. If request A sets `txtError = "A failed"` and before it is read, B sets `txtError = "B failed"`, user A could see B’s error. Result: incorrect messages and intermittent failures that are hard to debug.
 
-Also, this is not scalable. In environments with multiple service instances (clusters), the local memory variable is not synchronized across instances. Finally, it is hard to test and maintain, since shared mutable state makes tests less deterministic and the behavior more fragile. If you want to go in further detail in this aspect, go ahead to the advanced section just below.
+Also, this is not scalable. In environments with multiple service instances (clusters), the local memory variable is not synchronized across instances. Finally, it is hard to test and maintain, since shared mutable state makes tests less deterministic and the behavior more fragile. 
 
-----
-
-## ADVANCED: Error Management with `@ControllerAdvice` and `@ExceptionHandler`
+## Error Management with `@ControllerAdvice` and `@ExceptionHandler`
 
 `@ControllerAdvice` is a Spring Framework annotation used to define a global exception handler, allowing you to manage errors across the entire application from a single, centralized point. **`@ControllerAdvice` allows centralizing error handling for all controllers in a single class**, avoiding repeated try-catch blocks in each method. Inside this class, we use methods annotated with `@ExceptionHandler` to define what happens when a specific exception occurs (for example, showing an error view and sending a message to the user).
 
@@ -155,7 +153,8 @@ public class GlobalExceptionHandler {
     }
 
     // For specific exceptions
-    @ExceptionHandler({CustomException.class})
+    // you can group several exceptions inside {}
+    @ExceptionHandler(CustomException.class)
     public String handleNotFound(CustomException ex, Model model) {
         model.addAttribute("txtErr", "Exception: " + ex.getMessage());
         return "errorView";
@@ -164,8 +163,52 @@ public class GlobalExceptionHandler {
 ```
 > In Spring MVC, you can’t have two `@ExceptionHandler` methods in the same class that handle the same exception type — Spring will throw an ambiguity error at startup or will just pick one handler arbitrarily (depending on the Spring version). 
 
+In order to create a `CustomException`, you must define a new class that extends from an existing `Exception` derived class (it may be `Exception`, `RuntimeException`, etc.). It may be useful to group all the custom exceptions in a package or, if you decide to group controllers by area (Client, User), making a subpackage inside the proper package.
+```java
+ public class CustomException extends Exception{
+    public CustomException(String msg){
+        super(msg);
+    }
+}
+```
+However, it is a better practice in most of Spring Boot projects to extend from RuntimeException instead of Exception. If you use an `Exception` derived exception, as they are **checked**, you must add the `throw` to the signature method:
+```java 
+public String myMethod() throws CustomException{
+    throw new CustomException("ex");
+}
+```
+On the other hand, if you use a `RuntimeException` derived exception, as they are **unchecked**, you don't have to add any `throw` to the signature method.
+
+```java 
+public String myMethod(){
+    throw new CustomRuntimeException("ex");
+}
+```
+> **REMEMBER**
+> - **Checked Exceptions:** Derived from `Exception`. The compiler forces you to declare and handle them.
+> - **Unchecked Exceptions:** Derived from `RuntimeException`. The compiler doesn't force you to declare or handle them.
+> All exceptions are derived from `Throwable` thus they all can be thrown.
+
 Other ways to handle errors exist, but we will not cover them for now.
 
-> **ADVANCED ACTIVITY**
-> Create a `@ControllerAdvice` to manage errors globally in the *MyFavouriteComposer* project. To test the handlers, you can launch the different exceptions with throw, to see what happens.
+> **ACTIVITY**
+> Create a `@ControllerAdvice` to manage errors globally in the *MyFavouriteComposer* project.
+> - Create a handler for common exceptions
+> - Create as custom exceptions as needed to specific cases
+> - Create a specific handler for each exception
+> - Test manually the different exceptions you make. You can use this approach if you want (later we will use unit tests):
+> ```java
+>@GetMapping("/errorThrower")
+>    public String errorThrowerController(@RequestParam (required = false) String param) {
+>        if(true) throw new RuntimeException("I'm throwing an error");
+>        return "indexView";
+>    }
+>
+>    @GetMapping("/customErrorThrower")
+>    public String customErrorThrowerController(@RequestParam (required = false) String param) throws CustomException {
+>        if(true) throw new CustomException("I'm throwing a custom error");
+>        return "indexView";
+>    }
+>```
+
 
