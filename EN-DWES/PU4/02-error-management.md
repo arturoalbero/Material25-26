@@ -42,7 +42,7 @@ In this case, catching the exception sends the user to an error view that inform
 
 ## Handling Exceptions Through Redirects
 
-This approach does not work if the controller returns a redirect instead of a view because in that case, you cannot pass anything via the *model*. A solution is to pass the target *mapping* as a parameter, along with an error code (or even the exception message), and let the controller method handle it. For example:
+Instead of having an `errorView`, we could prefer to redirect in case of any error. However, we have to change our approach if the controller returns a redirect instead of a view because in that case, you cannot pass anything via the *model*. A solution is to pass the target *mapping* as a parameter, along with an error code (or even the exception message), and let the controller method handle it. For example:
 
 ```java
 try{ (...) }
@@ -68,7 +68,7 @@ public String showHome(@RequestParam(required = false) Integer err, Model model)
 
 ## Tracking Errors Through "Global" Variables
 
-One disadvantage of this option is that the exception message is “lost” because with a redirect, the target mapping only receives parameters, not the *model*. A solution is to have the controller store the message in a "global" variable (*technically, a controller attribute accessible by all mappings*), which the `try..catch` assigns the exception message to. Then, the mapping that returns the view can include the exception text in the *model* through this variable.
+One disadvantage of the option before is that the exception message is “lost” because, with a redirect, the target mapping only receives parameters, not the *model*. A solution is to have the controller store the message in a "global" variable (*technically, a controller attribute accessible by all mappings*), which the `try..catch` assigns the exception message to. Then, the mapping that returns the view can include the exception text in the *model* through this variable.
 
 ```java
 @Controller
@@ -131,7 +131,7 @@ This variable can serve for any type of message we want to include (we could cal
 
 Although the global variable approach is simple and useful for small projects, it can cause problems in larger projects. Spring MVC controllers are singletons by default. That means a single controller instance handles many concurrent requests. If the error message is stored in a field (`private String txtError`), **this variable is shared across all requests and users**. Two users, A and B, may trigger errors almost simultaneously. If request A sets `txtError = "A failed"` and before it is read, B sets `txtError = "B failed"`, user A could see B’s error. Result: incorrect messages and intermittent failures that are hard to debug.
 
-Also, this is not scalable. In environments with multiple service instances (clusters), the local memory variable is not synchronized across instances. Finally, it is hard to test and maintain, since shared mutable state makes tests less deterministic and the behavior more fragile.
+Also, this is not scalable. In environments with multiple service instances (clusters), the local memory variable is not synchronized across instances. Finally, it is hard to test and maintain, since shared mutable state makes tests less deterministic and the behavior more fragile. If you want to go in further detail in this aspect, go ahead to the advanced section just below.
 
 ----
 
