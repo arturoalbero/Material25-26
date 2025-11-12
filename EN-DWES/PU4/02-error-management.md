@@ -133,7 +133,9 @@ Although the global variable approach is simple and useful for small projects, i
 
 Also, this is not scalable. In environments with multiple service instances (clusters), the local memory variable is not synchronized across instances. Finally, it is hard to test and maintain, since shared mutable state makes tests less deterministic and the behavior more fragile.
 
-## Error Management with `@ControllerAdvice` and `@ExceptionHandler`
+----
+
+## ADVANCED: Error Management with `@ControllerAdvice` and `@ExceptionHandler`
 
 `@ControllerAdvice` is a Spring Framework annotation used to define a global exception handler, allowing you to manage errors across the entire application from a single, centralized point. **`@ControllerAdvice` allows centralizing error handling for all controllers in a single class**, avoiding repeated try-catch blocks in each method. Inside this class, we use methods annotated with `@ExceptionHandler` to define what happens when a specific exception occurs (for example, showing an error view and sending a message to the user).
 
@@ -163,6 +165,6 @@ public class GlobalExceptionHandler {
 
 Other ways to handle errors exist, but we will not cover them for now.
 
-> **ACTIVITY**
+> **ADVANCED ACTIVITY**
 > Create a `@ControllerAdvice` to manage errors globally in the *MyFavouriteComposer* project.
 
