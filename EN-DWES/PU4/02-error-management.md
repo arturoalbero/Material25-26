@@ -155,16 +155,17 @@ public class GlobalExceptionHandler {
     }
 
     // For specific exceptions
-    @ExceptionHandler(ComposerNotFoundException.class)
-    public String handleNotFound(ComposerNotFoundException ex, Model model) {
-        model.addAttribute("txtErr", "Composer not found: " + ex.getId());
+    @ExceptionHandler({CustomException.class})
+    public String handleNotFound(CustomException ex, Model model) {
+        model.addAttribute("txtErr", "Exception: " + ex.getMessage());
         return "errorView";
     }
 }
 ```
+> In Spring MVC, you can’t have two `@ExceptionHandler` methods in the same class that handle the same exception type — Spring will throw an ambiguity error at startup or will just pick one handler arbitrarily (depending on the Spring version). 
 
 Other ways to handle errors exist, but we will not cover them for now.
 
 > **ADVANCED ACTIVITY**
-> Create a `@ControllerAdvice` to manage errors globally in the *MyFavouriteComposer* project.
+> Create a `@ControllerAdvice` to manage errors globally in the *MyFavouriteComposer* project. To test the handlers, you can launch the different exceptions with throw, to see what happens.
 
