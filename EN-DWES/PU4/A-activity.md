@@ -13,18 +13,18 @@ These are the activities you should have done for the delivery of the unit 4 mai
 
 ## 02 Error Management
 
-> **ACTIVITY:**
+> **ACTIVITY (1):**
 > Create an "errorView" for the *MyFavouriteComposer* project that handles exceptions captured when creating a composer or a piece. The errorView should include a link back to the index and another to the form for creating the element.
 
-> **ACTIVITY:**
+> **ACTIVITY (2):**
 > Use this redirect method with parameter passing to control errors in *MyFavouriteComposer* edit forms. You should classify errors and return to the edit form, displaying the error at the top in red.
 >
 > * SUGGESTION: Use a switch-case to manage error codes.
 
-> **ACTIVITY:**
+> **ACTIVITY (3):**
 > Adapt the previous activity by adding the global variable to control the error message.
 
-> **ACTIVITY**
+> **ACTIVITY (4**
 > Create a `@ControllerAdvice` to manage errors globally in the *MyFavouriteComposer* project.
 > - Create a handler for common exceptions
 > - Create as custom exceptions as needed to specific cases
@@ -44,7 +44,7 @@ These are the activities you should have done for the delivery of the unit 4 mai
 >    }
 >```
 
-> **ACTIVITY:**
+> **ACTIVITY (5):**
 > Decide which error handling approach you want to use for your project. You can combine both methods or choose only one. In any case, consider the pros and cons and justify why you select one over the other.
 
 ## 03 Classes and interfaces. Command Line Runner. Archives in forms.

@@ -1,0 +1,71 @@
+criterion, level_description, score
+"Portada", "No hay", 0
+"Portada", "Correcto", 0.25
+
+"Índice", "No hay", 0
+"Índice", "Correcto", 0.25
+
+"Explicación", "No hay", 0
+"Explicación", "Poco correcta", 0.25
+"Explicación", "Suficiente", 0.5
+"Explicación", "Aceptable", 0.75
+"Explicación", "Perfecta", 1
+
+"Estructura de la app", "Sin estructura", 0
+"Estructura de la app", "Poca estructura", 0.25
+"Estructura de la app", "Perfectamente ordenado", 0.5
+
+"Servicios (1): Transformación del manager a Service", "MAL", 0
+"Servicios (1): Transformación del manager a Service", "FLOJO", 0.25
+"Servicios (1): Transformación del manager a Service", "SUFICIENTE", 0.5
+"Servicios (1): Transformación del manager a Service", "BIEN", 0.75
+"Servicios (1): Transformación del manager a Service", "PERFECTO", 1
+
+"Servicios (2): Servicio para operaciones CRUD de CSV", "MAL", 0
+"Servicios (2): Servicio para operaciones CRUD de CSV", "FLOJO", 0.25
+"Servicios (2): Servicio para operaciones CRUD de CSV", "SUFICIENTE", 0.5
+"Servicios (2): Servicio para operaciones CRUD de CSV", "BIEN", 0.75
+"Servicios (2): Servicio para operaciones CRUD de CSV", "PERFECTO", 1
+
+"Errores A1: Con ErrorView", "MAL", 0
+"Errores A1: Con ErrorView", "REGULAR", 0.25
+"Errores A1: Con ErrorView", "PERFECTO", 0.5
+
+"Errores A2: Con redirect", "MAL", 0
+"Errores A2: Con redirect", "REGULAR", 0.25
+"Errores A2: Con redirect", "PERFECTO", 0.5
+
+"Errores A3: Con variable global", "MAL", 0
+"Errores A3: Con variable global", "REGULAR", 0.25
+"Errores A3: Con variable global", "PERFECTO", 0.5
+
+"Errores A4: ControllerAdvice y ErrorHandler", "MAL", 0
+"Errores A4: ControllerAdvice y ErrorHandler", "REGULAR", 0.25
+"Errores A4: ControllerAdvice y ErrorHandler", "PERFECTO", 0.5
+
+"Errores A5: Consistencia en la aplicación", "MAL", 0
+"Errores A5: Consistencia en la aplicación", "REGULAR", 0.25
+"Errores A5: Consistencia en la aplicación", "PERFECTO", 0.5
+
+"Clases e interfaces", "MAL", 0
+"Clases e interfaces", "FLOJO", 0.25
+"Clases e interfaces", "REGULAR", 0.5
+"Clases e interfaces", "BIEN", 0.75
+"Clases e interfaces", "PERFECTO", 1
+
+"CommandLineRunner", "MAL", 0
+"CommandLineRunner", "FLOJO", 0.25
+"CommandLineRunner", "REGULAR", 0.5
+"CommandLineRunner", "BIEN", 0.75
+"CommandLineRunner", "PERFECTO", 1
+
+"Archivos en formularios", "MAL", 0
+"Archivos en formularios", "FLOJO", 0.25
+"Archivos en formularios", "REGULAR", 0.5
+"Archivos en formularios", "BIEN", 0.75
+"Archivos en formularios", "PERFECTO", 1
+
+"Funcionamiento Correcto de la aplicación", "MAL", 0
+"Funcionamiento Correcto de la aplicación", "REGULAR", 0.25
+"Funcionamiento Correcto de la aplicación", "PERFECTO", 0.5
+
