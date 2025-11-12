@@ -124,9 +124,6 @@ This variable can serve for any type of message we want to include (we could cal
 > **ACTIVITY:**
 > Adapt the previous activity by adding the global variable to control the error message.
 
-> **ACTIVITY:**
-> Decide which error handling approach you want to use for your project. You can combine both methods or choose only one. In any case, consider the pros and cons and justify why you select one over the other.
-
 ### Problems Using a “Global” Variable in the Controller
 
 Although the global variable approach is simple and useful for small projects, it can cause problems in larger projects. Spring MVC controllers are singletons by default. That means a single controller instance handles many concurrent requests. If the error message is stored in a field (`private String txtError`), **this variable is shared across all requests and users**. Two users, A and B, may trigger errors almost simultaneously. If request A sets `txtError = "A failed"` and before it is read, B sets `txtError = "B failed"`, user A could see B’s error. Result: incorrect messages and intermittent failures that are hard to debug.
@@ -211,4 +208,5 @@ Other ways to handle errors exist, but we will not cover them for now.
 >    }
 >```
 
-
+> **ACTIVITY:**
+> Decide which error handling approach you want to use for your project. You can combine both methods or choose only one. In any case, consider the pros and cons and justify why you select one over the other.
