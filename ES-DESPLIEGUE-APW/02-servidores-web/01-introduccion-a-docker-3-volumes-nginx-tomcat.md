@@ -54,13 +54,13 @@ Aquí:
 - `/ruta/en/host` es la ruta absoluta en el host.
 - `/ruta/en/contenedor` es la ruta dentro del contenedor.
 
-> **Actividad:** Crea un contenedor nginx y cópiale tu página web estática en su carpeta \html\ usando bind mount. Para ello deberás usar un comando similar al siguiente:
+> **Actividad 1:** Crea un contenedor nginx y cópiale tu página web estática en su carpeta \html\ usando bind mount. Para ello deberás usar un comando similar al siguiente:
 > ```bash
 > Docker run -d -v ./tu/ruta/relativa/:/usr/share/nginx/html -p8080:80 nginx
 > ```
 > Lánzalo y entra en localhost:8080. Una vez lanzado, prueba a cambiar el contenido HTML que hayas *bindeado*. Debería reflejarse sin necesidad de detener el contenedor.
 
-> **Actividad:** Haz lo mismo, pero a través de docker-compose. Para linkar un volumen en el docker compose haz lo siguiente dentro de la especificación del contenedor:
+> **Actividad 2:** Haz lo mismo, pero a través de docker-compose. Para linkar un volumen en el docker compose haz lo siguiente dentro de la especificación del contenedor:
 >```yml
 >volumes:
 >      - ./html:/usr/share/nginx/html
@@ -103,7 +103,7 @@ Por su parte, un volumen no se puede borrar si está asociado a un contenedor. P
 
 Hasta ahora, hemos visto cómo manejar Docker de forma sencilla, pero completa. Sin embargo, solamente hemos cubierto la punta del iceberg. No te olvides de consultar en la [documentación oficial](https://docs.docker.com/) cuando necesites saber alguna cosa concreta.
 
-> **Actividad:**
+> **Actividad 3:**
 > Busca **en la documentación oficial** cómo hacer las siguientes cosas (parámetros que admiten, etc.) y para qué sirven:
 > * docker system prune
 > * docker container commit
@@ -148,7 +148,7 @@ Ahora que ya sabemos usar Docker, vamos a explorar cómo aplicarlo al despliegue
 >Después de eso, puedes acceder a tu sitio en el navegador en:
 >[http://localhost:8080](http://localhost:8080) o [http://host-ip:8080](http://host-ip:8080).
 
->**ACTIVIDAD:** Antes de continuar con el siguiente apartado, vamos a experimentar las siguientes cosas:
+>**ACTIVIDAD 4:** Antes de continuar con el siguiente apartado, vamos a experimentar las siguientes cosas:
 > * Si no mapeamos los puertos, ¿podemos acceder al contenido estático de alguna forma?
 > * ¿Qué pasa si mapeamos al puerto 80?
 > * ¿Qué diferencia hay entre *bindear* un volumen y copiar datos a través del Dockerfile?

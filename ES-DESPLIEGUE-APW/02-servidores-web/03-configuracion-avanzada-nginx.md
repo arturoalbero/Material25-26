@@ -111,7 +111,7 @@ location ~* /count/[0-9] {
 ```
 Con el argumento `~*` le indicamos que trate la URI que sigue como una expresión regular. En este caso, interpretará `[0-9]` como cualquier número de una cifra (del 0 al 9) y después realizará el contenido de esa dirección. Esto nos permite controlar que varias direcciones escritas de formas distintas nos lleven al mismo sitio (así podríamos controlar variantes ortográficas sencillas, por ejemplo).
 
-> **ACTIVIDAD:** Prueba los usos de `location` trabajados hasta ahora y documenta las pruebas. Debes testear:
+> **ACTIVIDAD 1:** Prueba los usos de `location` trabajados hasta ahora y documenta las pruebas. Debes testear:
 > * Encontrar una dirección usando location y root.
 > * Encontrar una dirección usando alias.
 > * Encontrar una dirección usando try_files. En este caso, pon varias alternativas y ve cambiando el nombre de los archivos html para que primero encuentre el primero, luego el segundo y, finalmente, al no encontrar ninguno lance un error 404.
@@ -173,7 +173,7 @@ También contamos con las siguientes instrucciones para las expresiones:
 |x{n,} El símbolo x aparece al menos n veces
 |x{n,m}| El símbolo x aparece entre n y m veces (m también es un número entero positivo)
 
-> **ACTIVIDAD:** Prueba a hacer un redirect primero y después un rewrite. Experimenta con diferentes expresiones regulares.
+> **ACTIVIDAD 2:** Prueba a hacer un redirect primero y después un rewrite. Experimenta con diferentes expresiones regulares.
 > * Cualquier cosa que empiece por la palabra `otra` nos dirige a `otrascosas`.
 > * Para ir a `/count/[0-9]` podemos hacerlo siempre que el primer argumento del camino (en este caso `count`) sea una palabra que empiece por consonante y solo contenga caracteres alfanuméricos, siendo el mínimo 1 (la consonante inicial) y el máximo 5 (la consonante inicial y 4 caracteres alfanuméricos). Por ejemplo, `/x23z/3` es una dirección válida para el rewrite, pero ``/a23z/3` o `/x23zzz/3` no lo son.
 

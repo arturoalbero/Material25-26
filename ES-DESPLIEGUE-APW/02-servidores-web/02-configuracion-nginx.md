@@ -62,9 +62,9 @@ EXPOSE 8080
 
 Y usamos `docker build -t mi-nginx:1 .` para construir la imagen. Después, hacemos el docker run y en la consola podremos ver si todo va bien cuando intentemos acceder al contenido.  
 
-> **Actividad**: Prueba a exponer el puerto 6060 y a añadirle un index.html personalizado usando volumes.
+> **Actividad 1**: Prueba a exponer el puerto 6060 y a añadirle un index.html personalizado usando volumes.
 
-> **Actividad**: Crea una carpeta donde tengas un archivo dockerfile con la configuración de la imagen y crea un docker-compose.yml para especificar tanto el cambio del archivo de configuración como el bindeo del contenido estático.
+> **Actividad 2**: Crea una carpeta donde tengas un archivo dockerfile con la configuración de la imagen y crea un docker-compose.yml para especificar tanto el cambio del archivo de configuración como el bindeo del contenido estático.
 
 > **NOTA** Cada vez que cambias la configuración en NGINX, para que se haga efectiva, hay que recargar el servidor. Si lo usas en tu ordenador, debes usar el comando `nginx -s reload`. En Docker tienes dos opciones:
 > - Apagar y encender el contenedor de forma manual
@@ -206,4 +206,4 @@ En Docker, pwd es muy útil cuando haces bind mounts o volúmenes, porque Docker
 
 A partir de ahora, usa las rutas relativas para pruebas rápidas, pero emplea `$(pwd)` en entornos reales y automatizados, como Docker Compose.
 
-> **ACTIVIDAD:** Crea un entorno de trabajo para gestionar un servidor web nginx a través de Docker de la forma vista hasta ahora, con los volúmenes bindeados para trabajar cómodamente y registra los pasos en capturas de pantalla. Usa $(pwd).
+> **ACTIVIDAD 3:** Crea un entorno de trabajo para gestionar un servidor web nginx a través de Docker de la forma vista hasta ahora, con los volúmenes bindeados para trabajar cómodamente y registra los pasos en capturas de pantalla. Usa $(pwd).

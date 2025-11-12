@@ -1,0 +1,29 @@
+criterion, level_description, score
+
+"PORTADA", "NO", 0
+"PORTADA", "SÍ", 0.25
+
+"ÍNDICE", "NO", 0
+"ÍNDICE", "SÍ", 0.25
+
+"CALIDAD DE LA REDACCIÓN", "MAL", 0
+"CALIDAD DE LA REDACCIÓN", "REGULAR", 0.25
+"CALIDAD DE LA REDACCIÓN", "PERFECTO", 0.5
+
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "MAL", 0
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "FLOJO", 1
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "REGULAR", 2
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "BIEN", 3
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "PERFECTO", 4
+
+"ACTIVIDAD 1 - Usos del bloque location", "MAL", 0
+"ACTIVIDAD 1 - Usos del bloque location", "FLOJO", 0.75
+"ACTIVIDAD 1 - Usos del bloque location", "REGULAR", 1.25
+"ACTIVIDAD 1 - Usos del bloque location", "BIEN", 2
+"ACTIVIDAD 1 - Usos del bloque location", "PERFECTO", 2.5
+
+"ACTIVIDAD 2 - Redirect y Rewrite", "MAL", 0
+"ACTIVIDAD 2 - Redirect y Rewrite", "FLOJO", 0.75
+"ACTIVIDAD 2 - Redirect y Rewrite", "REGULAR", 1.25
+"ACTIVIDAD 2 - Redirect y Rewrite", "BIEN", 2
+"ACTIVIDAD 2 - Redirect y Rewrite", "PERFECTO", 2.5

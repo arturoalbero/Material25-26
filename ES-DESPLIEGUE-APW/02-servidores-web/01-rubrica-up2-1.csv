@@ -1,0 +1,47 @@
+criterion, level_description, score
+
+"PORTADA", "NO", 0
+"PORTADA", "SÍ", 0.25
+
+"ÍNDICE", "NO", 0
+"ÍNDICE", "SÍ", 0.25
+
+"CALIDAD DE LA REDACCIÓN", "MAL", 0
+"CALIDAD DE LA REDACCIÓN", "REGULAR", 0.25
+"CALIDAD DE LA REDACCIÓN", "PERFECTO", 0.5
+
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "MAL", 0
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "FLOJO", 1
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "REGULAR", 2
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "BIEN", 3
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "PERFECTO", 4
+
+"ACTIVIDAD 1 - Contenedor con bindmount", "MAL", 0
+"ACTIVIDAD 1 - Contenedor con bindmount", "FLOJO", 0.25
+"ACTIVIDAD 1 - Contenedor con bindmount", "REGULAR", 0.5
+"ACTIVIDAD 1 - Contenedor con bindmount", "BIEN", 0.75
+"ACTIVIDAD 1 - Contenedor con bindmount", "PERFECTO", 1
+
+"ACTIVIDAD 2 - Docker-compose", "MAL", 0
+"ACTIVIDAD 2 - Docker-compose", "FLOJO", 0.25
+"ACTIVIDAD 2 - Docker-compose", "REGULAR", 0.5
+"ACTIVIDAD 2 - Docker-compose", "BIEN", 0.75
+"ACTIVIDAD 2 - Docker-compose", "PERFECTO", 1
+
+"ACTIVIDAD 3 - Búsqueda en la doc ofi", "MAL", 0
+"ACTIVIDAD 3 - Búsqueda en la doc ofi", "FLOJO", 0.25
+"ACTIVIDAD 3 - Búsqueda en la doc ofi", "REGULAR", 0.5
+"ACTIVIDAD 3 - Búsqueda en la doc ofi", "BIEN", 0.75
+"ACTIVIDAD 3 - Búsqueda en la doc ofi", "PERFECTO", 1
+
+"ACTIVIDAD 4 - Preguntas", "MAL", 0
+"ACTIVIDAD 4 - Preguntas", "FLOJO", 0.25
+"ACTIVIDAD 4 - Preguntas", "REGULAR", 0.5
+"ACTIVIDAD 4 - Preguntas", "BIEN", 0.75
+"ACTIVIDAD 4 - Preguntas", "PERFECTO", 1
+
+"DOCUMENTACIÓN DE INCIDENCIAS", "MAL", 0
+"DOCUMENTACIÓN DE INCIDENCIAS", "FLOJO", 0.25
+"DOCUMENTACIÓN DE INCIDENCIAS", "REGULAR", 0.5
+"DOCUMENTACIÓN DE INCIDENCIAS", "BIEN", 0.75
+"DOCUMENTACIÓN DE INCIDENCIAS", "PERFECTO", 1

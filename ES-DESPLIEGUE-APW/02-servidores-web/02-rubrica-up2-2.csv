@@ -1,0 +1,35 @@
+criterion, level_description, score
+
+"PORTADA", "NO", 0
+"PORTADA", "SÍ", 0.25
+
+"ÍNDICE", "NO", 0
+"ÍNDICE", "SÍ", 0.25
+
+"CALIDAD DE LA REDACCIÓN", "MAL", 0
+"CALIDAD DE LA REDACCIÓN", "REGULAR", 0.25
+"CALIDAD DE LA REDACCIÓN", "PERFECTO", 0.5
+
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "MAL", 0
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "FLOJO", 1
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "REGULAR", 2
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "BIEN", 3
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "PERFECTO", 4
+
+"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "MAL", 0
+"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "FLOJO", 0.25
+"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "REGULAR", 0.5
+"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "BIEN", 0.75
+"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "PERFECTO", 1
+
+"ACTIVIDAD 2 - Docker-compose", "MAL", 0
+"ACTIVIDAD 2 - Docker-compose", "FLOJO", 0.25
+"ACTIVIDAD 2 - Docker-compose", "REGULAR", 0.5
+"ACTIVIDAD 2 - Docker-compose", "BIEN", 0.75
+"ACTIVIDAD 2 - Docker-compose", "PERFECTO", 1
+
+"ACTIVIDAD 3 - Entorno completo con pwd", "MAL", 0
+"ACTIVIDAD 3 - Entorno completo con pwd", "FLOJO", 0.5
+"ACTIVIDAD 3 - Entorno completo con pwd", "REGULAR", 1
+"ACTIVIDAD 3 - Entorno completo con pwd", "BIEN", 1.5
+"ACTIVIDAD 3 - Entorno completo con pwd", "PERFECTO", 2

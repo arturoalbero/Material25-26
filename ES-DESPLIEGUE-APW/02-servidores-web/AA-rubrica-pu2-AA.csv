@@ -1,0 +1,17 @@
+criterion, level_description, score
+
+"PORTADA", "NO", 0
+"PORTADA", "SÍ", 0.25
+
+"ÍNDICE", "NO", 0
+"ÍNDICE", "SÍ", 0.25
+
+"CALIDAD DE LA REDACCIÓN", "MAL", 0
+"CALIDAD DE LA REDACCIÓN", "REGULAR", 0.25
+"CALIDAD DE LA REDACCIÓN", "PERFECTO", 0.5
+
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "MAL", 0
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "FLOJO", 1
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "REGULAR", 2
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "BIEN", 3
+"SEGUIMIENTO DEL DOCUMENTO - Hacer los ejemplos y probarlos", "PERFECTO", 4

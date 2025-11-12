@@ -7,9 +7,11 @@ criterion, level_description, score
 
 "Explicación", "No hay", 0
 "Explicación", "Poco correcta", 0.25
-"Explicación", "Suficiente", 0.5
-"Explicación", "Aceptable", 0.75
-"Explicación", "Perfecta", 1
+"Explicación", "Correcta", 0.5
+
+"Puntualidad de las entregas", "No hay", 0
+"Puntualidad de las entregas", "Al menos la mitad a tiempo", 0.25
+"Puntualidad de las entregas", "Todas a tiempo", 0.5
 
 "Estructura de la app", "Sin estructura", 0
 "Estructura de la app", "Poca estructura", 0.25

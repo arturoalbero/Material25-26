@@ -44,7 +44,7 @@ alumno123:$apr1$eECVVovP$lT2DuowtRBqwoZsoPKDgy/
 Para hacer pruebas con contraseñas, es una buena idea **usar el navegador en modo privado o oculto**, porque si no el inicio de sesión se quedará almacenado.
 
 
-> **ACTIVIDAD**
+> **ACTIVIDAD 1**
 > Despliega un servidor con un bloque `location restringido/ {}` que requiera autenticación.
 > Comprueba qué pasa con un log-in correcto y con un log-in incorrecto.
 
@@ -56,7 +56,7 @@ Si necesitamos agregar un nuevo usuario al mismo archivo `.htpasswd`, podemos ej
 docker run --rm httpd:alpine htpasswd -nb usuario2 clave2 >> .htpasswd
 ```
 
-> **ACTIVIDAD**
+> **ACTIVIDAD 2**
 > Añade más usuarios autenticados y prueba los diferentes accesos.
 
 <details>
@@ -74,7 +74,7 @@ docker run --rm httpd:alpine htpasswd -nb usuario2 clave2 >> .htpasswd
 
 Para editar la clave, debemos borrar primero el usuario y después añadirlo con una clave nueva.
 
-> **ACTIVIDAD:** Restringe una de las location de tu servidor web para que solo se pueda acceder con un usuario registrado.
+> **ACTIVIDAD 3:** Restringe una de las location de tu servidor web para que solo se pueda acceder con un usuario registrado.
 > - Registra a 3 usuarios diferentes
 > - Intenta acceder con cada uno de ellos
 > - Intenta acceder con un usuario no registrado
