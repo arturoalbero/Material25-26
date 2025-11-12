@@ -1,7 +1,7 @@
 criterion, level_description, score
 
 "DOS NIVELES (0.25)", "NO", 0
-"DOS NIVELES", "SÍ", 0.25
+"DOS NIVELES (0.25)", "SÍ", 0.25
 
 "TRES NIVELES (0.5)", "MAL", 0
 "TRES NIVELES (0.5)", "REGULAR", 0.25
