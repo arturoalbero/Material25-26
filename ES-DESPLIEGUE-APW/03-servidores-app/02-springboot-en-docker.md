@@ -48,6 +48,8 @@ java -jar target/app.jar
 :: Spring Boot ::        (v2.2.4.RELEASE)
 ```
 
+>**NOTA**: En windows, es posible que tengas que usar el archivo mvnw que instala Spring Boot en lugar de `mvn`, que puede que no lo tengas instalado. Para ello, sitúate en la carpeta del proyecto y ejecuta `./mvnw clean package`. El resto debería funcionar igual.
+
 La aplicación debe arrancar correctamente, sin mostrar ningún aviso de error quedándose a la escucha en el puerto Http indicado en la configuración, normalmente el 8080. De tal manera que al abrir el navegador en la url http://localhost:8080 se debe mostrar contenido de nuestro proyecto.
 
 Llegados a este punto podemos asegurar que la aplicación funcionará desde dentro de un contenedor gestionado por Docker.
