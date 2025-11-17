@@ -1,6 +1,6 @@
 # Desplegar una App Spring Boot con Docker
 
-*Información extraída de [este enlace](https://www.arteco-consulting.com/articulos/tutorial-springboot/).*
+*Información extraída de [este enlace](https://www.arteco-consulting.com/articulos/tutorial-springboot/).* Esto significa que el texto está extraído de esa web y escrito por Ramón Arnau (adaptado por mí). Debes tener una aplicación Spring Boot preparada para empaquetar.
 
 ## Despliegue de una aplicación Spring Boot en Docker
 
@@ -8,7 +8,7 @@ Desplegar un programa con forma de Html dinámico realizado con Spring Boot y Ja
 
 ### Preparar la aplicación de Spring Boot
 
-El primer paso es asegurarnos de que la aplicación funciona correctamente al estar empaquetada en un único archivo jar. Esto es fácilmente lograble si hemos usado Maven como herramienta de construcción de proyectos Java asegurándonos de que hemos incluido el plugin siguiente en el fichero pom.xml
+El primer paso es asegurarnos de que la aplicación funciona correctamente al estar empaquetada en un único archivo jar. Esto es fácilmente lograble si hemos usado Maven como herramienta de construcción de proyectos Java asegurándonos de que hemos incluido el plugin siguiente en el fichero `pom.xml`.
 
 ```html
 <project attr="...">
@@ -23,7 +23,7 @@ El primer paso es asegurarnos de que la aplicación funciona correctamente al es
    </build>
 </project>
 ```
-Indicar la versión del plugin es opcional si nuestro proyecto tiene como `parent` el proyecto paraguas de Spring Boot denominado ``spring-boot-starter-parent. Si no lo tienes puede incluir el siguiente fragmento, normalmente al principio del fichero pom.xml, después de project:
+Indicar la versión del plugin es opcional si nuestro proyecto tiene como `parent` el proyecto paraguas de Spring Boot denominado `spring-boot-starter-parent`. Si no lo tienes puede incluir el siguiente fragmento, normalmente al principio del fichero `pom.xml`, después de project:
 
 ```html
 <parent>
@@ -54,7 +54,7 @@ Llegados a este punto podemos asegurar que la aplicación funcionará desde dent
 
 ### Construir la imagen de Spring Boot para Docker
 
-Una vez comprobado que la aplicación en un fat-jar obtenido a través del proceso de empaquetado de Maven, el siguiente paso es crear una imagen de la aplicación para que pueda ser usada en un contenedor virtualizado. Para ello se debe crear el fichero Dockerfile con los pasos necesarios para realizar el aprovisionamiento de la imagen. Afortunadamente, como usamos un fat-jar que contiene todas las dependencias requeridas dentro de él el aprovisionamiento se reduce a simplemente instalar la máquina virtual de Java.
+Una vez comprobado que la aplicación en un **fat-jar** *(un jar `java archive` que contiene tanto el código compilado como las dependencias)* obtenido a través del proceso de empaquetado de Maven, el siguiente paso es crear una imagen de la aplicación para que pueda ser usada en un contenedor virtualizado. Para ello se debe crear el fichero **Dockerfile** con los pasos necesarios para realizar el aprovisionamiento de la imagen. Afortunadamente, como usamos un fat-jar que contiene todas las dependencias requeridas dentro de él el aprovisionamiento se reduce a simplemente instalar la máquina virtual de Java.
 
 De nuevo, el proceso es muy simple ya que partiremos de una imagen base que ya contiene el JDK que necesitamos. Se mantienen actualizadas las imágenes base con todas las versiones activas del JDK.
 
@@ -110,7 +110,7 @@ Ya tenemos todo lo necesario para arrancar nuestro contenedor que ejecute la ima
 
 Aunque las imágenes son estáticas, en el momento de arrancar un contenedor podemos hacerle llegar parámetros en forma de variables de entorno o propiedades del sistema Java, usando -Dargument=value. Muy útil para indicar el profile de Spring que queremos que se active en el contenedor, por ejemplo para que use una u otra conexión con base de datos.
 
-Aunque hay muchas formas, en nuestro caso usaremos una variable de entorno para indicar el perfil activo en la aplicación. Esto debe hacerse indicando el nombre de perfil a usar en la variable de entorno SPRING_PROFILES_ACTIVE tal y como indica la documentación oficial de Spring Boot.
+Aunque hay muchas formas, en nuestro caso usaremos una variable de entorno para indicar el perfil activo en la aplicación. Esto debe hacerse indicando el nombre de perfil a usar en la variable de entorno `SPRING_PROFILES_ACTIVE` tal y como indica la documentación oficial de Spring Boot.
 
 También se debe indicar qué puerto del contenedor debe estar abierto, para que las peticiones http lleguen al proyecto. Por tanto, se debe añadir un argumento que configure que el tráfico que llegue en un puerto local, se redirija al puerto 8080 (por defecto de Spring) del contenedor.
 
@@ -121,6 +121,8 @@ docker run -p 8080:8080 --env SPRING_PROFILES_ACTIVE=docker \
 my_docker_hub_username/my_image_name:my_image_version
 ```
 
-Y listos! Esta sentencia deja ejecutando un contenedor con nuestro nuevo proyecto del millón de dólares ejecutándose en local. Esta misma configuración podrá servirte para desplegar la aplicaciónen un entorno abierto en Internet, utilizando la plataforma de orquestación de contenedores Kubernetes de Google, Amazon o Microsoft.
+¡Y listos! Esta sentencia deja ejecutando un contenedor con nuestro nuevo proyecto del millón de dólares ejecutándose en local. Esta misma configuración podrá servirte para desplegar la aplicaciónen un entorno abierto en Internet, utilizando la plataforma de orquestación de contenedores Kubernetes de Google, Amazon o Microsoft.
 
 > **ACTIVIDAD:** *Containeriza* una de las aplicaciones de Springboot que hayas hecho en Desarrollo Web en Entorno servidor. Si no tienes ninguna, puedes descargar el ejemplo añadido.
+
+> **ACTIVIDAD:** Despliega la aplicación de Springboot de entorno servidor (tuya o de un compañero) en internet usando Render o Koyeb.

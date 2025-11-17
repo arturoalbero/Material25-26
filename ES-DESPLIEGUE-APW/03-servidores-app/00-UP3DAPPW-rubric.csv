@@ -1,0 +1,33 @@
+criterion, level_description, score
+"Portada", "No hay", 0
+"Portada", "Correcto", 0.25
+
+"Índice", "No hay", 0
+"Índice", "Correcto", 0.25
+
+"Explicación", "No hay", 0
+"Explicación", "Poco correcta", 0.25
+"Explicación", "Correcta", 0.5
+
+"Puntualidad de las entregas", "No hay", 0
+"Puntualidad de las entregas", "Al menos la mitad a tiempo", 0.25
+"Puntualidad de las entregas", "Todas a tiempo", 0.5
+
+"Documentación de incidencias y recursos", "No hay", 0
+"Documentación de incidencias y recursos", "A medias", 0.25
+"Documentación de incidencias y recursos", "Completa", 0.5
+
+
+
+"Despliegue de la app NGINX en Koyeb", "PERFECTO", 1
+
+"Despliegue de la app NGINX en Render"
+
+"Preparación de la aplicación Spring Boot"
+
+"Preparación de la imagen docker para Spring Boot"
+
+"Lanzamiento del contenedor docker con la app Spring"
+
+
+
