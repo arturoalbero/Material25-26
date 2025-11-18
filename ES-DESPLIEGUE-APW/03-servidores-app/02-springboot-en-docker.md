@@ -76,6 +76,8 @@ Habiendo escrito el fichero de aprovisionamiento es hora de realizar la construc
 docker build -t my_docker_hub_username/my_image_name:my_image_version .
 ```
 
+>**NOTA:** También puede ser `docker build -t miapp-embebida:1 .` o cualquier nombre que quieras.
+
 Importante el punto (.) al final, este indica el directorio actual, en donde está el fichero Dockerfile. El argumento -t user/image:tag permite nombrar la imagen. Esta puede ser distribuida públicamente mediante Docker Hub, o de forma privada a través de algún Registry como Harbor privado como los disponibles en Amazon Web Services o Google Compute Engine.
 
 El comando de construcción generará una salida similar a la siguiente:
