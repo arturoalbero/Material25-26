@@ -109,7 +109,7 @@ public class MyRunner implements CommandLineRunner{
 
 Returning to forms, sometimes we want to attach files to send to the server. This is done using the `multipart` property of the HTTP protocol. A `multipart` message contains different sections or parts, each of which may have different content types. Thus, a response may include plain text, text files, images, etc. Each part is delimited by a line containing the `Content-type` attribute, specifying the content type of that part. The steps are:
 
-1. Add the attribute `enctype="multipart/form-data"` to the `<form>` tag used for file upload.
+1. Add the attribute `enctype="multipart/form-data"` to the `<form>` tag used for file upload. You can read more about `enctype` in [this link](https://aulab.es/articulos-guias-avanzadas/15/la-etiqueta-del-formulario).
 2. The form must include a file upload field:
    `<label>Attach file:<input type="file" name="file"></label>`.
 3. In the controller, add a new parameter to the method processing the form:
