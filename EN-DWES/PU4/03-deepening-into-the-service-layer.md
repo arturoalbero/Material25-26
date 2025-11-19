@@ -147,7 +147,7 @@ public class FileStorageService{
 
         if(filename.contains("..")) throw new RuntimeException("Invalid file");
         String extension = StringUtils.getFilenameExtension(filename);
-        String storedFilename = System.currentTimeMillis() + "." + extension;
+        String storedFilename = System.currentTimeMillis() + "." + extension; //en principio, cada segundo de la vida es único, como únicos deben ser los nombres de ficheros...
 
         try(InputStream inputStream = file.getInputStream()){
             Files.copy(inputStream, this.rootLocation.resolve(storedFilename), StandardCopyOption.REPLACE_EXISTING);
@@ -192,6 +192,9 @@ public ResponseEntity<Resource> serveFile(@PathVariable String filename){
     return ResponseEntity.ok().body(file);
 }
 ```
+> **DO YOU KNOW...** The pattern filename:.+ in Spring is used within a `@RequestMapping` or `@GetMapping` annotation to capture a path variable named filename that can include any character, including dots, allowing for file extensions to be part of the path.
+>
+> This is particularly useful for serving files with specific names and extensions, such as result_20200225.csv or archivo demo.pdf.
 
 We can limit the size of files allowed to be uploaded by adding the following properties to *application.properties*:
 
@@ -206,7 +209,7 @@ If the file size exceeds the limit, a `java.lang.IllegalStateException` will occ
 > Extend the previous activity to allow images to be stored on the server. Modify the necessary classes so that everything works correctly.
 
 > **ACTIVITY 5:**
-> This section introduces several elements we have not covered yet, but they are simple to use. Look them up in the official documentation of Java and Spring Framework. Use official documentation without AI assistance if possible (you may use a translator).
+> This section introduces several elements we have not covered yet, but they are simple to use. Look them up in the official documentation of [Java](https://docs.oracle.com/en/java/) and [Spring Framework](https://docs.spring.io/spring-framework/docs/current/javadoc-api/index.html). Use official documentation without AI assistance if possible (you may use a translator).
 >
 > * Classes `Path` and `Files` from `java.nio.file`
 > * Classes from `springframework`:
@@ -223,7 +226,7 @@ It is very common for applications to need to send emails, both to external user
 
 One option would be to install a mail server, but this is quite complex; instead, a simpler approach is to use Gmail as an email forwarder—meaning that instead of sending the email ourselves, we tell Gmail to send it for us.
 
-The only requirement is to have a Google account with two-step verification enabled and an application password. More information is available in Google's help documentation.
+The only requirement is to have a Google account with two-step verification enabled and an application password. [More information is available in Google's help documentation](https://support.google.com/accounts/answer/185833?hl=es).
 
 The process is very simple: we call a function, passing the recipient, subject, message body, and optionally attachments. Usually, we create a service class that includes this function, which can then be invoked from anywhere in the application.
 
@@ -266,7 +269,7 @@ public class EmailService{
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setTo(destination);
-            helper.setText(textMessage, true);
+            helper.setText(textMessage, true); //The second parameter allows you to use html in the message.
             helper.setSubject(subject);
             sender.send(message);
             return true;
