@@ -63,50 +63,18 @@ De nuevo, el proceso es muy simple ya que partiremos de una imagen base que ya c
 Así, el fichero Dockerfile queda tan simple como:
 
 ```dockerfile
-FROM openjdk:8-alpine
+FROM openjdk:26-ea-trixie
 ADD target/my-fat.jar /usr/share/app.jar
-ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/app.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/share/app.jar"]
 ```
 
-La primera línea indica que queremos usar la versión JDK-8 sobre un sistema mínimo como Alpine Linux para **asegurarnos de que el tamaño del archivo generado es lo más pequeño posible**. La segunda línea añade nuestra aplicación al empaquetado resultante, y por último se indica el comando de arranque que debe utilizar el contenedor una vez inicializado.
+La primera línea indica la imagen de java que vamos a usar. La segunda línea añade nuestra aplicación al empaquetado resultante, y por último se indica el comando de arranque que debe utilizar el contenedor una vez inicializado. En este caso, como `java` está incluido en el PATH de la imagen base, no necesitamos localizarlo en el contenedor.
 
 Habiendo escrito el fichero de aprovisionamiento es hora de realizar la construcción de la imagen:
 
 ```bash
-docker build -t my_docker_hub_username/my_image_name:my_image_version .
+docker build -t appspring:latest .
 ```
-
->**NOTA:** También puede ser `docker build -t miapp-embebida:1 .` o cualquier nombre que quieras.
-
-Importante el punto (.) al final, este indica el directorio actual, en donde está el fichero Dockerfile. El argumento -t user/image:tag permite nombrar la imagen. Esta puede ser distribuida públicamente mediante Docker Hub, o de forma privada a través de algún Registry como Harbor privado como los disponibles en Amazon Web Services o Google Compute Engine.
-
-El comando de construcción generará una salida similar a la siguiente:
-
-```bash
-Sending build context to Docker daemon  86.11MB
-Step 1/4 : FROM openjdk:8-alpine
-8-alpine: Pulling from library/openjdk
-e7c96db7181b: Pull complete
-f910a506b6cb: Pull complete
-c2274a1a0e27: Pull complete
-Digest: sha256:94792824df2df33402f201713f932b58cb9de94a0cd524164a0f2283343547b3
-Status: Downloaded newer image for openjdk:8-alpine
----> a3562aa0b991
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.9/main/x86_64/APKINDEX.tar.gz
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.9/community/x86_64/APKINDEX.tar.gz
-Executing busybox-1.29.3-r10.trigger
-OK: 123 MiB in 62 packages
-Removing intermediate container 8c14d7443332
----> 0c3f73a47bff
-Step 3/4 : ENTRYPOINT \["/usr/bin/java", "-jar", "/usr/share/app.jar"\]
----> Running in 0392060d1087
-Removing intermediate container 0392060d1087
----> 23655b67c59f
-Step 4/4 : ADD target/my-fat.jar /usr/share/app.jar
----> df132592b5f8
-Successfully built df132592b5f8
-```
-La nueva imagen está disponible localmente y puede confirmarse con docker images
 
 ### Arrancar contenedor con Spring Boot
 
@@ -121,12 +89,126 @@ También se debe indicar qué puerto del contenedor debe estar abierto, para que
 Dicho esto, ya sólo queda lanzar un contenedor usando la imagen anterior e indicando el perfil a activar:
 
 ```bash
-docker run -p 8080:8080 --env SPRING_PROFILES_ACTIVE=docker \
-my_docker_hub_username/my_image_name:my_image_version
+docker run --name appspring -p 8080:8080 --env SPRING_PROFILES_ACTIVE=docker appspring:latest
 ```
 
 ¡Y listos! Esta sentencia deja ejecutando un contenedor con nuestro nuevo proyecto del millón de dólares ejecutándose en local. Esta misma configuración podrá servirte para desplegar la aplicaciónen un entorno abierto en Internet, utilizando la plataforma de orquestación de contenedores Kubernetes de Google, Amazon o Microsoft.
 
-> **ACTIVIDAD:** *Containeriza* una de las aplicaciones de Springboot que hayas hecho en Desarrollo Web en Entorno servidor. Si no tienes ninguna, puedes descargar el ejemplo añadido.
+> **ACTIVIDAD 1:** *Containeriza* una de las aplicaciones de Springboot que hayas hecho en Desarrollo Web en Entorno servidor. Si no tienes ninguna, puedes descargar el ejemplo añadido.
 
-> **ACTIVIDAD:** Despliega la aplicación de Springboot de entorno servidor (tuya o de un compañero) en internet usando Render o Koyeb.
+> **ACTIVIDAD 2:** Despliega la aplicación de Springboot de entorno servidor (tuya o de un compañero) en internet usando Render o Koyeb.
+
+-----
+
+***Esta parte ya no pertence al tutorial***
+
+## Colaboración de NGINX y SPRINGBOOT
+
+Una vez tenemos nuestra aplicación Spring Boot contenedorizada y funcionando correctamente, un paso muy habitual en despliegues profesionales es colocar un **servidor Nginx delante de la aplicación**.
+
+Nginx actuará como **proxy inverso**, recibiendo todas las peticiones HTTP externas y redirigiéndolas al contenedor donde se ejecuta Spring Boot. Esto nos permite servir contenido estático de manera más eficiente (imágenes, CSS, JS), proteger la aplicación interna, añadir caché o compresión y facilitar la migración futura a HTTPS.
+
+Para que Nginx conozca a qué servidor debe reenviar las peticiones necesitamos preparar un fichero de configuración `nginx.conf`:
+
+```
+events {}
+
+http {
+    upstream spring_api {
+        server appspring:8080;  # nombre del contenedor de Spring Boot
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://spring_api;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+}
+```
+
+Este archivo indica que todas las peticiones entrantes se redirijan al contenedor llamado `appspring`, en su puerto interno 8080. Usamos nginx como **proxy**, es decir, **intermediario entre el cliente y el servidor de aplicaciones**. Es un proxy inverso porque se haya en el lado de los servidores (y no en el del cliente, como los proxy convencionales).
+
+* La directiva `upstream` declara un grupo de servidores backend al que nginx puede hacer proxy. Aquí el grupo se llama `spring_api`.
+* La directiva `server appspring:8080` es un nombre resoluble por el DNS interno de la plataforma del despliegue. De esta forma, NGINX enviará peticiones a `http://appspring:8080`. Cambia el nombre o el puerto según necesites. Se pueden añadir más de uno, si es necesario, y nginx irá probándolos uno a uno siguiendo un algoritmo de round robin.
+* La directiva `proxy_pass` sirve para que nginx reemplace la parte coincidente del location (en este caso `/`) por la URI definida en el proxy.
+* La directiva `proxy_set_header` sirve para cambiar partes de la cabecera del host. Puedes consultar información detallada en la [documentación oficial](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_set_header), pero en este caso concreto esto es lo que se utiliza:
+    * La directiva `proxy_set_header Host` pasa al backend la cabecera Host con el valor solicitado por el cliente, almacenado en la variable $host.
+    * La directiva `proxy_set_header X-REAL-IP` pone la IP del cliente real, la que llega a NGINX, para que el backend sepa quién llamó. En este caso, el backend verá la IP del contenedor NGINX.
+    * La directiva `proxy_set_header X-Forwarded-For` añade la IP del cliente.
+
+El siguiente paso es crear una imagen propia de Nginx que use nuestro archivo `nginx.conf`:
+
+```dockerfile
+FROM nginx:latest
+COPY nginx.conf /etc/nginx/nginx.conf
+```
+
+Y construir la imagen como ya sabemos:
+
+```bash
+docker build -t nginxspring:latest .
+```
+
+Para que Nginx pueda comunicarse con Spring Boot, ambos contenedores deben estar en la misma red. Para ello, creamos una red compartida.
+
+```bash
+docker network create springnet
+```
+
+Finalmente, ejecutamos ambos contenedores dentro de la red que acabamos de crear.
+
+```bash
+docker run --name appspring --network springnet -p 8080:8080 --env SPRING_PROFILES_ACTIVE=docker appspring:latest
+```
+
+```bash
+docker run --name nginxproxy --network springnet -p 80:80 nginxspring:latest
+```
+
+De esta forma, Nginx escucha en el puerto **80** y le pasa las peticiones al contenedor `appspring` en el puerto 8080. Al acceder a **[http://localhost](http://localhost)** estarás viendo tu app Spring Boot, pero servida por medio de Nginx.
+
+> **ACTIVIDAD 3:** Añade un contenedor NGINX para que trabaje en colaboración con tu aplicación *containerizada* en la actividad 1.
+
+
+## Colaboración de NGINX y SPRINGBOOT a través de Docker Compose
+
+Podemos concentrar todo el proceso anterior en un único archivo `docker-compose.yml`:
+
+```yaml
+services:
+  appspring:
+    image: appspring:latest
+    container_name: appspring
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+    expose:
+      - "8080"
+
+  nginxproxy:
+    image: mynginx:latest
+    container_name: nginxproxy
+    ports:
+      - "80:80"
+    depends_on:
+      - appspring
+```
+
+> **ACTIVIDAD 4:** Crea el docker-compose.yml que refleje lo conseguido en la actividad 3.
+
+> **ACTIVIDAD 5:** En lugar de usar directamente el nombre de los contenedores, crea un docker compose que parta de los archivos que tengas en local. Distribúyelos de la siguiente manera:
+> -----proyecto/
+>      |--springapp/
+>         |---my-fat.jar
+>         |---Dockerfile
+>      |--nginxspring/
+>         |---nginx.conf
+>         |---Dockerfile
+>      |--docker-compose.yml 
+
+
+
