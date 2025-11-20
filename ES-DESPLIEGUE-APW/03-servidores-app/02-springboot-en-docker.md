@@ -201,14 +201,16 @@ services:
 > **ACTIVIDAD 4:** Crea el docker-compose.yml que refleje lo conseguido en la actividad 3.
 
 > **ACTIVIDAD 5:** En lugar de usar directamente el nombre de los contenedores, crea un docker compose que parta de los archivos que tengas en local. Distribúyelos de la siguiente manera:
-> -----proyecto/
->      |--springapp/
->         |---my-fat.jar
->         |---Dockerfile
->      |--nginxspring/
->         |---nginx.conf
->         |---Dockerfile
->      |--docker-compose.yml 
+>```
+>-----proyecto/
+>     |--springapp/
+>        |---my-fat.jar
+>        |---Dockerfile
+>     |--nginxspring/
+>        |---nginx.conf
+>        |---Dockerfile
+>     |--docker-compose.yml
+>```
 
 
 
