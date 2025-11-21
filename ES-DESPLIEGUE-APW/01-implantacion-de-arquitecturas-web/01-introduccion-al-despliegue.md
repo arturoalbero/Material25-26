@@ -1,5 +1,7 @@
 # Arquitecturas web
 
+https://codefinity.com/es/blog/How-to-use-Spring-with-the-IntelliJ-Community-Edition
+
 > **Criterios de evaluación:** 1a, 1b, 1h
 
 ## 1. Despliegue de aplicaciones web

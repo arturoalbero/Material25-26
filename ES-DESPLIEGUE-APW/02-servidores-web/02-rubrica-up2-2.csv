@@ -19,14 +19,14 @@ criterion, level_description, score
 "ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "MAL", 0
 "ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "FLOJO", 0.25
 "ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "REGULAR", 0.5
-"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "BIEN", 0.75
-"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "PERFECTO", 1
+"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "BIEN", 1
+"ACTIVIDAD 1 - Contenedor con bindmount - puerto 6060", "PERFECTO", 1.5
 
 "ACTIVIDAD 2 - Docker-compose", "MAL", 0
 "ACTIVIDAD 2 - Docker-compose", "FLOJO", 0.25
 "ACTIVIDAD 2 - Docker-compose", "REGULAR", 0.5
-"ACTIVIDAD 2 - Docker-compose", "BIEN", 0.75
-"ACTIVIDAD 2 - Docker-compose", "PERFECTO", 1
+"ACTIVIDAD 2 - Docker-compose", "BIEN", 1
+"ACTIVIDAD 2 - Docker-compose", "PERFECTO", 1.5
 
 "ACTIVIDAD 3 - Entorno completo con pwd", "MAL", 0
 "ACTIVIDAD 3 - Entorno completo con pwd", "FLOJO", 0.5

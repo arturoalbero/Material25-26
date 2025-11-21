@@ -19,14 +19,14 @@ criterion, level_description, score
 "ACTIVIDAD 1 - autenticación", "MAL", 0
 "ACTIVIDAD 1 - autenticación", "FLOJO", 0.25
 "ACTIVIDAD 1 - autenticación", "REGULAR", 0.5
-"ACTIVIDAD 1 - autenticación", "BIEN", 0.75
-"ACTIVIDAD 1 - autenticación", "PERFECTO", 1
+"ACTIVIDAD 1 - autenticación", "BIEN", 1
+"ACTIVIDAD 1 - autenticación", "PERFECTO", 1.5
 
 "ACTIVIDAD 2 - autenticación múltiple", "MAL", 0
 "ACTIVIDAD 2 - autenticación múltiple", "FLOJO", 0.25
 "ACTIVIDAD 2 - autenticación múltiple", "REGULAR", 0.5
-"ACTIVIDAD 2 - autenticación múltiple", "BIEN", 0.75
-"ACTIVIDAD 2 - autenticación múltiple", "PERFECTO", 1
+"ACTIVIDAD 2 - autenticación múltiple", "BIEN", 1
+"ACTIVIDAD 2 - autenticación múltiple", "PERFECTO", 1.5
 
 "ACTIVIDAD 3 - Restricción", "MAL", 0
 "ACTIVIDAD 3 - Restricción", "FLOJO", 0.5

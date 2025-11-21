@@ -12,7 +12,7 @@ Un servidor de aplicaciones es un software que proporciona un entorno de ejecuci
 | **Interacción con el usuario** | Responde peticiones estáticas. | Interpreta peticiones, ejecuta lógica y genera respuestas dinámicas. |
 | **Ejemplos**  | NGINX, Apache HTTP Server, Caddy.  | Tomcat, WildFly, GlassFish.   |
 
-> **ACTIVIDAD** Enumera algunos servidores de aplicaciones para Java, .NET, PHP, Ruby o Python y describe cómo funcionan. Por ejemplo, habla del caso de Django o de Ruby On Rails.
+> **ACTIVIDAD 1** Enumera algunos servidores de aplicaciones para Java, .NET, PHP, Ruby o Python y describe cómo funcionan. Por ejemplo, habla del caso de Django o de Ruby On Rails.
 
 Es frecuente que los servidores web y los servidores de aplicaciones colaboren en el despliegue y funcionamiento de una aplicación web. Por ejemplo, si usamos NGINX de servidor web y Tomcat de servidor de aplicaciones, NGINX actúa como proxy inverso recibiendo las peticiones HTTP, Tomcat ejecuta la aplicación Java que genera la respuesta y NGINX entrega dicha respuesta al usuario.
 
@@ -20,7 +20,7 @@ El servidor de aplicaciones que usaremos en este apartado será Tomcat, concreta
 
 Sin embargo, antes de introducirnos al despliegue de aplicaciones web, vamos a ver alternativas para desplegar el trabajo de la unidad de programación anterior en la web.
 
-> **ACTIVIDAD** Prepara alguna de tus aplicaciones de Entorno Servidor, o crea una aplicación sencilla con Spring Boot.
+> **ACTIVIDAD 2** Prepara alguna de tus aplicaciones de Entorno Servidor, o crea una aplicación sencilla con Spring Boot.
 
 ## 2. Introducción al despliegue en red
 
@@ -28,7 +28,7 @@ El objetivo final del despliegue de una aplicación web es que sea accesible par
 
 ### 2.1 Despliegue en la plataforma Koyeb
 
-> **ACTIVIDAD**: Despliega la aplicación de la unidad de programación 2 en Koyeb, haciendo los cambios necesarios para que funcione. Sigue los pasos a continuación.
+> **ACTIVIDAD 3**: Despliega la aplicación de la unidad de programación 2 en Koyeb, haciendo los cambios necesarios para que funcione. Sigue los pasos a continuación.
 
 En este punto, vamos a trasladar todo lo que hemos hecho hasta ahora usando Docker a un servidor web real. Hay muchas opciones disponibles, pero vamos a emplear el servicio `koyeb`, que dispone de una opción gratuita. Lo primero que haremos será registrarnos en `koyeb` (podemos hacerlo con nuestra cuenta de github). Nada más comenzar, nos da acceso a un plan Pro, pero el que vamos a usar más adelante es el plan Free.
 
@@ -89,7 +89,7 @@ Esperamos mientras se termina de desplegar. Este proceso es relativamente lento,
 
 ### 2.2 Despliegue en la plataforma Render
 
-> **ACTIVIDAD** Despliega la misma aplicación que habías desplegado en Koyeb, usando el mismo repositorio y los mismos archivos, en Render.
+> **ACTIVIDAD 4** Despliega la misma aplicación que habías desplegado en Koyeb, usando el mismo repositorio y los mismos archivos, en Render.
 
 Pasados los 7 días de prueba, Koyeb nos pedirá que o bien nos mantengamos en el plan pro pagando una mensualidad o que bajemos al plan gratuito. En el plan gratuito es necesario introducir una tarjeta de crédito válida para confirmar la identidad, por lo que puede que no nos apetezca. Una alternativa que no requiere nada de esto es [Render](https://render.com/).
 
