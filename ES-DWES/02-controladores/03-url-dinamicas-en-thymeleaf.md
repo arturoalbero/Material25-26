@@ -129,7 +129,7 @@ Podemos añadir parámetros en *la parte consulta* de una URL con `@{}`, poniend
 ```html
 <a th:href="@{/product(id=3)}">
 ```
-Que una vex procesado quedaría como `<a href="/product?id=3">`. Si son varios parámetros, los separamos por comas `<a th:href="@{/product(id=3, size='big')}">` y se procesa para quedar `<a href="/product?id=3&size=big">`.
+Que una vez procesado quedaría como `<a href="/product?id=3">`. Si son varios parámetros, los separamos por comas `<a th:href="@{/product(id=3, size='big')}">` y se procesa para quedar `<a href="/product?id=3&size=big">`.
 
 > **NOTA:** De aquí podemos extrapolar que existen algunos caracteres reservados a la hora de construir URL,como pueden ser `/`, `&`, etc. Investiga cuales son para no incluirlos en las direcciones o parámetros que crees.
 
