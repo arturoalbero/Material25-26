@@ -86,6 +86,6 @@ For more information, consult **[this video](https://www.youtube.com/watch?v=yTo
 >   - An info log for the services, to check that what we want is being carried out.
 >   - A warning log if:
 >       - The added composer lived or lives for more than 100 years.
->       - If the piece added to a composer premiered after their date of birth.
+>       - If the piece added to a composer premiered after their date of death.
 >   - Add an error log every time a controlled exception is thrown.
 >       - Add one more case to not allow adding a piece: That its premiere is earlier than the composer's birth.
