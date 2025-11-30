@@ -1,0 +1,179 @@
+::FTP_Concepto::
+¿Cuál es la característica principal del protocolo FTP?
+{
+~Transfiere datos cifrados por defecto
+~Utiliza únicamente el puerto 22
+=Permite transferir archivos sin cifrado
+~Solo funciona entre sistemas operativos iguales
+}
+
+::FTP_Puertos::
+¿Qué puertos usa normalmente FTP?
+{
+=20 y 21
+~22 y 23
+~443 y 444
+~8080 y 8443
+}
+
+::FTP_Problema::
+¿Cuál es el principal problema de seguridad de FTP?
+{
+=Todo el tráfico viaja en texto plano
+~No permite conexiones pasivas
+~No permite autenticar usuarios
+~Sólo funciona dentro de redes locales
+}
+
+::SSH_Definicion::
+¿Qué ofrece SSH respecto a Telnet?
+{
+=Un canal seguro cifrado
+~Mayor velocidad de transferencia
+~Uso de dos canales (control y datos)
+~Solo autenticación sin cifrado
+}
+
+::SSH_Puerto::
+¿Cuál es el puerto asociado al protocolo SSH?
+{
+=22
+~21
+~443
+~995
+}
+
+::SCP_Protocolo::
+SCP utiliza como base para la transferencia de archivos:
+{
+=SSH
+~FTP
+~HTTP
+~SMB
+}
+
+::SFTP_Definicion::
+¿Cuál es una característica correcta de SFTP?
+{
+=Usa un solo canal cifrado sobre SSH
+~Es una extensión directa de FTP
+~Utiliza los puertos 20 y 21
+~No cifra los datos por defecto
+}
+
+::SFTP_Confusion::
+¿Por qué suele haber confusión con el nombre SFTP?
+{
+=Muchos piensan que es FTP sobre SSH, pero es un protocolo nuevo
+~Porque usa los mismos comandos que FTP
+~Porque solo sirve para listar archivos
+~Porque requiere FTPS para cifrar
+}
+
+::FTPS_Definicion::
+¿Qué es FTPS?
+{
+=FTP con una capa SSL/TLS añadida
+~FTP encapsulado dentro de SSH
+~Un sustituto directo de SFTP
+~Una versión insegura de FTP
+}
+
+::FTPS_Puertos::
+¿Qué puerto usa frecuentemente FTPS implícito?
+{
+=990
+~22
+~80
+~8443
+}
+
+::Modos_Activo_Cliente::
+En el modo activo de FTP, el cliente debe:
+{
+=Aceptar conexiones entrantes en un puerto >1024
+~Elegir el puerto 20 para datos
+~Enviar el comando PASV
+~Desactivar el firewall
+}
+
+::Modos_Activo_Comando::
+¿Qué comando envía el cliente en modo Activo?
+{
+=PORT
+~PASV
+~AUTH TLS
+~SSH-INIT
+}
+
+::Modos_Pasivo_Comando::
+¿Qué comando envía el cliente cuando quiere conectarse en modo Pasivo?
+{
+=PASV
+~PORT
+~AUTH
+~TLSREQ
+}
+
+::Modos_Pasivo_Puertos::
+En modo Pasivo, el servidor:
+{
+=Indica un puerto aleatorio mayor de 1024
+~Siempre usa el puerto 20
+~Debe conectarse al cliente
+~Deshabilita el canal de control
+}
+
+::Control_vs_Datos::
+En FTP, ¿qué puerto se usa para el canal de control?
+{
+=21
+~20
+~22
+~2048
+}
+
+::Canal_Datos_Activo::
+¿En qué puerto se abre el canal de datos en modo Activo?
+{
+=20 en el servidor
+~20 en el cliente
+~21 en el cliente
+~22 en el servidor
+}
+
+::SFTP_vs_FTPS::
+¿Cuál de las siguientes comparaciones es correcta?
+{
+=SFTP no usa FTP; FTPS sí usa FTP
+~FTPS usa SSH; SFTP usa TLS
+~SFTP usa puertos 20/21; FTPS usa el 22
+~FTPS siempre usa un único canal
+}
+
+::ProFTPD_Servidor::
+¿Para qué sirve un servidor como ProFTPD?
+{
+=Proveer el servicio FTP/FTPS
+~Proveer el servicio SSH
+~Proveer bases de datos SQL
+~Proveer DNS
+}
+
+::Clientes_Filezilla::
+FileZilla es:
+{
+=Un cliente gráfico de transferencia de archivos
+~Un servidor SFTP
+~Un analizador de puertos
+~Un firewall para FTP
+}
+
+::Docker_ProFTPD::
+¿Cuál es una ventaja de usar Docker para montar ProFTPD?
+{
+=Permite aislar y virtualizar el servidor FTP fácilmente
+~Obliga a usar FTPS siempre
+~Elimina la necesidad de puertos
+~Hace innecesario crear usuarios
+}
