@@ -84,6 +84,7 @@ Antes de cada nueva transferencia tanto en el modo Activo como en el Pasivo, el 
 | FTPS Implícito         | 990           | 989                       | Menos usado                        |
 | SFTP                   | 22            | mismo canal               | No usa dos canales                 |
 
+> **ACTIVIDAD 1** Realiza el test de pruebas de AULES para comprobar que has entendido la parte teórica. Indica en la memoria las preguntas que fallaste la primera vez (fallar no resta puntuación, así que no te preocupes si no te sale muy bien). Repite el test las veces que necesites.
 
 ## FileZilla
 
