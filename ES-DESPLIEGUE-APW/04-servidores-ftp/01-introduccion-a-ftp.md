@@ -229,3 +229,4 @@ Para conectarnos a él, tenemos que poner en el cliente de Filezilla lo siguient
 
 Poniendo el puerto que hayamos mapeado y la contraseña que hayamos escogido. Ahora ya puedes descargarte los ficheros del servidor y también subir archivos al servidor.
 
+
