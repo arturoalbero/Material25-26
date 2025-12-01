@@ -4,9 +4,9 @@ En este resultado de aprendizaje, ***"Administra servidores de transferencia de 
 
 Como cliente, emplearemos Filezilla. Como servidor emplearemos proFTPD y servidores gratuitos en la nube. Emplearemos Docker para crear una instalación de proFTP virtualizada y NGINX como servidor web.
 
-## Protocolos de transferencia de archivos
+## 1. Protocolos de transferencia de archivos
 
-### FTP o File Transfer Protocol
+### 1.1 FTP o File Transfer Protocol
 
 El Protocolo de transferencia de archivos (en inglés: File Transfer Protocol o FTP) es un protocolo de red para la transferencia de archivos entre sistemas conectados a una red TCP (Transmission Control Protocol), basado en la arquitectura cliente-servidor. Desde un equipo cliente se puede conectar a un servidor para descargar archivos desde él o para enviarle archivos, independientemente del sistema operativo utilizado en cada equipo.
 
@@ -17,17 +17,17 @@ Para solucionar este problema son de gran utilidad aplicaciones como SCP y SFTP,
 
 > **FTP** Transferencia de ficheros, puertos 20 y 21. Prioriza velocidad por encima de la seguridad.
 
-### SSH o Secure Shell
+### 1.2 SSH o Secure Shell
 
 SSH (o Secure SHell) es el nombre de un protocolo y del programa que lo implementa cuya principal función es **el acceso remoto a un servidor por medio de un canal seguro en el que toda la información está cifrada**. Además de la conexión a otros dispositivos, SSH permite copiar datos de forma segura (tanto archivos sueltos como simular sesiones FTP cifradas), gestionar claves RSA para no escribir contraseñas al conectar a los dispositivos y pasar los datos de cualquier otra aplicación por un canal seguro tunelizado mediante SSH y también puede redirigir el tráfico del (Sistema de Ventanas X) para poder ejecutar programas gráficos remotamente. El puerto TCP asignado es el 22.
 
 > **SSH** Acceso remoto, similar a telnet pero cifrado. Su puerto es el 22.
 
-### SCP o Secure Copy Protocol
+### 1.3 SCP o Secure Copy Protocol
 
 El Secure Copy Protocol (SCP), también conocido como Secure Copy, es un protocolo de sistemas informáticos que se utiliza para la transferencia de archivos de forma segura. En términos generales, este protocolo permite la transferencia de datos entre un host local y un host remoto o entre dos hosts remotos, a través del protocolo Secure Shell (SSH). Cómo característica principal de su funcionamiento, el protocolo SCP implementa un proceso de autenticación, al igual que un cifrado de transmisión para garantizar la autenticidad y seguridad.
 
-### SFTP o SSH File Transfer Protocol
+### 1.4 SFTP o SSH File Transfer Protocol
 
 SFTP (SSH File Transfer Protocol, «Protocolo de Transferencia de Archivos por SSH», aunque también conocido como Secure File Transfer Protocol, «Protocolo Seguro de Transferencia de Archivos») es un protocolo de red que proporciona acceso, transferencia y administración de archivos a través de cualquier flujo de datos.
 
@@ -35,13 +35,13 @@ Un error muy común que suele ocurrir cuando se nombra SFTP es pensar en que el 
 
 El protocolo SFTP en sí no facilita la autenticación y la seguridad, sino que espera que el protocolo subyacente proporcione esa seguridad. SFTP es utilizado frecuentemente como subsistema del protocolo SSH, al haber sido diseñadas por el mismo grupo, sin embargo, es posible ejecutarlo a través de SSH (y algunas implementaciones que lo soporten) o de otros flujos de datos. Un cliente de protocolo SFTP dispuesto a conectarse a un servidor SSH necesita conocer la ruta de acceso al binario del servidor SFTP en el lado del servidor.
 
-### FTPS o FTP sobre SSL
+### 1.5 FTPS o FTP sobre SSL
 
 FTPS (comúnmente referido como FTP/SSL) es un nombre usado para abarcar un número de formas en las cuales el protocolo FTP puede realizar transferencias de ficheros seguras. Cada forma conlleva el uso de una capa SSL/TLS debajo del protocolo estándar FTP para cifrar los canales de control y/o datos. No debe confundirse con el protocolo seguro de transferencia de ficheros SFTP, el cual suele ser usado con SSH.
 
 Para solucionar el problema de la confidencialidad (cifrado de los datos) en la autenticación y en la transferencia de datos, se decidió añadir una capa de seguridad SSL/TLS al propio protocolo FTP. FTPS y FTPES también se conocen como FTP over TLS/SSL, y están basados en el propio protocolo FTP.
 
-### Tabla comparativa
+### 1.6 Tabla comparativa
 
 |FTP|FTP/SSL|SFTP
 |--|--|--
@@ -58,23 +58,23 @@ En la actualidad, SFTP es el protocolo más empleado, seguido de FTPS. FTP prác
 > - **SFTP** = nuevo protocolo dentro de SSH (no usa FTP)
 > - **FTPS** = FTP + TLS (sí usa el protocolo FTP y sus comandos: USER, PASS, PORT…)
 
-## Modos de conexión del cliente FTP
+### 1.7 Modos de conexión del cliente FTP
 
-### Modo activo
+#### Modo activo
 
 En modo Activo, el servidor siempre crea el canal de datos en su puerto 20, mientras que en el lado del cliente el canal de datos se asocia a un puerto aleatorio mayor que el 1024. Para ello, el cliente manda un comando PORT al servidor por el canal de control indicándole ese número de puerto, de manera que el servidor pueda abrirle una conexión de datos por donde se transferirán los archivos y los listados, en el puerto especificado.
 
 Lo anterior tiene un grave problema de seguridad, y es que la máquina cliente debe estar dispuesta a aceptar cualquier conexión de entrada en un puerto superior al 1024, con los problemas que ello implica si tenemos el equipo conectado a una red insegura como Internet. De hecho, los cortafuegos que se instalen en el equipo para evitar ataques seguramente rechazarán esas conexiones aleatorias. Para solucionar esto se desarrolló el modo pasivo. En realidad, este enfoque presenta riesgos importantes en redes inseguras, porque obliga al cliente a aceptar conexiones entrantes en puertos altos.
 ![alt text](image.png)
 
-### Modo Pasivo
+#### Modo Pasivo
 
 Cuando el cliente envía un comando PASV sobre el canal de control, el servidor FTP le indica por el canal de control, el puerto (mayor a 1024 del servidor. Ejemplo:2040) al que debe conectarse el cliente. El cliente inicia una conexión desde el puerto siguiente al puerto de control (Ejemplo: 1036) hacia el puerto del servidor especificado anteriormente (Ejemplo: 2040).
 
 Antes de cada nueva transferencia tanto en el modo Activo como en el Pasivo, el cliente debe enviar otra vez un comando de control (PORT o PASV, según el modo en el que haya conectado), y el servidor recibirá esa conexión de datos en un nuevo puerto (aleatorio si es en modo pasivo o por el puerto 20 si es en modo activo).
 ![alt text](image-1.png)
 
-### Tabla de puertos
+### 1.8 Tabla de puertos
 
 | Protocolo              | Control       | Datos                     | Comentario                         |
 | ---------------------- | ------------- | ------------------------- | ---------------------------------- |
@@ -84,20 +84,9 @@ Antes de cada nueva transferencia tanto en el modo Activo como en el Pasivo, el 
 | FTPS Implícito         | 990           | 989                       | Menos usado                        |
 | SFTP                   | 22            | mismo canal               | No usa dos canales                 |
 
-> **ACTIVIDAD 1** Realiza el test de pruebas de AULES para comprobar que has entendido la parte teórica. Indica en la memoria las preguntas que fallaste la primera vez (fallar no resta puntuación, así que no te preocupes si no te sale muy bien). Repite el test las veces que necesites.
+> **ACTIVIDAD 1:** Realiza el test de pruebas de AULES para comprobar que has entendido la parte teórica. Indica en la memoria las preguntas que fallaste la primera vez (fallar no resta puntuación, así que no te preocupes si no te sale muy bien). Repite el test las veces que necesites.
 
-## FileZilla
-
-Filezilla, que no tiene nada que ver con Mozilla, es una empresa que ofrece servicios gratuitos de FTP, entre ellos un cliente y un servidor. Para poder interactuar con servidores FTP, vamos a instalar un servidor FTP y conectarnos a un servidor público. Se puede instalar en el ordenador o bien usar un archivo .zip con todo lo necesario, que nos permita usarlo sin necesidad de permisos de administrador.
-
-> **ACTIVIDAD 2**
-> Descarga Filezilla Client de esta [página web](https://filezilla-project.org/download.php?show_all=1) y elige la versión adecuada. Ejecútalo y realiza las siguientes actividades, capturando lo que sucede en los `logs` de la aplicación:
-> - Conéctate a un servidor FTP público ([de esta lista](https://www.sftp.net/public-online-ftp-servers)). `ftp.scene.org` funciona (probado a 30 de noviembre de 2025).
-> ![alt text](image-3.png)
-> - Descarga un archivo cualquiera, buscándolo y haciendo doble click sobre él. Documenta dónde se descarga. No lo abras.
-> - Sube un archivo cualquiera, de poca importancia. Probablemente no puedas, pero documenta lo que sale por pantalla.
-
-### Fuentes
+### 1.9 Fuentes
 
 <details>
 
@@ -114,9 +103,29 @@ https://es.wikipedia.org/wiki/SSH_File_Transfer_Protocol
 
 </details>
 
-## Montaje de un servidor FTP local con Docker
+## 2. Clientes y servidores FTP: Filezilla y ProFTPD
 
-> **ACTIVIDAD 3:** Sigue el siguiente documento y monta un servidor FTP local a través de Docker y realiza pruebas de subida y bajada de ficheros. Documenta el proceso.
+> **ACTIVIDAD 2:**
+> Prepara el entorno de trabajo. Debe ser un repositorio de github denominado UP04 (o similar) con respaldo en tu ordenador. Puedes crearlo desde VS CODE.
+> Debes tener la carpeta de la unidad abierta en VS CODE. La carpeta debe contener diferentes subcarpetas para trabajar. La primera sería 01-introduccion-a-ftp y dentro completa las actividades de este documento.
+
+### 2.1 El cliente FTP Filezilla
+
+Filezilla, que no tiene nada que ver con Mozilla, es una empresa que ofrece servicios gratuitos de FTP, entre ellos un cliente y un servidor. Para poder interactuar con servidores FTP, vamos a instalar un servidor FTP y conectarnos a un servidor público. Se puede instalar en el ordenador o bien usar un archivo .zip con todo lo necesario, que nos permita usarlo sin necesidad de permisos de administrador.
+
+> **ACTIVIDAD 3:**
+> Descarga Filezilla Client de esta [página web](https://filezilla-project.org/download.php?show_all=1) y elige la versión adecuada. Ejecútalo y realiza las siguientes actividades, capturando lo que sucede en los `logs` de la aplicación:
+> - Conéctate a un servidor FTP público ([de esta lista](https://www.sftp.net/public-online-ftp-servers)). `ftp.scene.org` funciona (probado a 30 de noviembre de 2025).
+> ![alt text](image-3.png)
+> - Descarga un archivo cualquiera, buscándolo y haciendo doble click sobre él. Documenta dónde se descarga. No lo abras.
+> - Sube un archivo cualquiera, de poca importancia. Probablemente no puedas, pero documenta lo que sale por pantalla.
+
+
+### 2.2 Montaje de un servidor FTP local, ProFTPD, con Docker
+
+#### Preparación del contenedor
+
+> **ACTIVIDAD 4:** Sigue el siguiente documento y monta un servidor FTP local a través de Docker y realiza pruebas de subida y bajada de ficheros. Documenta el proceso.
 
 Para montar un servidor ftp en local, vamos a emplear la misma técnica que usamos para crear los certificados autofirmados. Crearemos un contenedor de Docker que use la imagen de alpine y tenga una carpeta de datos bindeada (para que podamos ver el proceso).
 
@@ -130,6 +139,8 @@ docker run -it --name ftp-alpine -p21:21 -p 21000-21010:21000-21010 -v ./ftp/dat
 Para que esto funcione, en nuestra carpeta de trabajo tenemos que tener creada la carpeta `ftp/data`, que bindearemos en el contenedor, en la carpeta del usuario que vamos a crear más adelante (`ftpuser`). También es conveniente bindear la carpeta de configuración de proftpd. 
 
 Abrimos el puerto ftp principal, el 21, y también el rango de puertos 21000-21010 necesarios para conexiones FTP. Importante usar la imagen en modo iterativo (-it) y lanzar sh (shell).
+
+#### Instalación de ProFTPD en el contenedor
 
 Una vez arrancado, en la consola tenemos que instalar el servidor ftp, en este caso [proftpd](http://www.proftpd.org/). Para ello, introducimos en `shell` los siguientes comandos:
 
@@ -147,6 +158,8 @@ Una vez creado y **apuntada la contraseña** (yo le puse la misma que el usuario
 ```bash
 chown ftpuser:ftpuser /home/ftpuser
 ```
+
+#### Configuración de ProFTPD
 
 Lo siguiente es acceder al archivo `/etc/proftpd/proftpd.conf`, que tendremos bindeado en nuestra carpeta `ftp/conf`. Copia este archivo, cambia lo que consideres. El archivo está anotado para que sepas lo que hace cada línea:
 
@@ -198,6 +211,8 @@ AccessDenyMsg                   "Acceso denegado."
 
 ```
 
+#### Despliegue y testeo del servidor FTP
+
 Ahora debemos lanzar el servidor ftp. Podemos lanzarlo en primer plano usando el argumento `-n`, o dejarlo en segundo plano si lo omitimos:
 ```shell
 proftpd -n
@@ -231,3 +246,14 @@ Poniendo el puerto que hayamos mapeado y la contraseña que hayamos escogido. Ah
 
 
 Más información sobre proFTPD en su [**documentación oficial**](http://www.castaglia.org/proftpd/doc/devel-guide/toc.html).
+
+#### Creación de un Dockerfile con todo lo anterior
+
+[EN CONSTRUCCION]
+
+> **ACTIVIDAD 5** Realiza un dockerfile para construir una imagen a partir de todo lo que hemos trabajado en la actividad anterior.
+
+- Desde la imagen alpine
+- Crea las carpetas necesarias
+- Copia los archivos de configuración necesarias, aunque el bindeo será requerido
+- Realiza los comandos adecuados para funcionar. Esto es complejo.

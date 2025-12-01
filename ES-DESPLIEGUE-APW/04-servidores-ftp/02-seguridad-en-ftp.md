@@ -1,7 +1,16 @@
 # Seguridad en los servidores de transferencia de archivos
 
-## Certificados TLS. Configuración de FTPS en Filezilla Server
 
-## SFTP a través de Docker
+## Implementación de FTPS en ProFTPD
+http://www.proftpd.org/docs/contrib/mod_sftp.html 
 
-## WebDAV
+### Certificados TLS
+
+http://www.proftpd.org/docs/howto/TLS.html 
+
+## Implementación de SFTP en ProFTPD
+
+## Combinación de ProFTPD y NGINX
+
+-> Primero con run, luego con Docker Compose.
+
