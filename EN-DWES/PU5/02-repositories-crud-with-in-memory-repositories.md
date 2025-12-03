@@ -1,4 +1,4 @@
-# Repositories. CRUD with in-memory repositories
+# 5.2 Repositories. CRUD with in-memory repositories
 
 ## 1. Repositories
 
@@ -528,4 +528,5 @@ The line `th:selected="${generoSeleccionado} ? true : false"` is not mandatory, 
 
 These two filters are independent; filters are not combined by default, and one or the other is applied. Their combined functionality would have to be programmed.
 
-> **ACTIVITY 3:** Reprogram the filters you had (by name, by nationality, by gender for the pieces) to adapt them to the established format.
+> **ACTIVITY 3:** Reprogram the filters you had (by name, by nationality, by genre for the pieces) to adapt them to the established format.
+> - At least one text filter and one filter by list element.
