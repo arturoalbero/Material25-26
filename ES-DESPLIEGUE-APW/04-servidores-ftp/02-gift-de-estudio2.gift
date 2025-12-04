@@ -1,0 +1,413 @@
+::Proto_FTPS_Explicito::
+FTPS explícito se caracteriza por:
+{
+=Negociar el cifrado mediante AUTH TLS
+~Cifrar desde el inicio en el puerto 990
+~Usar el puerto 22 por defecto
+~No requerir certificados
+}
+
+::Proto_FTPS_Implicito::
+¿Cuál es una característica de FTPS implícito?
+{
+=Usa el puerto 990 y cifra desde el inicio
+~Usa AUTH TLS
+~No utiliza certificados
+~Es el método recomendado actualmente
+}
+
+::Proto_SFTP_Puerto::
+SFTP trabaja normalmente sobre:
+{
+=El puerto 22
+~El puerto 21
+~El puerto 990
+~El puerto 443
+}
+
+::Proto_SFTP_Base::
+SFTP funciona sobre:
+{
+=SSH
+~TLS
+~FTP tradicional
+~HTTP
+}
+
+::Proto_FTPS_Confusion::
+¿Qué afirmación es correcta respecto a FTPS?
+{
+=Es FTP + TLS
+~Es un reemplazo de SSH
+~Usa un único canal de datos
+~Se basa en un túnel SSH
+}
+
+::Proto_FTP_NoSeguro::
+¿Por qué FTP se considera inseguro?
+{
+=Transmite credenciales en texto plano
+~Usa demasiados puertos
+~No permite descargar archivos
+~Requiere certificados
+}
+
+::Proto_DobleCanal::
+¿Qué protocolo utiliza dos canales (control y datos)?
+{
+=FTP
+~SFTP
+~SSH
+~HTTPS
+}
+
+::Proto_CanalUnico::
+¿Qué protocolo usa un único canal?
+{
+=SFTP
+~FTP Activo
+~FTPS Implícito
+~FTPES
+}
+
+::Proto_SCP_Dif::
+¿Cuál es una diferencia entre SCP y SFTP?
+{
+=SCP no soporta operaciones avanzadas como listar o borrar archivos
+~SCP usa TLS
+~SFTP requiere dos puertos
+~SCP es más moderno que SFTP
+}
+
+::Proto_Pasivo_NAT::
+¿Por qué se prefiere el modo pasivo en redes con NAT?
+{
+=Evita conexiones entrantes al cliente
+~El servidor no usa puertos altos
+~No requiere firewall
+~Usa un único canal
+}
+
+::ProFTPD_Modulos::
+¿Para qué sirven los módulos en ProFTPD?
+{
+=Añadir funcionalidades como FTPS o SFTP
+~Eliminar la necesidad de archivos de configuración
+~Sustituir la creación de usuarios
+~Actuar como firewall interno
+}
+
+::ProFTPD_ModTLS::
+El módulo usado para FTPS en ProFTPD es:
+{
+=mod_tls
+~mod_sftp
+~mod_ftps
+~mod_crypto
+}
+
+::ProFTPD_ModSFTP::
+El módulo usado para SFTP en ProFTPD es:
+{
+=mod_sftp
+~mod_ssh
+~mod_tls
+~mod_scp
+}
+
+::ProFTPD_DefaultRoot::
+¿Qué consigue la directiva DefaultRoot ~ ?
+{
+=Enjaula al usuario en su directorio home
+~Permite acceso a todos los directorios
+~Desactiva el modo pasivo
+~Crea el usuario por defecto
+}
+
+::ProFTPD_RequireShell::
+¿Por qué se usa RequireValidShell off ?
+{
+=Para permitir que usuarios sin shell válida se conecten
+~Para deshabilitar FTPS
+~Para forzar autenticación SSH
+~Para impedir las conexiones locales
+}
+
+::ProFTPD_PassivePorts::
+¿Por qué se definen puertos pasivos en ProFTPD?
+{
+=Para que el servidor pueda usarlos en modo pasivo
+~Para permitir el uso del puerto 22
+~Para desactivar TLS
+~Para permitir conexiones sin contraseña
+}
+
+::ProFTPD_TLSRequired::
+¿Qué hace TLSRequired on ?
+{
+=Obliga a conexiones cifradas
+~Deshabilita FTPS
+~Permite conexiones anónimas
+~Activa automáticamente SFTP
+}
+
+::ProFTPD_SFTPHostKey::
+¿Qué necesita ProFTPD para habilitar SFTP?
+{
+=Claves SSH generadas
+~Un certificado TLS
+~El puerto 20 libre
+~El módulo mod_tls activado
+}
+
+::ProFTPD_Verificar_Modulos::
+¿Qué comando permite verificar módulos cargados?
+{
+=proftpd -l
+~proftpd --modules
+~ftps --list
+~cat /etc/modules
+}
+
+::ProFTPD_Log_TLS::
+¿Qué archivo registra errores del módulo TLS según la configuración propuesta?
+{
+=/var/log/proftpd/tls.log
+~tls.log en el home del usuario
+~/logs/tls.log
+~/ssl/errors.log
+}
+
+::Docker_Bind_Data::
+¿Por qué se bindea la carpeta ftp/data ?
+{
+=Para persistir los archivos del usuario FTP fuera del contenedor
+~Para habilitar FTPS
+~Para exponer el puerto 21
+~Para generar claves SSH automáticamente
+}
+
+::Docker_Bind_Conf::
+¿Para qué sirve bindear ftp/conf en /etc/proftpd ?
+{
+=Para modificar la configuración sin reconstruir la imagen
+~Para permitir archivos muy pesados
+~Para activar NGINX
+~Para crear claves SSH
+}
+
+::Docker_Run_FTP_Puertos::
+¿Qué instrucción de Docker se usa para abrir puertos al host?
+{
+=-p
+~--expose
+~-v
+~--bind
+}
+
+::Docker_Expose::
+¿Qué hace realmente EXPOSE en un Dockerfile?
+{
+=Documenta puertos usados en la imagen
+~Abre puertos del contenedor
+~Configura TLS
+~Crea rutas de red internas
+}
+
+::Docker_AddUser_Shell::
+¿Por qué se usa /bin/false al crear el usuario ftpuser?
+{
+=Para impedir sesiones interactivas
+~Para activar SFTP
+~Para permitir FTPS
+~Para habilitar el login SSH
+}
+
+::Docker_NoCache::
+¿Por qué se usa apk add --no-cache ?
+{
+=Para evitar almacenar paquetes en caché y reducir tamaño
+~Para acelerar la ejecución de ProFTPD
+~Para obligar a usar TLS
+~Para copiar archivos automáticamente
+}
+
+::Docker_Mkdir_Run::
+¿Por qué debemos crear /run/proftpd en Alpine?
+{
+=Porque ProFTPD la necesita para sockets internos
+~Porque almacena los archivos de usuarios
+~Porque contiene claves SSH
+~Porque sirve contenido web
+}
+
+::Docker_CMD::
+¿Qué hace la instrucción CMD en un Dockerfile?
+{
+=Define el comando que se ejecuta al iniciar el contenedor
+~Ejecuta comandos al construir la imagen
+~Abre los puertos
+~Instala paquetes
+}
+
+::Docker_Commit::
+docker commit sirve para:
+{
+=Crear una imagen basada en un contenedor ya modificado
+~Guardar archivos en un volumen
+~Firmar imágenes
+~Reiniciar contenedores
+}
+
+::Docker_Network_Connect::
+¿Para qué se usa docker network connect ?
+{
+=Para conectar un contenedor a una red existente
+~Para exponer puertos automáticamente
+~Para montar volúmenes
+~Para reiniciar servicios internos
+}
+
+::NGINX_Colaboracion::
+¿Por qué NGINX no puede actuar como proxy de ProFTPD?
+{
+=Porque FTP usa múltiples puertos y canales
+~Porque NGINX no soporta TLS
+~Porque SFTP solo funciona con Apache
+~Porque ProFTPD usa HTTP/2
+}
+
+::NGINX_Bind_Data::
+¿Por qué se bindea ftp/data a /usr/share/nginx/html ?
+{
+=Para que NGINX pueda servir los mismos archivos que ProFTPD gestiona
+~Para habilitar TLS en NGINX
+~Para permitir subir archivos desde el navegador
+~Para cifrar automáticamente los listados
+}
+
+::NGINX_Conf_Dir::
+La configuración de NGINX suele guardarse en:
+{
+=/etc/nginx/conf.d
+~/.nginx/config
+~/nginx/sites-enabled
+~/nginx/html
+}
+
+::NGINX_Red::
+¿Por qué debe estar ProFTPD y NGINX en la misma red Docker?
+{
+=Para comunicarse internamente
+~Para compartir el mismo PID 1
+~Para evitar exponer puertos
+~Para activar SFTP
+}
+
+::Filezilla_FTPS::
+Para conectarse por FTPS explícito en Filezilla, se debe seleccionar:
+{
+=Requiere FTPS explícito (FTP sobre TLS)
+~SFTP - SSH File Transfer Protocol
+~FTP simple
+~FTP implícito sin cifrado
+}
+
+::Filezilla_SFTP::
+Para conectarse por SFTP en Filezilla, se debe usar:
+{
+=El protocolo SFTP y el puerto configurado (p.ej. 2222)
+~FTP con AUTH TLS
+~FTP implícito en 990
+~FTP simple en 21
+}
+
+::TLS_Cert_Autofirmado::
+¿Qué ocurre al usar un certificado autofirmado en FTPS?
+{
+=El cliente pedirá confirmación debido a que no es de confianza
+~No funcionará bajo ningún caso
+~Requiere añadir la clave pública al servidor
+~Se deshabilita el modo pasivo
+}
+
+::Seguridad_FTPS_vs_SFTP::
+¿Cuál es una afirmación correcta?
+{
+=FTPS requiere certificados; SFTP requiere claves SSH
+~SFTP requiere certificados; FTPS usa claves RSA
+~FTPS usa un canal único; SFTP usa dos
+~SFTP funciona por TLS
+}
+
+::SSH_Keys_Generacion::
+¿Qué comando genera claves SSH para SFTP en ProFTPD?
+{
+=ssh-keygen -t rsa -f /etc/proftpd/ssh_host_rsa_key -N ""
+~openssl genrsa -out sftp.key
+~tls-keygen proftpd
+~addkey --ssh
+}
+
+::SFTP_AuthMethods::
+¿Qué permite configurar SFTPAuthMethods publickey,password ?
+{
+=Los métodos de autenticación permitidos
+~Los algoritmos de cifrado TLS
+~La política de puertos
+~El directorio raíz del usuario
+}
+
+::TLS_Protocol_Minimo::
+¿Qué hace TLSProtocol TLSv1.2 ?
+{
+=Obliga a usar protocolos TLS 1.2 o superiores
+~Deshabilita FTPS
+~Permite SSLv3
+~Crea certificados automáticamente
+}
+
+::Firewall_FTP::
+¿Qué problema tienen los firewalls con FTP?
+{
+=La apertura dinámica de puertos en modo pasivo
+~El uso del puerto 22
+~El cifrado de los datos
+~El tamaño de los archivos
+}
+
+::FTP_Anónimo::
+¿Cuál es una característica del FTP anónimo?
+{
+=Permite acceso sin usuario autenticado
+~Requiere FTPS
+~Usa el puerto 22
+~Usa autenticación RSA
+}
+
+::SFTP_No_Dependencia_FTP::
+¿Por qué SFTP no tiene nada que ver con FTP?
+{
+=Es un protocolo totalmente nuevo diseñado para SSH
+~Es FTP encapsulado en TLS
+~Usa los comandos USER y PASS
+~Requiere los puertos 20 y 21
+}
+
+::FTPS_Comandos::
+¿Qué comando inicia el cifrado en FTPS explícito?
+{
+=AUTH TLS
+~STARTTLS
+~TLSBEGIN
+~CERTREQ
+}
+
+::ProFTPD_Modulos_Separacion::
+¿Por qué ProFTPD no incluye SFTP de serie?
+{
+=Porque se implementa mediante módulos externos como mod_sftp
+~Porque depende de OpenSSH
+~Porque solo funciona con TLS
+~Porque requiere Apache
+}
