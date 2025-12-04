@@ -220,9 +220,9 @@ proftpd -n
 No funcionará, porque alpine es una distribución minimalista y debemos añadir algunas carpetas y permisos que usa proftpd:
 
 ```bash
-mkdir -p /run/proftpd
-mkdir -p /var/run/proftpd
-mkdir -p /var/log/proftpd
+mkdir -p /run/proftpd # Se usa para almacenar sockets
+mkdir -p /var/run/proftpd # Se usa para almacenar PIDs (procesos)
+mkdir -p /var/log/proftpd # Se usa para almacenar logs
 chmod 755 /run/proftpd /var/run/proftpd
 ```
 
@@ -249,7 +249,61 @@ Más información sobre proFTPD en su [**documentación oficial**](http://www.ca
 
 #### Creación de un Dockerfile con todo lo anterior
 
-[EN CONSTRUCCION]
+A continuación, vamos a aprender a crear un dockerfile con todo lo anterior, que podremos usar para posteriores despliegues combinados o dentro de un docker-compose. Partiremos del archivo de configuración que ya tenemos creado y, simplemente, haremos que la imagen se genere después de haber lanzado los comandos de shell que hacíamos manualmente.
+
+```dockerfile
+FROM alpine:latest
+# Instalación de proftpd
+RUN apk update
+RUN apk add --no-cache proftpd
+```
+
+La opción --no-cache sirve para que no guarde la base de datos descargados en `/var/cache/apk`, por eso se utiliza en muchas de las instalaciones *dockerizadas*. Esta opción evita ocupar espacio innecesario en la imagen y reduce su tamaño final.
+
+Continuamos con la creación del usuario. Si recuerdas, aquí teníamos que introducir la contraseña de forma manual, así que vamos a tener que hacer:
+
+```dockerfile
+# Creamos el usuario con los valores por defecto (-D), determinamos su carpeta home (-h)
+# y ponemos el shell (-s) como /bin/false para que no pueda iniciar sesión en modo interactivo (así se inicia en la conexión solamente)
+RUN adduser -D -h /home/ftpuser -s /bin/false ftpuser
+```
+En Alpine, la opción `-h` hace que el directorio home se cree automáticamente, sin necesidad de realizar un mkdir.
+
+```dockerfile
+# Enviamos la contraseña con un echo con el formato [usuario]:[contraseña].
+# chpasswd recoge el mensaje y establece la contraseña para el usuario.
+# Este método NO ES NADA SEGURO, porque la contraseña es visible por todos. Sirve para pruebas.
+RUN echo "ftpuser:ftpuser" | chpasswd
+# Damos los permisos necesarios de forma recursiva (-R)
+RUN  chown -R ftpuser:ftpuser /home/ftpuser
+
+```
+
+Lo siguiente es crear las carpetas que necesita proftpd para funcionar en alpine y darles permisos completos:
+
+```dockerfile
+RUN mkdir -p /run/proftpd /var/run/proftpd /var/log/proftpd
+RUN chmod 755 /run/proftpd /var/run/proftpd
+```
+
+Aunque aquí hayan aparecido los `RUN` por separado, lo normal es agruparlos semánticamente. Todas las instrucciones de los `RUN` se pueden combinar usando entre instrucción e instrucción el operador `&&`. Esto deja un archivo más compacto.
+
+A continuación, de forma opcional, copiamos el archivo de configuración y exponemos los puertos. Este paso no es obligatorio ya que la apertura de puertos la haremos más adelante tanto en el run como en el docker-compose y, de la misma forma, podremos *bindear* nuestra carpeta de configuración tanto en el `run` con -v como en el `docker-compose` con `volumes:`. Eso sí, la copia de la configuración hará que no sea obligatorio *bindear* un volumen de configuración más adelante:
+
+```dockerfile
+COPY ./ftp/conf/proftpd.conf /etc/proftpd/proftpd.conf
+EXPOSE 21
+EXPOSE 21000-21010
+```
+> **RECUERDA QUE** la instrucción `EXPOSE` no abre puertos, solamente los documenta dentro de la imagen.
+
+Finalmente, le decimos a dockerfile que la imagen, al lanzarse en un contenedor, ejecute un comando.
+
+```dockerfile
+CMD ["proftpd", "-n"]
+```
+La diferencia entre RUN y CMD es que RUN se ejecuta ANTES de crear la imagen, cuando se ejecuta el comando `build`, con lo cual dicha imagen ya viene con todo eso ejecutado. Sin embargo, CMD se ejecuta al instanciar la imagen en un contenedor (lo que lo convierte en el proceso principal).
+
 
 > **ACTIVIDAD 5** Realiza un dockerfile para construir una imagen a partir de todo lo que hemos trabajado en la actividad anterior.
 
@@ -257,3 +311,5 @@ Más información sobre proFTPD en su [**documentación oficial**](http://www.ca
 - Crea las carpetas necesarias
 - Copia los archivos de configuración necesarias, aunque el bindeo será requerido
 - Realiza los comandos adecuados para funcionar. Esto es complejo.
+
+> **ACTIVIDAD 6** Crea un archivo `docker-compose.yml` que te sirva para lanzar un contenedor a partir del dockerfile creado en la actividad anterior.
