@@ -47,3 +47,22 @@
 
 ## 5.3 Hidden attributes in forms and parameters in archives
 
+> **ACTIVITY 1**: Read about **records** on *this web page* and answer the following questions:
+> – Which methods are automatically generated in a record?
+> – Why can’t setters be used?
+> – What does it mean that the attributes are final?
+> – What particularity do the automatically generated getters have?
+
+> **ACTIVITY 2**: Modify the forms and their corresponding controller methods to demonstrate the three alternatives we have for managing hidden attributes. You may modify the classes to add some hidden attribute if needed:
+>
+> 1. Manually assigning the hidden attribute.
+> 2. Using a hidden field.
+> 3. Using an ad-hoc DTO (with record)
+
+> **ACTIVITY 3:** Redo the newsletter email-sending process you designed, storing the messages in a configuration file named `email.properties`.
+
+> **ACTIVITY 4:** Create another configuration file in which you store messages that you will later send to the view through the controllers:
+> – Error messages
+> – Welcome messages
+
+> **ACTIVITY 5:** Create another configuration file in which we store the web application version `version = 1`. Then, add in one of the classes a parameter indicating in which version of the application it was created. That parameter must also be stored in the corresponding `.csv`.
