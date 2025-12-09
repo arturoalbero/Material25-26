@@ -9,10 +9,15 @@ En esta unidad de programación, vamos a tratar el siguiente resultado de aprend
 Este resultado de aprendizaje tiene diversos criterios de evaluación, de los cuales los tres primeros ya se han tratado en la unidad anterior, ya que se encuentran redactados exactamente con las mismas palabras:
 
 > a) Se ha caracterizado el modelo de producción y consumo actual.
+>
 > b) Se han identificado los principios de la economía verde y circular.
+>
 > c) Se han contrastado los beneficios de la economía verde y circular frente al modelo clásico de producción.
+>
 > e) Se han aplicado principios de ecodiseño.
+>
 > g) Se ha analizado el ciclo de vida del producto.
+>
 > h) Se han identificado los procesos de producción y los criterios de sostenibilidad aplicados.
 
 Por lo tanto, aplicando lo aprendido en el tema anterior, vamos a centrarnos en los siguientes criterios de evaluación:
