@@ -23,7 +23,9 @@ Este resultado de aprendizaje tiene diversos criterios de evaluación, de los cu
 Por lo tanto, aplicando lo aprendido en el tema anterior, vamos a centrarnos en los siguientes criterios de evaluación:
 
 > d) Se ha evaluado el impacto de las actividades personales y profesionales.
+>
 > f) Se han aplicado estrategias sostenibles.
+>
 > i) Se ha aplicado la normativa ambiental.
 
 ## 2. Normativa ambiental
