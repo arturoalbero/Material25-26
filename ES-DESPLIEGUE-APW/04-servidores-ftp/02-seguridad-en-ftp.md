@@ -4,24 +4,100 @@
 
 Para poder implementar tanto FTPS como SFTP, ProFTPD se nutre de módulos. Los módulos son programas en lenguaje C con las funcionalidades extra que queremos usar. Tenemos que tenerlos en nuestro ordenador, o dentro del contenedor que estemos usando, y activarlos en el archivo de configuración `proftpd.conf`. A continuación, veremos la implementación de ambos protocolos gracias a los módulos.
 
+Recuerda que es necesaria la instalación de proftpd como se vio en el apartado anterior. Si reiniciamos el contenedor, las instrucciones del `shell` las tendremos que invocar mediante `docker exec [contenedor] [instrucción]`. `docker restart [contenedor]` también nos puede ser de utilidad.
+
+Para hacer pruebas, es recomendable lanzar proftpd como demonio, es decir, simplemente ejecutando `proftpd` (sin el -n). De esta forma, seguimos teniendo acceso a la consola para poder pararlo si hay algún problema usando:
+
+```bash
+pkill proftpd
+```
+
 
 ## Implementación de FTPS en ProFTPD
 
-ProFTPD permite la implementación del protocolo FTPS a través del módulo `mod_tls`. FTPS no es más que el FTP tradicional usando una capa de seguridad a través de un certificado TLS. En [la unidad 2, punto 5, aprendimos a generar estos certificados](ES-DESPLIEGUE-APW/02-servidores-web/05-certificados-digitales-e-introduccion-al-despliegue-en-red.md).
+Para experimentar FTPS, vamos a crear un contenedor llamado `ftps-alpine` con una configuración muy similar a `ftp-alpine`. Para habilitar FTPS necesitamos un certificado y una clave. Genéralos como vimos en capítulos anteriores y colócalos en una carpeta de certificados. La *bindearemos* a la carpeta `/etc/proftpd/ssl/` del contenedor. Ejecutamos:
+```bash
+docker run -it --name ftps-alpine -p2121:21 -p21000-21010:21000-21010 -v ./ftp/data:/home/ftpuser -v ./ftp/conf:/etc/proftpd -v ./ftp/certs/:/etc/proftpd/ssl/ alpine:latest sh 
+```
+Y procedemos a la instalación de proftpd, como vimos en la anterior actividad.
+
+ProFTPD permite la implementación del protocolo FTPS a través del módulo `mod_tls`. El módulo debe instalarse en el terminal con `apk add proftpd-mod_tls`. 
+
+FTPS no es más que el FTP tradicional usando una capa de seguridad a través de un certificado TLS. En [la unidad 2, punto 5, aprendimos a generar estos certificados](ES-DESPLIEGUE-APW/02-servidores-web/05-certificados-digitales-e-introduccion-al-despliegue-en-red.md).
 
 Existen dos tipos de FTPS, explícito e implícito. Este último se considera obsoleto y cifraba desde el principio de la conexión, usando el puerto 990. El FTPS explícito se conecta por el puerto 21 y es entonces cuando establece el cifrado mediante `AUTH TLS`.
 
-Para habilitar FTPS necesitamos un certificado y una clave. Genéralos como vimos en capítulos anteriores y colócalos en una carpeta de certificados. La *bindearemos* a la carpeta `/etc/proftpd/ssl/` del contenedor.
 
-Para activar TLS, en el archivo de configuración debemos activar el módulo, añadiendo las siguientes líneas:
+Para activar TLS, en el archivo de configuración debemos activar el módulo. El archivo de configuración debería quedar así:
 
-```nginx
+```proftpd
+#===
+# Configuración básica de proFTPD
+#===
+
+ServerName          "Servidor FTP de pruebas"
+ServerType          standalone
+DefaultServer       on
+
+# Puerto principal
+Port                21
+
+# Uso de IPv6 desactivado
+
+UseIPv6             off
+
+# Desactivamos el soporte de logs wtpm
+
+WtmpLog off
+
+# Usuario y grupo del proceso de servidor
+
+User                nobody
+Group               nogroup
+
+# Raíz del usuario para que estos queden enjaulados en su home
+DefaultRoot         ~
+
+# Permite que los usuarios sin shell válida se conecten (necesario porque usamos Alpine)
+RequireValidShell   off
+
+# Enmascaramiento de la dirección interna, necesario para Docker
+
+MasqueradeAddress 127.0.0.1
+# Los puertos pasivos que necesitará Docker
+
+PassivePorts        21000 21010
+
+# Permisos de subida y descarga
+<Limit LOGIN>
+  AllowAll
+</Limit>
+
+<Limit READ WRITE>
+  AllowAll
+</Limit>
+
+# Permisos por defecto de los archivos subidos
+Umask                           022
+
+# Mensajes mostrados en la conexión
+AccessGrantMsg                  "Bienvenido al servidor FTP."
+AccessDenyMsg                   "Acceso denegado."
+
+# Uso de mod_dso para cargar mod_tls, ya que la versión de alpine así lo requiere:
+
+<IfModule mod_dso.c>
+    # If mod_tls was built as a shared/DSO module, load it (de la documentación oficial)
+    LoadModule mod_tls.c
+  </IfModule>
+
 <IfModule mod_tls.c>
+
   TLSEngine                   on
   TLSLog                      /var/log/proftpd/tls.log
 
-  TLSRSACertificateFile       /etc/proftpd/ssl/proftpd.crt
-  TLSRSACertificateKeyFile    /etc/proftpd/ssl/proftpd.key
+  TLSRSACertificateFile       /etc/proftpd/ssl/certificate.crt
+  TLSRSACertificateKeyFile    /etc/proftpd/ssl/private.key
 
   # Solo permitimos conexiones cifradas
   TLSRequired                 on
@@ -29,9 +105,7 @@ Para activar TLS, en el archivo de configuración debemos activar el módulo, a�
   # Protocolos mínimos seguros
   TLSProtocol                 TLSv1.2
 
-  # Protección de los canales de datos
-  TLSOptions                  NoCertRequest
-  TLSVerifyClient             off
+ 
 </IfModule>
 ```
 
@@ -45,6 +119,10 @@ Protocolo: FTP
 Cifrado: Requiere FTPS explícito (FTP sobre TLS)
 ```
 
+Usa [**estas instrucciones**](https://www.snel.com/support/connect-with-ftps-using-filezilla/) para crear conexiones personalizadas. 
+
+![alt text](image-5.png)
+
 Si el certificado es autofirmado, el cliente pedirá confirmación.
 
 > **ACTIVIDAD 1** Implementa un servidor FTPS explícito en Docker siguiendo los pasos anteriores. Comprueba su funcionamiento correcto en Filezilla.
@@ -53,7 +131,17 @@ Para más información, puedes consultar la documentación oficial aquí: http:/
 
 ## Implementación de SFTP en ProFTPD
 
-SFTP es un protocolo de transferencia de ficheros totalmente distinto que funciona en el puerto `22`. De esta forma, tendremos que cambiar esos datos en nuestra configuración. Recuerda que si el puerto está en uso, cuando mapeamos puertos lo podemos sustituir por cualquier otro, como `2222`. Como vamos a necesitar generar claves SSH, puedes bindear en una de tus carpetas la carpeta `/etc/proftpd/` del contenedor. En esa carpeta almacenamos las claves SSH, que podemos generar con el programa `ssh-keygen`:
+SFTP es un protocolo de transferencia de ficheros totalmente distinto que funciona en el puerto `22`. De esta forma, tendremos que cambiar esos datos en nuestra configuración. Recuerda que si el puerto está en uso, cuando mapeamos puertos lo podemos sustituir por cualquier otro, como `2222`. Debemos ejecutar Docker Run para crear el contenedor:
+
+```bash
+docker run -it --name sftp-alpine -p2222:22 -p21000-21010:21000-21010 -v ./ftp/data:/home/ftpuser -v ./ftp/conf:/etc/proftpd -v ./ftp/certs/:/etc/proftpd/ssl/ alpine:latest sh
+```
+Realiza la configuración inicial de proftpd. Como vamos a necesitar generar claves SSH, puedes bindear en una de tus carpetas la carpeta `/etc/proftpd/` del contenedor. En esa carpeta almacenamos las claves SSH, que podemos generar con el programa `ssh-keygen`.
+Instalamos open-ssh:
+```bash
+apk add --no-cache openssh-keygen
+```
+Y luego ejecutamos:
 
 ```bash
 ssh-keygen -t rsa   -f /etc/proftpd/ssh_host_rsa_key    -N ""
@@ -65,38 +153,83 @@ SFTP utiliza un solo canal cifrado sobre SSH (protocolo 22), y es normalmente m�
 Como sucedía con FTPS, ProFTPD no incluye SFTP por defecto: se habilita mediante el módulo mod_sftp. En Alpine, ProFTPD suele incluir el módulo. Podemos comprobarlo con el siguiente comando:
 
 ```
-proftpd -l | grep sftp
+proftpd -l
 ```
-Que debería devolver los módulos, de esta forma:
+Que debería devolver los módulos, entre ellos:
 ```
 mod_sftp.c
 mod_sftp_pam.c
 ```
 
-Debemos activar el módulo en el archivo de configuración de la siguiente manera:
+Si no está instalado, lo añadimos con la línea `apk add proftpd-mod_sftp`. Si tenemos `mod_dso.c`, lo podemos añadir de forma dinámica en el archivo de configuración con:
 
-```nginx
-<IfModule mod_sftp.c>
-  SFTPEngine                on
-  SFTPLog                   /var/log/proftpd/sftp.log
+```text
+<IfModule mod_dso.c>
+    LoadModule mod_sftp.c
+</IfModule>
+```
+Finalmente, se nos queda el archivo de configuración aproximadamente así:
+```proftpd
+#===
+# Configuración básica de ProFTPD para SFTP en Alpine
+#===
 
-  # Puerto SFTP (SSH)
-  Port                      2222
+ServerName          "Servidor SFTP de pruebas"
+ServerType          standalone
+DefaultServer       on
 
-  # Claves del servidor (SSH)
-  SFTPHostKey               /etc/proftpd/ssh_host_rsa_key
-  SFTPHostKey               /etc/proftpd/ssh_host_ecdsa_key
+# Puerto principal para SFTP
+Port                22
 
-  # Aislamiento del usuario
-  DefaultRoot               ~
+# IPv6 desactivado
+UseIPv6             off
 
-  # Algoritmos seguros
-  SFTPAuthMethods           publickey,password
+# Logs
+WtmpLog             off
+
+
+# Usuario y grupo del proceso
+User                nobody
+Group               nogroup
+
+# Raíz del usuario (enjaulamiento)
+DefaultRoot         ~
+
+# Permitir usuarios sin shell válida (Alpine)
+RequireValidShell   off
+
+# Permisos de login
+<Limit LOGIN>
+  AllowAll
+</Limit>
+
+# Permisos por defecto de archivos subidos
+Umask               022
+
+# Mensajes
+AccessGrantMsg      "Bienvenido al servidor SFTP."
+AccessDenyMsg       "Acceso denegado."
+
+# Carga de módulos DSO
+<IfModule mod_dso.c>
+    LoadModule mod_sftp.c
+    
 </IfModule>
 
+
+# Configuración de SFTP
+<IfModule mod_sftp.c>
+    SFTPEngine on
+
+    # Claves host SSH generadas
+    SFTPHostKey /etc/proftpd/ssh_host_rsa_key
+    SFTPHostKey /etc/proftpd/ssh_host_ecdsa_key
+
+</IfModule>  
 ```
 
-Finalmente, para comprobar que funciona, debemos conectarnos al servidor con Filezilla estableciendo como protocolo: `SFTP - SSH File Transfer Protocol` y como puerto el 2222 (o el hayamos abierto).
+Igual que antes, ara comprobar que funciona, debemos conectarnos al servidor con Filezilla estableciendo como protocolo: `SFTP - SSH File Transfer Protocol` y como puerto el 2222 (o el hayamos abierto).
+![alt text](image-6.png)
 
 > **ACTIVIDAD 2** Implementa un servidor SFTP en Docker siguiendo los pasos anteriores. Comprueba su funcionamiento correcto en Filezilla.
 
@@ -104,7 +237,9 @@ Para más información, puedes consultar la documentación oficial aquí: http:/
 
 ## Combinación de ProFTPD y NGINX
 
-La mala noticia es que, a diferencia de lo que sí podíamos hacer con tomcat en la unidad anterior, NGINX no puede hacer de proxy con ProFTPD. Esto se debe a que el protocolo es más complejo y requiere varios puertos para funcionar correctamente. Sin embargo, lo que sí puede hacer y se hace muy a menudo, es servir archivos desde el servidor FTP, de la misma forma que podría conectarse a una base de datos desde un servidor de bases de datos.
+La mala noticia es que, a diferencia de lo que sí podíamos hacer con tomcat en la unidad anterior, NGINX no puede hacer de proxy con ProFTPD. Esto se debe a que el protocolo es más complejo y requiere varios puertos para funcionar correctamente. 
+
+Sin embargo, lo que sí puede hacer y se hace muy a menudo, es servir archivos desde el servidor FTP, de la misma forma que podría conectarse a una base de datos desde un servidor de bases de datos.
 
 Básicamente, lo que tenemos que hacer es lanzar un contenedor de NGINX que sirva archivos pidiéndoselos al servidor FTP haciendo que:
 
@@ -118,13 +253,17 @@ Para ello, en `docker`, debemos lanzar los dos contenedores y conectarlos a trav
 > - Haz una imagen del contenedor FTPS(`proftpd-ftps`) y otra del contenedor SFTP(`proftpd-sftp`).
 
 Una vez tengamos los contenedores, podemos lanzarlos:
+
 ```bash
 docker run -d --name proftpd -p 21:21 -p 21000-21010:21000-21010 -v ./ftp/conf:/etc/proftpd -v ./ftp/data:/home/ftpuser proftpd-ftps
 ```
+
 A continuación, lanzamos el contenedor NGINX, bindeando la configuración:
+
 ```bash
 docker run -d --name nginx -p 80:80 -p 443:443 -v ./nginx/conf:/etc/nginx/conf.d -v ./ftp/data:/usr/share/nginx/html/ nginx:latest
 ```
+
 Con este *bindeo* `-v ./ftp/data:/usr/share/nginx/html/` le indicamos al servidor nginx que su carpeta de html es la misma que la carpeta donde los datos de nuestro servidor de ftp se descargan.
 
 Cuando lo tenemos todo listo y funcionando, los conectamos mediante una red:
