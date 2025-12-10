@@ -5,13 +5,17 @@
 In some cases (for example, when creating a new element in a CRUD) there may be attributes that we do not want to be introduced in the form, either because they take a default value, because they are calculated in a service, etc. One example could be the employee’s registration date, which could be taken automatically from the system.
 
 In these cases, if the view with the form has no `<input>` associated with an attribute, when submitting, that attribute will reach the controller with a null value. To solve this possible issue, we have several options.
+
 a) Assign the value after receiving it from the submit, not before.
+
 b) If it is necessary to assign it beforehand, for example in the constructor, add a `<input type="hidden">` in the view so that it remains hidden but retains the previously assigned value.
+
 c) Create an ad-hoc class only with the form fields (what is known as a DTO), and once received, move those attributes from the DTO to the real object. This would be the best option.
 
 Let’s see all this in an example. Suppose we are still in the CRUD of the `Empleado` entity and that, in addition to the previous attributes, it has a new one called `fechaRegistro`.
 
 Suppose that this last attribute is taken from the system date. The possibilities seen would look like this:
+
 a) In the service (or controller), assign the value after receiving it from the `submit` and not before:
 
 ```java
@@ -64,11 +68,12 @@ public Empleado buildEmpleadoFromDto(EmpleadoDTO empleadoDTO){
 }
 ```
 
-> **ACTIVITY 1**: Read about **records** on *this web page* and answer the following questions:
-> – Which methods are automatically generated in a record?
-> – Why can’t setters be used?
-> – What does it mean that the attributes are final?
-> – What particularity do the automatically generated getters have?
+> **ACTIVITY 1**: Read about **records** on [*this web page*](https://www.makigas.es/series/records-en-java/records-de-java-que-son-y-como-usarlos) and answer the following questions:
+>
+> * Which methods are automatically generated in a record?
+> * Why can’t setters be used?
+> * What does it mean that the attributes are final?
+> * What particularity do the automatically generated getters have?
 
 > **ACTIVITY 2**: Modify the forms and their corresponding controller methods to demonstrate the three alternatives we have for managing hidden attributes. You may modify the classes to add some hidden attribute if needed:
 >
