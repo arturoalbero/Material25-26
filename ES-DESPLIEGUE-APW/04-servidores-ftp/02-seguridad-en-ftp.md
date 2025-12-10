@@ -16,9 +16,11 @@ pkill proftpd
 ## Implementación de FTPS en ProFTPD
 
 Para experimentar FTPS, vamos a crear un contenedor llamado `ftps-alpine` con una configuración muy similar a `ftp-alpine`. Para habilitar FTPS necesitamos un certificado y una clave. Genéralos como vimos en capítulos anteriores y colócalos en una carpeta de certificados. La *bindearemos* a la carpeta `/etc/proftpd/ssl/` del contenedor. Ejecutamos:
+
 ```bash
 docker run -it --name ftps-alpine -p2121:21 -p21000-21010:21000-21010 -v ./ftp/data:/home/ftpuser -v ./ftp/conf:/etc/proftpd -v ./ftp/certs/:/etc/proftpd/ssl/ alpine:latest sh 
 ```
+
 Y procedemos a la instalación de proftpd, como vimos en la anterior actividad.
 
 ProFTPD permite la implementación del protocolo FTPS a través del módulo `mod_tls`. El módulo debe instalarse en el terminal con `apk add proftpd-mod_tls`. 
@@ -50,7 +52,7 @@ UseIPv6             off
 
 WtmpLog off
 
-# Usuario y grupo del proceso de servidor
+# Usuario y grupo del proceso de servidor. Este diseño es solo apto para pruebas, lo normal es definir un usuario y un grupo.
 
 User                nobody
 Group               nogroup
@@ -61,10 +63,11 @@ DefaultRoot         ~
 # Permite que los usuarios sin shell válida se conecten (necesario porque usamos Alpine)
 RequireValidShell   off
 
-# Enmascaramiento de la dirección interna, necesario para Docker
+# Enmascaramiento de la dirección interna, necesario para Docker. Si se va a probar fuera de localhost, MasqueradeAddress debe ser la IP externa accesible.
 
 MasqueradeAddress 127.0.0.1
-# Los puertos pasivos que necesitará Docker
+
+# Los puertos pasivos que necesitará Docker al usar FTPS
 
 PassivePorts        21000 21010
 
@@ -89,7 +92,7 @@ AccessDenyMsg                   "Acceso denegado."
 <IfModule mod_dso.c>
     # If mod_tls was built as a shared/DSO module, load it (de la documentación oficial)
     LoadModule mod_tls.c
-  </IfModule>
+</IfModule>
 
 <IfModule mod_tls.c>
 
@@ -111,6 +114,17 @@ AccessDenyMsg                   "Acceso denegado."
 
 Activamos el módulo mediante etiquetas similares a las de un xml, como todas las directivas de ProFTPD, y dentro ponemos los parámetros necesarios para el módulos, en pares parámetro-valor.
 
+Observamos el uso de `mod_dso`. Puedes indagar más sobre él en la [documentación oficial de proftpd](http://www.proftpd.org/docs/modules/mod_dso.html). Se trata de un módulo compilado de manera independiente que ProFTPD puede cargar dinámicamente en tiempo de ejecución, sin necesidad de recompilar el servidor. Permite añadir funcionalidades como `mod_tls` o `mod_sftp` de forma flexible.
+
+> **NOTA:**
+> Si queremos usar grupos y usuarios, debemos dar permisos a las carpetas del ssh:
+> ```bash 
+> chmod 600 /etc/proftpd/ssh_host_*
+> chown nobody:nogroup /etc/proftpd/ssh_host_*
+> ```
+> En pruebas de aprendizaje no es necesario, pero en producción real sí es fundamental restringir los permisos de forma efectiva.
+
+
 Para probar que todo funciona, en Filezilla debemos seleccionar:
 
 ```text
@@ -131,10 +145,12 @@ Para más información, puedes consultar la documentación oficial aquí: http:/
 
 ## Implementación de SFTP en ProFTPD
 
-SFTP es un protocolo de transferencia de ficheros totalmente distinto que funciona en el puerto `22`. De esta forma, tendremos que cambiar esos datos en nuestra configuración. Recuerda que si el puerto está en uso, cuando mapeamos puertos lo podemos sustituir por cualquier otro, como `2222`. Debemos ejecutar Docker Run para crear el contenedor:
+SFTP es un protocolo de transferencia de ficheros totalmente distinto a FTPS que funciona en el puerto `22`. SFTP solamente usa el canal SSH. Además, a diferencia de FTPS, SFTP no necesita puertos pasivos (21000-21010), por lo que no hay que mapearlos.
+
+Por este motivo, debemos cambiar nuestra configuración al crear el contenedor. Recuerda que si el puerto está en uso, cuando mapeamos puertos lo podemos sustituir por cualquier otro, como `2222`. Debemos ejecutar Docker Run para crear el contenedor:
 
 ```bash
-docker run -it --name sftp-alpine -p2222:22 -p21000-21010:21000-21010 -v ./ftp/data:/home/ftpuser -v ./ftp/conf:/etc/proftpd -v ./ftp/certs/:/etc/proftpd/ssl/ alpine:latest sh
+docker run -it --name sftp-alpine -p2222:22 -v ./ftp/data:/home/ftpuser -v ./ftp/conf:/etc/proftpd -v ./ftp/certs/:/etc/proftpd/ssl/ alpine:latest sh
 ```
 Realiza la configuración inicial de proftpd. Como vamos a necesitar generar claves SSH, puedes bindear en una de tus carpetas la carpeta `/etc/proftpd/` del contenedor. En esa carpeta almacenamos las claves SSH, que podemos generar con el programa `ssh-keygen`.
 Instalamos open-ssh:
@@ -168,7 +184,9 @@ Si no está instalado, lo añadimos con la línea `apk add proftpd-mod_sftp`. Si
     LoadModule mod_sftp.c
 </IfModule>
 ```
+
 Finalmente, se nos queda el archivo de configuración aproximadamente así:
+
 ```proftpd
 #===
 # Configuración básica de ProFTPD para SFTP en Alpine
@@ -212,10 +230,8 @@ AccessDenyMsg       "Acceso denegado."
 
 # Carga de módulos DSO
 <IfModule mod_dso.c>
-    LoadModule mod_sftp.c
-    
+  LoadModule mod_sftp.c
 </IfModule>
-
 
 # Configuración de SFTP
 <IfModule mod_sftp.c>
@@ -228,7 +244,10 @@ AccessDenyMsg       "Acceso denegado."
 </IfModule>  
 ```
 
-Igual que antes, ara comprobar que funciona, debemos conectarnos al servidor con Filezilla estableciendo como protocolo: `SFTP - SSH File Transfer Protocol` y como puerto el 2222 (o el hayamos abierto).
+Como se puede observar, el archivo de configuración de SFTP es más sencillo que el de FTPS. SFTP no requiere puertos pasivos, a diferencia de FTPS.
+
+Igual que antes, para comprobar que funciona, debemos conectarnos al servidor con Filezilla estableciendo como protocolo: `SFTP - SSH File Transfer Protocol` y como puerto el 2222 (o el hayamos abierto).
+
 ![alt text](image-6.png)
 
 > **ACTIVIDAD 2** Implementa un servidor SFTP en Docker siguiendo los pasos anteriores. Comprueba su funcionamiento correcto en Filezilla.
@@ -250,13 +269,14 @@ Para ello, en `docker`, debemos lanzar los dos contenedores y conectarlos a trav
 
 > **ACTIVIDAD 3** Transforma los contenedores anteriores en imágenes. Puedes usar el comando `docker commit` para ello. Busca información aquí: https://docs.docker.com/reference/cli/docker/container/commit/ 
 > Es algo relativamente habitual cuando creas manipulas el contenedor a través de una shell, como estamos haciendo nosotros, y quieres "imprimir" el estado actual para que otros lo usen.
-> - Haz una imagen del contenedor FTPS(`proftpd-ftps`) y otra del contenedor SFTP(`proftpd-sftp`).
+> - Haz una imagen del contenedor FTP (`proftpd-ftp`), otra del FTPS(`proftpd-ftps`) y otra del contenedor SFTP(`proftpd-sftp`).
 
 Una vez tengamos los contenedores, podemos lanzarlos:
 
 ```bash
 docker run -d --name proftpd -p 21:21 -p 21000-21010:21000-21010 -v ./ftp/conf:/etc/proftpd -v ./ftp/data:/home/ftpuser proftpd-ftps
 ```
+> **NOTA** Lo ideal es que no se llamen igual, así que prueba a ponerles los nombres de las imágenes o cualquier otro que te resulte significativo.
 
 A continuación, lanzamos el contenedor NGINX, bindeando la configuración:
 
