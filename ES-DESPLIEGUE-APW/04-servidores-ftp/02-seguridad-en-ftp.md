@@ -114,7 +114,7 @@ AccessDenyMsg                   "Acceso denegado."
 
 Activamos el módulo mediante etiquetas similares a las de un xml, como todas las directivas de ProFTPD, y dentro ponemos los parámetros necesarios para el módulos, en pares parámetro-valor.
 
-Observamos el uso de `mod_dso`. Puedes indagar más sobre él en la [documentación oficial de proftpd](http://www.proftpd.org/docs/modules/mod_dso.html). Se trata de un módulo compilado de manera independiente que ProFTPD puede cargar dinámicamente en tiempo de ejecución, sin necesidad de recompilar el servidor. Permite añadir funcionalidades como `mod_tls` o `mod_sftp` de forma flexible.
+Observamos el uso de `mod_dso`. Puedes indagar más sobre él en la [documentación oficial de proftpd](http://www.proftpd.org/docs/modules/mod_dso.html). De forma muy resumida, se trata de un módulo compilado de manera independiente que ProFTPD puede cargar dinámicamente en tiempo de ejecución, sin necesidad de recompilar el servidor. Permite añadir funcionalidades como `mod_tls` o `mod_sftp` de forma flexible.
 
 > **NOTA:**
 > Si queremos usar grupos y usuarios, debemos dar permisos a las carpetas del ssh:
