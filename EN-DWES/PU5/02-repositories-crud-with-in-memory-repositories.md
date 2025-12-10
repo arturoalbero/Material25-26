@@ -411,10 +411,10 @@ public class Main {
 ```
 
 > **ACTIVITY 1** Carry out work analogous to the previous example in the new version of My Favourite Composer. Keep in mind that it is similar to what you already did in the previous version, but with a slightly different approach.
-> – Organize the entities using repositories
-> – Create the CRUD methods and any others you consider necessary to work with the repositories in their corresponding services.
-> – Adapt the views you already had, or create new ones, to support those methods. Use clear and concise URI naming. Use `@PathVariable`.
-> – Initialize the data from the .csv file using CommandLineRunner.
+> - Organize the entities using repositories
+> - Create the CRUD methods and any others you consider necessary to work with the repositories in their corresponding services.
+> - Adapt the views you already had, or create new ones, to support those methods. Use clear and concise URI naming. Use `@PathVariable`.
+> - Initialize the data from the .csv file using CommandLineRunner.
 > You can adapt the practice already done to this format, or do it again.
 
 ### Records or Lombok?
