@@ -254,6 +254,8 @@ Igual que antes, para comprobar que funciona, debemos conectarnos al servidor co
 
 Para más información, puedes consultar la documentación oficial aquí: http://www.proftpd.org/docs/contrib/mod_sftp.html 
 
+> **NOTA:** En ocasiones, al bindear un volumen, la ejecución de los programas del contenedor puede fallar porque los permisos de los archivos no son válidos. En estos casos, debemos modificar los permisos en nuestro disco duro que hayamos bindeado o, si no podemos, crear los archivos en otro punto del contenedor que no esté bindeado. Esto puede pasarte con las claves ssh si trabajas con discos duros externos, así que prueba a crearlas dentro del contenedor, por ejemplo en la carpeta `/usr/`. No te olvides de actualizar la dirección en el archivo de configuración.
+
 ## Combinación de ProFTPD y NGINX
 
 La mala noticia es que, a diferencia de lo que sí podíamos hacer con tomcat en la unidad anterior, NGINX no puede hacer de proxy con ProFTPD. Esto se debe a que el protocolo es más complejo y requiere varios puertos para funcionar correctamente. 
