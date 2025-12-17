@@ -302,3 +302,6 @@ docker network connect mynet nginx
 - Ábrela en el navegador servida por NGINX.
 
 > **ACTIVIDAD 5** Realiza el test de repaso de AULES para comprobar tu conocimiento. Esta vez es de la unidad al completo. Indica en la memoria las preguntas que fallaste la primera vez (fallar no resta puntuación, así que no te preocupes si no te sale muy bien). Repite el test las veces que necesites.
+
+
+-> MONTAR VIRTUAL BOX con ALPINE

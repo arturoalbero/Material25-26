@@ -364,4 +364,4 @@ Such operations require that the calling method, from a service, be annotated wi
 >   - /emails/: Shows the emails of teachers and students.
 
 > **ACTIVITY 5:** Configure the application so the repository is persistent. Follow the instructions in the previous configuration section.
-```
+
