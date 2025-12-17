@@ -141,10 +141,10 @@ More info about Hibernate: https://hibernate.org/
 
 > **ACTIVITY 1:** Create an application using entities for relational mapping. Make a version with Lombok and another with records, but use all annotations possible. Use the H2 database.
 >
-> * We want a database where students (id, name, email, birth date, address, phone numbers), teachers (same attributes as students plus department, category [PERMANENT, TEMPORARY]), and courses (id, name, description) are registered.
+> * We want a database where students (id, name, email, birth date, address, phone numbers), teachers (same attributes as students plus department, category [PERMANENT, TEMPORARY]), and subjects (id, name, description) are registered.
 >
->   * A student can enroll in many courses, and a course can have many students.
->   * A teacher can teach many courses, but a course can only be taught by one teacher.
+>   * A student can enroll in many subjects, and a subject can have many students.
+>   * A teacher can teach many subjects, but a subject can only be taught by one teacher.
 >     Note that this is not a realistic scenario; it is a simplified practice for class. Insert data using data.sql and verify that everything runs correctly in the H2 console.
 >
 > **IMPORTANT:** Relationships will be defined in the next section. Here we work manually as if they exist but without defining them explicitly. This is not usual, and once we see relationship mapping, we will stop doing it this way, but it serves for practice.
@@ -281,21 +281,30 @@ Empleado findTopOrderBySalarioDesc(); //Finds the highest-paid employee
 > **ACTIVITY 2:** Create the repositories for the database above. Remember to structure the project into `domain` (or `entities`), `controllers`, `repositories`, and `services`. Repositories should be injected into services or controllers using `@Autowired`.
 >
 > Create the following views with their respective controllers:
->
-> * /alumnos: Shows all students
-> * /profesores: Shows all teachers
-> * /asignaturas: Shows all courses
-> * /alumnos/{asignatura}: Shows students enrolled in the {asignatura} course
-> * /asignaturas/{alumno}: Shows courses taken by {alumno}
+> **CREATE**
+> * `/add/alumno`: Create a form to add a student.
+> * `/add/profesor`: Create a form to add a teacher.
+> * `/add/subject`: Create a form to add a subject.
+> **READ**
+> * `/alumnos`: Shows all students
+> * `/profesores`: Shows all teachers
+> * `/asignaturas`: Shows all subjects
+> **UPDATE**
+> * `edit/alumno/{id}`: Edit the {id} student with an edit form.
+> * `edit/profesor/{id}`: Edit the {id} teacher with an edit form.
+> * `edit/asignatura/{id}`: Edit the {id} subject with an edit form.
+> You can leave the UPDATE URIS to later, using `@Query`
+> **DELETE**
+> * `delete/profesor/{id}`: Deletes the {id} teacher.
+> * `delete/alumno/{id}`: Deletes the {id} student.
+> * `delete/asignatura/{id}`: Deletes the {id} subject.
 
-> This activity focuses on practicing derived methods.
+> **ACTIVITY 3:** Create the following views with their respective controllers:
+> * `/alumnos/{asignatura}`: Shows students enrolled in the {asignatura} course
+> * `/asignaturas/{alumno}`: Shows subjects taken by {alumno}
+> * `/alumnos/oldest/`: Shows the oldest student.
+> * `/alumnos/findby/email`: Searches students by email and shows the results also in `/alumnos/findby/email/` (use the model object properly).
 
-> **ACTIVITY 3:** Create a form to add students `/add/alumno`, another to add teachers `add/profesor`, and a third to add courses `add/asignatura`.
->
-> * Courses must be assigned to existing teachers.
-> * Students can be assigned several existing courses and must have at least one.
-
-> This activity focuses on practicing methods inherited from CrudRepository.
 
 ### 3.3 @Query Methods
 
@@ -358,10 +367,10 @@ Such operations require that the calling method, from a service, be annotated wi
 
 > **ACTIVITY 4:**
 > Based on the students, courses, and teachers project:
-> - Create edit forms from the previous add forms (changing `add` to `edit` in the URI). Include hidden attribute techniques from section 5.3 to manage IDs, and remember to annotate services with `@Transactional` if using a query for editing.
-> - Use @Query to create the following URIs:
->   - /alumnos/{profesor}: Shows all students taught by {profesor}, including the course.
->   - /emails/: Shows the emails of teachers and students.
+> - Create the edit forms, if you have not created them yet. Include hidden attribute techniques from section 5.3 to manage IDs, and remember to annotate services with `@Transactional` if using a query for editing.
+> Use @Query to create the following URIs:
+> * `/alumnos/{profesor}`: Shows the students enrolled in subjects which are taught by {profesor}
+> * `/alumnos/oldest/{num}`: Shows the *num* oldest students (being num an integer number greater than 0).
 
 > **ACTIVITY 5:** Configure the application so the repository is persistent. Follow the instructions in the previous configuration section.
 

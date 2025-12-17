@@ -1,17 +1,19 @@
 # 6.3 Mapeo de asociaciones
 
-## 1. `@ManyToOne` y `@OneToMany`
+## 1. Mapeo de asociaciones
 
-## 2. `@ManyToMany`
+Las entidades de nuestro modelo (clases) no están aisladas, sino que se relacionan entre ellas. Así pues, si tenemos en nuestro modelo de dominio una entidad "Libro" y una entidad "Autor" lo lógico es que exista una relación entre ellos. Los diagramas de clase UML son una forma de representación habitual de estas relaciones.
 
-## 3. `@OneToOne`
+## 2. `@ManyToOne` y `@OneToMany`
+
+## 3. `@ManyToMany`
+
+## 4. `@OneToOne`
 
 > **ACTIVIDAD 1:** Realiza los mapeos correspondientes en el proyecto del apartado anterior (el de alumnos, profesores y asignaturas). Recuerda que la base de datos era:
 > - Queremos una base de datos en la cual estén registrados alumnos (id, nombre, email, fecha de nacimiento, direccion, teléfonos), profesores (mismos atributos que alumnos y departamento, categoría [FIJO, INTERINO]) y asignaturas(id, nombre, descripción). 
 >   - Un alumno puede cursar muchas asignaturas y una asignatura puede tener muchos alumnos.
 >   - Un profesor puede impartir muchas asignaturas, pero una asignatura solo puede ser impartida por un profesor.
-> Y añade lo siguiente:
-> - Un alumno puede tener una calificación en una asignatura. Trata "calificación" como una entidad que se relaciona con la asociación de la relación alumno-asignatura. Las calificaciones tienen una nota sin decimales, del 1 al 10, contando los valores 0 como *no presentado* y 11 como *mención de honor*.
 > Comprueba en la consola de H2 el funcionamiento correcto de la aplicación.
 
 > **ACTIVIDAD 2:** Haz una nueva versión de My Favourite Composer empleando:
