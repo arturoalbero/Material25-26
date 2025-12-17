@@ -267,6 +267,14 @@ Combinando la ordenación y la restricción de datos, podemos obtener cosas como
 Empleado findTopOrderBySalarioDesc (); //Encontramos al empleado mejor pagado
 ```
 
+<details>
+<summary>
+
+**DEPRECATED**
+
+</summary>
+
+
 > **ACTIVIDAD 2:** Crea los repositorios para la base de datos anterior. Recuerda que debes estructurar el proyecto en `domain` (o `entities`), `controllers`, `repositories` y `services`. Los repositorios se deben inyectar en los servicios o en los controladores con `@Autowired`. 
 > 
 > Crea las siguientes vistas con sus respectivos controladores:
@@ -283,6 +291,36 @@ Empleado findTopOrderBySalarioDesc (); //Encontramos al empleado mejor pagado
 > - A los alumnos se les pueden asignar varias asignaturas ya existentes y al menos tienen que tener una.
 >
 > En esta actividad se trata de practicar los métodos heredados de CrudRepository.
+
+</details>
+
+> **ACTIVITY 2:** Create the repositories for the database above. Remember to structure the project into `domain` (or `entities`), `controllers`, `repositories`, and `services`. Repositories should be injected into services or controllers using `@Autowired`.
+>
+> Create the following views with their respective controllers. Use the repositories interfaces:
+> **CREATE**
+> * `/add/alumno`: Create a form to add a student.
+> * `/add/profesor`: Create a form to add a teacher.
+> * `/add/subject`: Create a form to add a subject.
+> **READ**
+> * `/alumnos`: Shows all students
+> * `/profesores`: Shows all teachers
+> * `/asignaturas`: Shows all subjects
+> **UPDATE**
+> * `edit/alumno/{id}`: Edit the {id} student with an edit form.
+> * `edit/profesor/{id}`: Edit the {id} teacher with an edit form.
+> * `edit/asignatura/{id}`: Edit the {id} subject with an edit form.
+> You can leave the UPDATE URIS to later, using `@Query`
+> **DELETE**
+> * `delete/profesor/{id}`: Deletes the {id} teacher.
+> * `delete/alumno/{id}`: Deletes the {id} student.
+> * `delete/asignatura/{id}`: Deletes the {id} subject.
+
+> **ACTIVITY 3:** Create the following views with their respective controllers:
+> * `/alumnos/{asignatura}`: Shows students enrolled in the {asignatura} course
+> * `/asignaturas/{alumno}`: Shows subjects taken by {alumno}
+> * `/alumnos/oldest/`: Shows the oldest student.
+> * `/alumnos/findby/email`: Searches students by email and shows the results also in `/alumnos/findby/email/` (use the model object properly).
+
 
 ### 3.3 Métodos @Query
 
@@ -340,6 +378,13 @@ int updateEmailById(@Param("id") Integer id, @Param("email") String email);
 
 Este tipo de operaciones requiere que la llamada a este método, desde un servicio, esté anotada con @Transactional, que trabajaremos más adelante, igual que los Joins.
 
+<details>
+<summary>
+
+**DEPRECATED**
+
+</summary>
+
 > **ACTIVIDAD 4:**
 > Partiendo del proyecto de los alumnos, asignaturas y profesores: 
 > - Crea los formularios de edición partiendo de los formularios anteriores (cambiando `add` por `edit` en la URI). Incluye en el formulario de edición alguna de las técnicas que vimos en el apartado 5.3 (atributos ocultos en formularios) para gestionar las `id` y no te olvides de anotar con `@Transactional` los servicios que empleen la edición si usas un query.
@@ -349,3 +394,14 @@ Este tipo de operaciones requiere que la llamada a este método, desde un servic
 
 
 > **ACTIVIDAD 5:** Configura la aplicación para que el repositorio sea persistente. Sigue las instrucciones del apartado anterior de configuración.
+
+</details>
+
+> **ACTIVITY 4:**
+> Based on the students, courses, and teachers project:
+> - Create the edit forms, if you have not created them yet. Include hidden attribute techniques from section 5.3 to manage IDs, and remember to annotate services with `@Transactional` if using a query for editing.
+> Use @Query to create the following URIs:
+> * `/alumnos/{profesor}`: Shows the students enrolled in subjects which are taught by {profesor}
+> * `/alumnos/oldest/{num}`: Shows the *num* oldest students (being num an integer number greater than 0).
+
+> **ACTIVITY 5:** Configure the application so the repository is persistent. Follow the instructions in the previous configuration section.

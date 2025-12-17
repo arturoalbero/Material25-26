@@ -280,7 +280,7 @@ Empleado findTopOrderBySalarioDesc(); //Finds the highest-paid employee
 
 > **ACTIVITY 2:** Create the repositories for the database above. Remember to structure the project into `domain` (or `entities`), `controllers`, `repositories`, and `services`. Repositories should be injected into services or controllers using `@Autowired`.
 >
-> Create the following views with their respective controllers:
+> Create the following views with their respective controllers. Use the repositories interfaces:
 > **CREATE**
 > * `/add/alumno`: Create a form to add a student.
 > * `/add/profesor`: Create a form to add a teacher.
