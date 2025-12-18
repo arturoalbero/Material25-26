@@ -281,20 +281,28 @@ Empleado findTopOrderBySalarioDesc(); //Finds the highest-paid employee
 > **ACTIVITY 2:** Create the repositories for the database above. Remember to structure the project into `domain` (or `entities`), `controllers`, `repositories`, and `services`. Repositories should be injected into services or controllers using `@Autowired`.
 >
 > Create the following views with their respective controllers. Use the repositories interfaces:
+>
 > **CREATE**
+>
 > * `/add/alumno`: Create a form to add a student.
 > * `/add/profesor`: Create a form to add a teacher.
 > * `/add/subject`: Create a form to add a subject.
+>
 > **READ**
+>
 > * `/alumnos`: Shows all students
 > * `/profesores`: Shows all teachers
 > * `/asignaturas`: Shows all subjects
+>
 > **UPDATE**
+>
 > * `edit/alumno/{id}`: Edit the {id} student with an edit form.
 > * `edit/profesor/{id}`: Edit the {id} teacher with an edit form.
 > * `edit/asignatura/{id}`: Edit the {id} subject with an edit form.
 > You can leave the UPDATE URIS to later, using `@Query`
+>
 > **DELETE**
+>
 > * `delete/profesor/{id}`: Deletes the {id} teacher.
 > * `delete/alumno/{id}`: Deletes the {id} student.
 > * `delete/asignatura/{id}`: Deletes the {id} subject.
