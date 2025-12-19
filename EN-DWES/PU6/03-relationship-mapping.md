@@ -399,3 +399,4 @@ Points to consider:
 >
 > For the database, you can follow a relational schema similar to this:
 > ![alt text](image.png)
+> If you have any problem with a data type or the enums, use String (Varchar) instead. You will modify it later in `6.5`.
