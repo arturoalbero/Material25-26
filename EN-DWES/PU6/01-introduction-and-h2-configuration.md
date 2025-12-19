@@ -1,4 +1,4 @@
-# 6. Introduction to Data Access. Initial H2 Configuration in Spring
+# 6.1 Introduction to Data Access. Initial H2 Configuration in Spring
 
 ## 1. Introduction to Data Access
 
