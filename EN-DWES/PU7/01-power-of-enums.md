@@ -242,4 +242,4 @@ In Python, although enums can also have methods, they usually do not have attrib
 
 In short, Java has the most powerful and secure enum model, but at the same time this can make it harder to transfer code from Java to other less powerful languages, where auxiliary classes would be required to replicate the same behavior.
 
-> **ACTIVITY 8:** Translate the result of **Activity 6** (the cards) into C#, Python, and JavaScript, noting the changes required to achieve equivalent behavior.
+> **ACTIVITY 8 (ADVANCED):** Translate the result of **Activity 6** (the cards) into C#, Python, and JavaScript, noting the changes required to achieve equivalent behavior.
