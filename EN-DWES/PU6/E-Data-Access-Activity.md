@@ -129,4 +129,6 @@
 
 ## 6.4 DTO
 
+> **ACTIVITY:** In the My Favourite Composer project, use DTOs generated automatically with ModelMapper for all information transfers with the view (when displaying composers or pieces, when editing, etc.).
+
 ## 6.5 Another Important JPA Concepts
