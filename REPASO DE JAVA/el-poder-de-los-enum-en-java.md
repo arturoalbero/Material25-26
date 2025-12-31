@@ -225,3 +225,7 @@ En Python, aunque los enum también pueden tener métodos, no suelen tener atrib
 En definitiva, Java es el lenguaje con el modelo de enum más potente y seguro, pero al mismo tiempo eso podría dificultar la transferencia de código desde Java hacia otros lenguajes con menor potencia, para los que habría que emplear clases auxiliares para replicar su comportamiento.
 
 > **ACTIVIDAD 8:** Traduce a C#, Python y Javascript el resultado de la **actividad 6** (las cartas), anotando los cambios que debes realizar para que tenga un comportamiento equivalente.
+
+Puedes ampliar tu conocimiento aquí: https://www.tpointtech.com/java-enums
+
+![IMG](https://imgs.search.brave.com/co2NZ11JOeu_HSok0D7QwF0_kpIh9K2uQ3W5bEtCiP8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9kMmpk/Z2F6emtpOXZqbS5j/bG91ZGZyb250Lm5l/dC9qYXZhL25ldy9p/bWFnZXMvamF2YS1l/bnVtLnBuZw)
