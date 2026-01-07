@@ -1,4 +1,4 @@
-# Servicios de Nombres de Dominio (DNS)
+# Introducción a los servidores DNS
 
 ## Sistema de Nombres de Dominio (DNS)
 
