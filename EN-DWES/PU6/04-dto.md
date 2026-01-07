@@ -118,3 +118,45 @@ public List<EmpleadoDTO> convertEmpleadoDto(List<Empleado> listaEmpleados){
 You can check the official ModelMapper page here: [https://modelmapper.org/](https://modelmapper.org/)
 
 > **ACTIVITY:** In the My Favourite Composer project, use DTOs generated automatically with ModelMapper for all information transfers with the view (when displaying composers or pieces, when editing, etc.).
+
+More examples from [here](https://modelmapper.org/getting-started/).
+
+From the main class `Order` composed of the other classes:
+```java
+// Assume getters and setters on each class
+class Order {
+  Customer customer;
+  Address billingAddress;
+}
+
+class Customer {
+  Name name;
+}
+
+class Name {
+  String firstName;
+  String lastName;
+}
+
+class Address {
+  String street;
+  String city;
+}
+```
+This DTO:
+```java
+// Assume getters and setters
+class OrderDTO {
+  String customerFirstName;
+  String customerLastName;
+  String billingStreet;
+  String billingCity;
+}
+```
+Take a look at the naming. In the DTO `customerFirstName` points to `name.firstName`.
+
+When the map method is called, the source and destination types are analyzed to determine which properties implicitly match according to a matching strategy and other configuration. Data is then mapped according to these matches.
+
+Even when the source and destination objects and their properties are different, as in the example above, ModelMapper will do its best to determine reasonable matches between properties according to the configured matching strategy.
+
+Check the [**user manual**](https://modelmapper.org/user-manual/) for more information about mapping using modelMapper.
