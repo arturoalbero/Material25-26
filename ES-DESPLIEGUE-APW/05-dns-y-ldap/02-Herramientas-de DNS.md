@@ -1,4 +1,6 @@
-## Configuración de un DNS usando BIND9
+# Herramientas de DNS
+
+## 1. Instalación del conjunto de herramientas de DNS BIND9
 
 Para poner en práctica esto, usaremos un contenedor de Docker con la imagen de Alpine. Instalaremos las herramientas del proyecto Bind, que incluyen el servidor DNS named y las bind-tools dig, nslookup y nsupdate.
 
@@ -12,9 +14,11 @@ Para instalar bind9 en alpine, debemos ejecutar:
 apk update
 apk add bind
 ```
-También podemos añadir bind con la opción `--no-cache` para reducir el tamaño del contenedor. Esto instalará el servidor `named` y otras utilidades, como `nslookup`.
+También podemos añadir bind con la opción `--no-cache` para reducir el tamaño del contenedor. Esto instalará el servidor `named` y otras utilidades, como `nslookup` o `dig`.
 
-Ahora podemos usar dig o nslookup para comprobar direcciones ip. Dig significa "Domain Information Groper". Se trata de una herramienta de línea de comandos utilizada para realizar consultas a servidores DNS
+## 2. Introducción a la herramienta DIG
+
+Dig significa "Domain Information Groper". Se trata de una herramienta de línea de comandos utilizada para realizar consultas a servidores DNS
 
 Si hacemos por ejemplo `dig www.google.es` recibimos la siguiente información:
 ```
@@ -158,3 +162,180 @@ En este caso, traduce www en internet por la ip 192.0.2.1 y mantiene el resultad
 > * www.bottlecaps.de
 > * www.youtube.com
 > Finalmente, prueba `dig -x 8.8.8.8` para hacer una resolución inversa (le damos la ip y nos devuelve el nombre)
+
+## 3. Introducción a la herramienta nslookup
+
+[***fuente***](https://axarnet.es/blog/que-es-nslookup)
+
+NSLOOKUP es una herramienta que nos permite realizar consultas sobre los nombres de dominio y conocer cómo están resolviendo los DNS, a qué IP apunta el dominio, etc. La herramienta está disponible también en Windows y la puedes probar desde PowerShell.
+
+Su función principal es conocer la IP del dominio, pero además de eso, podemos conocer el resto de los registros DNS que pueda tener el dominio, como los MX, CNAME o TXT.
+
+También podemos usar NSLOOKUP a la inversa, esto quiere decir que desde una dirección IP, podemos saber a qué dominio corresponde, lo cual puede ser de utilidad en ciertos momentos.
+
+Si hacemos `nslookup google.es`, obtendremos una respuesta similar a esta:
+```sh
+Servidor:  UnKnown
+Address:  192.168.10.1
+Respuesta no autoritativa:
+Nombre:  google.es
+Addresses:  2a00:1450:4003:80f::2003
+142.250.178.163
+```
+Básicamente, esto es lo que significa cada cosa:
+
+* **Servidor**: Esto es el servidor que realiza la petición En este caso desconocido, porque es el nuestro propio.
+* **Address**: La IP que realiza la consulta, en este caso el de nuestro router, switch, etc.
+* **Respuesta no autoritativa**: Esto indica que el dominio no pertenece a las DNS que estamos consultando. Los servidores DNS se replican por Internet y esto nos indica que así ha sido, se han consultado otros DNS para obtener la información del dominio.
+* **Nombre**: El nombre del dominio que ha sido consultado.
+* **Addresses**: Aquí encontraremos las direcciones IP asociadas al dominio, en este caso hay dos, una IPv4 y un IPv6.
+
+Si invocamos el programa `nslookup` sin especificar una dirección, entramos en el modo interactivo. Una vez ahí, vamos poniendo nuestras direcciones y se van resolviendo. Si escribimos `exit` salimos del modo interactivo.
+
+
+> **ACTIVIDAD 3**: Realiza las consultas de la actividad 2 con `nslookup`. El programa detecta de forma automática si buscas una resolución convencional o inversa. Realiza las consultas usando el modo interactivo, por comodidad.
+
+### NSLOOKUP - comandos de ejemplo
+
+Hasta aquí hemos visto cómo funciona NSLOOKUP de forma básica, pero como hemos comentado antes, podemos usarlo con otros comandos para obtener más información sobre las DNS del dominio.
+En las pruebas que hemos hecho, siempre nos ha devuelto al IP del dominio, que sería el registro del tipo A.
+
+Esto es así por defecto en NSLOOKUP, pero podemos cambiarlo para que nos muestre el resto de los registros, como, por ejemplo:
+```sh
+A
+Registros del tipo A IPv4
+AAA
+Registros del tipo A IPv6
+MX
+Mail Exchanger, para el correo electrónico
+PTR
+Registros inverso. De una IP a un nombre de dominio
+NS
+Servidor de nombres de dominio
+TXT
+Registros TXT que tenga el dominio
+```
+Pongamos que queremos ver los registros TXT que tiene creados un dominio en sus DNS, para esto accederemos de nuevo a NSLOOKUP:
+```sh
+nslookup
+```
+A continuación, le diríamos que queremos que se muestren los TXT con:
+```sh
+set type=TXT
+```
+Y a continuación, sólo tendríamos que escribir el nombre del dominio para ver los resultados.
+
+> **ACTIVIDAD 4**: Busca los dominios de la actividad 2, pero con el modo texto.
+
+
+Si queremos ver otro tipo de registro, como los registros MX, introduciríamos el valor correspondiente:
+```sh
+set type=MX
+```
+Y luego el nombre del dominio para ver el resultado.
+
+> **ACTIVIDAD 5:** Busca los dominios de la actividad 2, pero con el modo email.
+
+Como verás, es muy sencillo, aunque tengamos que escribir en la línea de comandos, cualquier puede hacerlo, ya que no es complicado.
+
+### Cambiar Servidor DNS para hacer las consultas
+
+Una de las cosas más interesantes que podemos hacer con NSLOOKUP es cambiar el servidor DNS desde donde hacer las consultas.
+
+Por defecto, usará las de nuestro proveedor o las que estén configuradas en el router que no de la conexión a Internet, pero podemos cambiarlo para, por ejemplo, ver la información desde el servidor DNS de Google de Google.
+
+Es muy sencillo, tan sólo volvemos a la pantalla del sistema y entramos de nuevo en NSLOOKUP:
+```sh
+nslookup
+```
+Después de pulsar enter, añadimos lo siguiente:
+```sh
+server 8.8.8.8
+```
+Esto nos dará como respuesta que el servidor predeterminado será el de Google:
+```sh
+server 8.8.8.8
+Servidor predeterminado: dns.google
+Address: 8.8.8.8
+```
+¡Y ya está! Ahora cualquier consulta que hagamos en NSLOOKUP, tendrá respuesta de los DNS de Google.
+
+¿Por qué es así? Porque las DNS públicas de Google, las cuales puedes configurar en cualquier ordenador, son 8.8.8.8 y 8.8.4.4.
+
+En el caso que quieras probar con otro servidor DNS, sólo tendrías que conocer las DNS de ese proveedor y que estas sean públicas. Por ejemplo, 1.1.1.1 pertenece a CloudFlare y 208.67.222.222 pertenece al servidor DNS de OpenDNS.
+
+Si realizas una búsqueda encontrarás distintos DNS públicos que puedes usar con NSLOOKUP.
+
+> **ACTIVIDAD 6**: Cambia el servidor de búsqueda y realiza las mismas búsquedas que en la actividad 2. Usa el tipo de búsqueda `A` (por defecto). Compara las diferencias entre los resultados obtenidos aquí y los resultados obtenidos en la actividad 3.
+
+### Otros comandos NSLOOKUP
+
+Como puedes ver, no es nada complicado usar NSLOOKUP, aunque se tenga que escribir algo de texto.
+
+El problema que puedes tener es conocer los comandos, pero no te preocupes, ya que NSLOOKUP te los puedes mostrar. Sólo entra en NSLOOKUP y escribe:
+```sh
+help
+```
+Y te mostrará información acerca de los comandos más comunes.
+
+> **ACTIVIDAD 7**: Busca con el comando help los comandos más comunes. Haz una captura del resultado de la búsqueda.
+
+### Comandos que empiezan por [no]
+
+Como verás, hay un montón de comandos que puedes utilizar en NSLOOKUP y hay algunas cosas que pueden confundir un poco al principio, pero verás enseguida que la rutina es más o menos la misma para todos los comandos.
+
+Por ejemplo, verás que hay algunas opciones en las que hay que puedes incluir [no] delante de cada una de las opciones, lo que puede crear confusiones si no lo has usado nunca.
+
+comandos-no-nslookup
+Los comandos en los que se pueden usar los prefijos no en NSLOOKUP son los siguientes:
+
+* [no]debug
+* [no]d2
+* [no]defname
+* [no]recurse
+* [no]search
+* [no]vc
+* [no]msxfr
+
+Lo que hace cada uno de estos comandos la tienes en la pantalla de ayuda, pero vamos a enseñarte cómo activarlos y cómo desactivarlos. Es muy sencillo. Digamos que quieres activar el modo debug para ver más información sobre algunos dominios, así que, sencillamente, escribe el siguiente comando en NSLOOKUP:
+```sh
+set debug
+```
+Ahora prueba a añadir un dominio y veras la información que la aplicación te dará sobre él.
+
+A partir de ahora, todas las consultas que hagas sobre los dominios será bajo el comando debug, lo cual nos puede venir muy bien si queremos ver esta información en estos dominios, pero.... ¿cómo salimos del comando debug? Como quizás ya estás imaginando, usando el prefijo no saldremos de esta opción:
+
+```sh
+set nodebug
+```
+
+Como ves, que no es necesario tener que salir/entrar en el Símbolo del sistema para reiniciar NSLOOKUP y salir de una opción que hayas iniciado, sólo tienes que conocer el comando adecuando. Esto mismo funciona con todas las opciones en las que veas [no] delante en la pantalla de ayuda de NSLOOKUP.
+
+> **ACTIVIDAD 8**: Consulta el dominio `www.google.es` en el modo debug y sal del modo debug.
+
+### Casos prácticos de uso de NSLOOKUP
+NSLOOKUP es una herramienta que te ayudará a resolver problemas y obtener información relacionada con el Sistema de Nombres de Dominio (DNS).
+
+Vamos a ver algunos casos en los que NSLOOKUP te puede ayudar a resolver un problema.
+
+#### Verificación de la Configuración de DNS de un Sitio Web
+
+Imagina que tienes un sitio web y notas que algunos usuarios no pueden acceder a él.
+
+Usando NSLOOKUP, puedes verificar si los registros DNS de tu sitio están configurados correctamente.
+
+Simplemente ejecutas NSLOOKUP seguido del nombre de tu dominio y obtienes detalles sobre su dirección IP y servidores DNS asociados.
+
+#### Diagnóstico de Problemas de Correo Electrónico
+
+Supongamos que algunos de tus correos electrónicos no llegan a sus destinatarios.
+
+NSLOOKUP puede ayudarte a verificar si los registros MX (Mail Exchange) de tu dominio están correctamente establecidos, lo cual es crucial para el correcto funcionamiento del correo electrónico.
+
+#### Identificación de Cambios en los Registros DNS
+
+En ocasiones, los cambios en los registros DNS pueden tardar en propagarse. Si recientemente hiciste cambios en la configuración DNS de tu dominio, puedes usar NSLOOKUP para comprobar si estos cambios se han propagado por Internet.
+
+Al ingresar tu dominio en NSLOOKUP, obtendrás información actualizada sobre su configuración DNS y además, ya hemos explicado que puedes realizar consultas desde distintos servidores DNS, así que puedes comprobar si la propagación ya es efectiva en todos ellos.
+
+Por ejemplo, puedes hacer un cabio en un registro MX, pero el correo no está llegando a su destino en las cuentas de Gmail. Puedes usar la DNS de Google en NSLOOKUP para comprobar si el cambio en el registro ya ven los servidores de Google.
