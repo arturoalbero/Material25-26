@@ -1,0 +1,279 @@
+::DNS01::¿Cuál es la función principal del sistema DNS? {
+=Traducir nombres de dominio en direcciones IP
+~Asignar direcciones MAC a dispositivos
+~Cifrar las comunicaciones web
+~Controlar el tráfico de red
+}
+
+::DNS02::El sistema DNS se caracteriza por ser: {
+=Jerárquico y distribuido
+~Centralizado y local
+~Plano y estático
+~Privado y cerrado
+}
+
+::DNS03::¿Qué evita el uso del DNS a los usuarios? {
+=Memorizar direcciones IP
+~Usar navegadores web
+~Conectarse a Internet
+~Utilizar protocolos de red
+}
+
+::DNS04::¿Cuál de las siguientes es una dirección IPv6? {
+=2400:cb00:2048:1::c629:d7a2
+~192.168.1.1
+~255.255.255.0
+~127.0.0.1
+}
+
+::DNS05::¿Qué servicio NO depende habitualmente del DNS? {
+=Bluetooth
+~Correo electrónico
+~LDAP
+~Servicios web
+}
+
+::DNS06::¿Qué convierte el proceso de resolución DNS? {
+=Un nombre de dominio en una dirección IP
+~Una IP en un nombre de dominio siempre
+~Una URL en HTML
+~Un protocolo en otro
+}
+
+::DNS07::¿Quién recibe inicialmente la consulta DNS de un navegador? {
+=El solucionador DNS recursivo
+~El servidor raíz
+~El servidor autoritativo
+~El servidor TLD
+}
+
+::DNS08::El recursor DNS se compara con: {
+=Un bibliotecario
+~Un diccionario
+~Una estantería
+~Un índice final
+}
+
+::DNS09::¿Qué servidor es el primer paso en la resolución DNS? {
+=Servidor raíz
+~Servidor autoritativo
+~Servidor TLD
+~Servidor web
+}
+
+::DNS10::¿Qué parte del dominio gestiona un servidor TLD? {
+=La extensión como .com
+~El subdominio
+~El nombre del host
+~La dirección IP
+}
+
+::DNS11::¿Cuál es la última parada en una consulta DNS? {
+=Servidor de nombres autoritativo
+~Servidor raíz
+~Solucionador recursivo
+~Servidor TLD
+}
+
+::DNS12::¿Qué servidor contiene los registros reales de DNS? {
+=Servidor autoritativo
+~Servidor recursivo
+~Servidor raíz
+~Servidor del navegador
+}
+
+::DNS13::¿Dónde se sitúa el solucionador recursivo en la consulta DNS? {
+=Al inicio del proceso
+~Al final del proceso
+~Después del servidor autoritativo
+~Entre servidores TLD
+}
+
+::DNS14::¿Qué permite evitar consultas repetidas en DNS? {
+=La caché
+~El TTL
+~El servidor raíz
+~El protocolo HTTP
+}
+
+::DNS15::¿Qué sucede si un registro DNS está en caché? {
+=Se omiten pasos de la búsqueda
+~Se reinicia la consulta
+~Se consulta siempre al servidor raíz
+~Se genera un error
+}
+
+::DNS16::¿Qué empresa aloja parcialmente el servidor F-root? {
+=Cloudflare
+~Google
+~Comcast
+~OpenDNS
+}
+
+::DNS17::F-root pertenece al nivel: {
+=Raíz
+~TLD
+~Autoritativo
+~Local
+}
+
+::DNS18::¿Qué tecnología usa Cloudflare para gestionar grandes volúmenes de tráfico? {
+=Anycast
+~Unicast
+~Broadcast
+~Multicast
+}
+
+::DNS19::¿Cuántos pasos tiene normalmente una búsqueda DNS sin caché? {
+=8
+~6
+~10
+~4
+}
+
+::DNS20::¿Qué ocurre en el paso 2 de la búsqueda DNS? {
+=Se consulta un servidor raíz
+~El navegador hace una petición HTTP
+~Se devuelve la página web
+~Se consulta el servidor autoritativo
+}
+
+::DNS21::¿Qué devuelve el servidor TLD al solucionador? {
+=La dirección del servidor autoritativo
+~La IP final del dominio
+~La página web
+~Un mensaje de error
+}
+
+::DNS22::¿Qué hace el navegador tras recibir la IP? {
+=Realiza una petición HTTP
+~Consulta otro servidor DNS
+~Almacena la IP permanentemente
+~Finaliza la conexión
+}
+
+::DNS23::¿Qué es el solucionador stub? {
+=El cliente DNS del sistema operativo
+~Un servidor raíz
+~Un servidor TLD
+~Un navegador web
+}
+
+::DNS24::¿Qué tipo de consulta exige una respuesta completa? {
+=Consulta recursiva
+~Consulta iterativa
+~Consulta no recursiva
+~Consulta inversa
+}
+
+::DNS25::En una consulta iterativa, el servidor DNS: {
+=Devuelve la mejor respuesta posible
+~Resuelve completamente la consulta
+~Devuelve siempre un error
+~Consulta al cliente
+}
+
+::DNS26::¿Cuándo se produce una consulta no recursiva? {
+=Cuando el servidor tiene el registro en caché o es autoritativo
+~Cuando el cliente no espera respuesta
+~Cuando se consulta al servidor raíz
+~Cuando falla la red
+}
+
+::DNS27::¿Cuál es el objetivo principal del almacenamiento en caché DNS? {
+=Mejorar rendimiento y fiabilidad
+~Eliminar servidores DNS
+~Aumentar el TTL
+~Reducir la seguridad
+}
+
+::DNS28::¿Qué determina el tiempo que un registro permanece en caché? {
+=El TTL
+~El navegador
+~El sistema operativo
+~El servidor raíz
+}
+
+::DNS29::¿Cuál es la primera caché que se comprueba? {
+=La del navegador
+~La del ISP
+~La del servidor raíz
+~La del servidor TLD
+}
+
+::DNS30::¿Dónde se puede ver la caché DNS en Chrome? {
+=chrome://net-internals/#dns
+~chrome://settings/dns
+~chrome://dns-cache
+~chrome://about/dns
+}
+
+::DNS31::¿Qué ocurre si el solucionador stub no tiene el registro? {
+=Envía la consulta a un solucionador recursivo
+~Consulta al servidor web
+~Devuelve un error
+~Reinicia el sistema
+}
+
+::DNS32::¿Quién suele proporcionar el solucionador recursivo externo? {
+=El ISP
+~El navegador
+~El servidor autoritativo
+~El servidor raíz
+}
+
+::DNS33::Si el solucionador tiene registros NS pero no A, ¿qué hace? {
+=Consulta directamente a los servidores autoritativos
+~Consulta al servidor raíz
+~Devuelve un error
+~Espera al TTL
+}
+
+::DNS34::¿Qué se evita al tener registros NS en caché? {
+=Consultar servidores raíz y TLD
+~Usar el navegador
+~Resolver el dominio
+~Enviar consultas iterativas
+}
+
+::DNS35::¿Cuándo se consulta normalmente a los servidores raíz? {
+=Cuando la caché está vacía
+~En todas las consultas
+~Cuando falla HTTP
+~Cuando hay registros A
+}
+
+::DNS36::¿Qué registro suele intervenir en subdominios como blog.example.com? {
+=CNAME
+~A
+~MX
+~TXT
+}
+
+::DNS37::¿Qué diferencia clave hay entre Cloudflare y servicios como Google DNS? {
+=Cloudflare aloja servidores autoritativos
+~Google DNS no usa caché
+~Cloudflare no usa DNS
+~Google DNS es autoritativo raíz
+}
+
+::DNS38::¿Qué tipo de servidor permite responder sin consultar a otros? {
+=Servidor autoritativo
+~Servidor recursivo
+~Servidor raíz
+~Servidor del navegador
+}
+
+::DNS39::¿Qué se reduce gracias al almacenamiento en caché DNS? {
+=Consumo de ancho de banda y CPU
+~El número de dominios
+~El uso de HTTP
+~La jerarquía DNS
+}
+
+::DNS40::¿Qué tipo de sistema es DNS dentro de Internet? {
+=Fundamental para la infraestructura
+~Opcional y local
+~Exclusivo de navegadores
+~Independiente de la red
+}
