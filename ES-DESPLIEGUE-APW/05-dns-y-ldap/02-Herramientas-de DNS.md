@@ -339,3 +339,15 @@ En ocasiones, los cambios en los registros DNS pueden tardar en propagarse. Si r
 Al ingresar tu dominio en NSLOOKUP, obtendrás información actualizada sobre su configuración DNS y además, ya hemos explicado que puedes realizar consultas desde distintos servidores DNS, así que puedes comprobar si la propagación ya es efectiva en todos ellos.
 
 Por ejemplo, puedes hacer un cabio en un registro MX, pero el correo no está llegando a su destino en las cuentas de Gmail. Puedes usar la DNS de Google en NSLOOKUP para comprobar si el cambio en el registro ya ven los servidores de Google.
+
+## 4. nslookup web
+
+También dispones del portal https://www.nslookup.io/ para realizar búsquedas de dns. El portal nos da toda la información disponible y dispone de varias opciones. Podemos alternar los servidores fácilmente sobre una búsqueda en la pestaña superior. Por defecto busca en `Cloudflare`.
+
+> **ACTIVIDAD 9:** Ve a la página nslookup.io y realiza las siguientes búsquedas:
+> * www.google.com
+> * www.gog.com
+> * ceice.gva.es
+> Anota los resultados de `Cloudflare`, `Google DNS`, `Authoritative`, `Local DNS -> SouthAfrica` y `Local DNS -> Canada`.
+
+> **ACTIVIDAD 10**: Reflexiona sobre los parecidos y las diferencias entre nslookup y dig. Resumiendo, nslookup es para consultas rápidas y dig dispone de mayor información relacionada con la configuración del DNS.
