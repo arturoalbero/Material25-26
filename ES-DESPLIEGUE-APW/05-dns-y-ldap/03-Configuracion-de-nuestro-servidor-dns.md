@@ -156,3 +156,7 @@ Tanto @localhost como 127.0.0.1 hacen referencia al propio equipo.
 
 > **ACTIVIDAD 6:** Crea varios contenedores, cada uno de ellos con una aplicación web distinta (usa nginx y cambia ligeramente el index.html para identificarlas). Configura un contenedor con un servidor dns que las incluya a todas. Emplea al menos dos zonas. Finalmente, usa un último contenedor para poder hacer las pruebas. Recuerda cambiar el DNS por defecto.
 
+> **ACTIVIDAD AMPLIACIÓN 1:** Configura el DNS del sistema host o del navegador para que consulte el DNS de tu contenedor. Entonces, comprueba que el navegador se conecta correctamente a los diferentes contenedores con las aplicaciones web. Finalmente, restablece el DNS para dejar el ordenador correctamente configurado. Usa una máquina virtual con Linux para hacerlo más sencillo.
+
+> **ACTIVIDAD AMPLIACIÓN 2:** Configura el DNS del sistema para que cuando hagas `www.google.es` te lleve a la página de `www.gog.com` y viceversa. Usa una máquina virtual con Linux para hacerlo más sencillo.
+
