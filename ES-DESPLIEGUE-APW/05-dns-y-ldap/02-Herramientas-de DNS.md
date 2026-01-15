@@ -195,6 +195,8 @@ Si invocamos el programa `nslookup` sin especificar una dirección, entramos en 
 
 > **ACTIVIDAD 3**: Realiza las consultas de la actividad 2 con `nslookup`. El programa detecta de forma automática si buscas una resolución convencional o inversa. Realiza las consultas usando el modo interactivo, por comodidad.
 
+> **NOTA:** Algunas búsquedas pueden estar bloquedaas por la privacidad del sistema, y puede que no te funcionen en los ordenadores del instituto y/o con la red de Conselleria. Pruébalas en casa más adelante, o conectándote a otra red.
+
 ### NSLOOKUP - comandos de ejemplo
 
 Hasta aquí hemos visto cómo funciona NSLOOKUP de forma básica, pero como hemos comentado antes, podemos usarlo con otros comandos para obtener más información sobre las DNS del dominio.
