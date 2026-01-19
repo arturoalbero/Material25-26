@@ -230,7 +230,151 @@ You can find more information about `EnumMap` [**here**](https://www.baeldung.co
 > * A method that sums all the hours for a given day and returns the result
 > * A method that, given an `EnumMap`, returns the busiest day in terms of total hours
 
-## 6. Final Considerations
+## 6. Factory Pattern
+
+[***source***](https://nachoiborraies.github.io/java/md/en/05f)
+
+Factory pattern is one of the most used patterns in Java. It is a creational pattern that provides one of the best ways of creating objects. Using this pattern lets us create objects without showing the logic of the creation to the user. We just use a common interface.
+
+For instance, let’s go back to the Shapes example of previous documents. We had a Shape interface that was implemented by some classes, such as Circle, Square or Rectangle. Whenever we wanted to create an object, we had to call a concrete constructor:
+```java
+Shape myShape = new Circle(3);
+...
+Shape myShape2 = new Square(5);
+...
+myShape.draw();
+...
+```
+
+Therefore, developer must know the name of every class implementing Shape interface. But, if we use Factory pattern, we can encapsulate all the possible ways of creating a shape, so that we just need to specify which shape do we need, and the pattern will provide an instance of the concrete shape.
+
+First step is to define the shape factory. This typically consists in creating a new class with a static method which is in charge of creating the objects of a given class or class hierarchy. In our case, we define a static method to create Shape subtypes:
+
+```java
+public class ShapeFactory 
+{
+    public static Shape getShape(ShapeType type, float param1, float param2)
+    {
+        if(type == ShapeType.CIRCLE){
+            return new Circle(param1);            
+        } else if(type == ShapeType.RECTANGLE){
+            return new Rectangle(param1,param2);
+        } else if(type == ShapeType.SQUARE){
+            return new Square(param1);
+        }
+
+        return null;
+    }
+}
+```
+
+This way, if we want to create an instance of any shape, we just need to call this factory with the name of the shape we want to create, and its parameters
+
+```java
+Shape shape1 = ShapeFactory.getShape(ShapeType.CIRCLE,3, 0);
+shape1.draw();
+System.out.println(shape1.calculateArea());
+```
+Regarding ShapeType, it’s just an enum where we can specify all the subtypes that we want to manage:
+```java
+
+public enum ShapeType { CIRCLE, SQUARE, RECTANGLE }
+```
+
+From the developer’s point of view, there’s only one class (or interface, in this case), which is “Shape”, and he doesn’t need to know anything about the rest of implementing classes. This design pattern is really useful when there is a complex class hierarchy with a common instantiation pattern (similar parameters), or a huge bunch of classes which are really similar and implement the same parent interface or abstract class, as we can see in the following example.
+
+We have a company that sells some products. We must apply the general VAT to some products, and a reduced VAT to some others. So we start by defining an abstract class called Invoice with two subclasses to represent these two types of VAT.
+```java
+public abstract class Invoice 
+{
+    private int id;
+    private double amount;
+
+    public int getId() 
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public double getAmount() 
+    {
+        return amount;
+    }
+
+    public void setAmount(double amount) 	
+    {
+        this.amount = amount;
+    }
+
+    public abstract double getAmountVAT();
+}
+```
+
+These are the subclasses:
+```java
+public class InvoiceVAT extends Invoice
+{
+    @Override
+    public double getAmountVAT() 
+    {
+        return getAmount()*1.21;
+    }
+}
+
+public class InvoiceVATReduced extends Invoice
+{
+    @Override
+    public double getAmountVAT()
+    {
+        return getAmount()*1.10;
+    }
+}
+```
+This way, we can define an InvoiceType enum to identify the enum types:
+
+public enum InvoiceType { NORMAL, REDUCED }
+And also an InvoiceFactory class to create one of the invoice types depending on the parameters:
+
+```java
+public class InvoiceFactory 
+{
+    public static Invoice getInvoice(InvoiceType type)
+    {
+        if (type == InvoiceType.NORMAL)
+        {
+            return new InvoiceVAT();
+        } else if (type == InvoiceType.REDUCED) {
+            return new InvoiceVATReduced();
+        } else {
+            return null;
+        }
+    }
+}
+```
+Finally, we can use this factory to create the invoices:
+
+```java
+Invoice myInvoice = FactoryInvoice.getInvoice(InvoiceType.NORMAL);
+Invoice myInvoiceRed = FactoryInvoice.getInvoice(InvoiceType.REDUCED);
+
+myInvoice.setId(1);
+myInvoice.setAmount(1000);
+
+myInvoiceRed.setId(2);
+myInvoiceRed.setAmount(500);
+
+System.out.println(myInvoice.getAmountVAT());
+System.out.println(myInvoiceRed.getAmountVAT());
+```
+> **ACTIVITY 8:** Create a new project called Invoices with the packages invoices.types for the invoice types, and invoices.main with the main class. Implement the classes of the invoices example above, and add a new type of invoice with a super-reduced VAT (4%).
+
+
+
+## 7. Final Considerations
 
 For all these reasons, enums are a very useful and practical data type. They are especially relevant in security-related contexts, since they guarantee a single instance per value and are commonly used to represent states, roles, types, and so on.
 
@@ -242,6 +386,4 @@ In Python, although enums can also have methods, they usually do not have attrib
 
 In short, Java has the most powerful and secure enum model, but at the same time this can make it harder to transfer code from Java to other less powerful languages, where auxiliary classes would be required to replicate the same behavior.
 
-> **ACTIVITY 8 (ADVANCED):** Translate the result of **Activity 6** (the cards) into C#, Python, and JavaScript, noting the changes required to achieve equivalent behavior.
-
-## Factory Pattern
+> **ACTIVITY 9 (AMPLIATION):** Translate the result of **Activity 6** (the cards) into C#, Python, and JavaScript, noting the changes required to achieve equivalent behavior.
