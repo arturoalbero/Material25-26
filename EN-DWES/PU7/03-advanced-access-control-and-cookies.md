@@ -1,6 +1,6 @@
-# Advanced User Control and Cookies
+# Advanced Access Control and Cookies
 
-## 1. Advanced User Control
+## 1. Advanced User Access Control
 
 ### 1.1 Getting the logged-in user
 
