@@ -1,6 +1,6 @@
-# Advanced User Management and Cookies
+# Advanced User Control and Cookies
 
-## 1. Advanced User Management
+## 1. Advanced User Control
 
 ### 1.1 Getting the logged-in user
 
