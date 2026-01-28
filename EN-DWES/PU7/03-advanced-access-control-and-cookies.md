@@ -109,7 +109,7 @@ Similarly, to perform logout, the method annotated with `GetMapping("/signout")`
 ```html
 <body>
         <h2>Are you sure you want to log out</h2>
-        <form th:action="@{logout}" method="post">
+        <form th:action="@{/logout}" method="post">
                 <input type="submit" value="Logout">
         </form>
 </body>
@@ -118,7 +118,7 @@ Similarly, to perform logout, the method annotated with `GetMapping("/signout")`
 For the logout operation, we would have another option, which would be to log out directly without going through the confirmation view. With CSRF enabled, the /logout route via POST performs the actual logout, so in the views it would be enough to add the code that performs that POST:
 
 ```html
-<form th:action="@{logout}" method="post">
+<form th:action="@{/logout}" method="post">
         <input type="submit" value="Logout">
 </form>
 ```
