@@ -2,6 +2,8 @@
 
 ## CI/CD: Integración y Entrega/Despliegue Continuos
 
+Se siguen las instrucciones de [**este tutorial**](https://docs.github.com/es/actions/get-started/quickstart), más o menos.
+
 **CI/CD** es una práctica fundamental en el desarrollo de software moderno que integra dos conceptos clave: la **Integración Continua (CI)** y la **Entrega Continua (CD)** o **Despliegue Continuo (CD)**. Su objetivo es automatizar y mejorar el proceso desde la creación del código hasta su implementación en producción, permitiendo ciclos de desarrollo más rápidos, eficientes y fiables.
 
 La **Integración Continua (CI)** consiste en integrar los cambios de código en un repositorio compartido de forma frecuente. Cada integración se valida automáticamente mediante compilaciones y pruebas automatizadas, lo que permite detectar errores de manera temprana y mantener una base de código estable.
