@@ -90,7 +90,7 @@ public class CorsConfig{
 }
 ```
 
-> **ACTIVITY 1:** Create a small JavaScript client that consumes the MyFavouriteComposer API. Configure it to avoid CORS conflicts. You can use Express as a web server, as explained in these [**notes**](https://nachoiborraies.github.io/nodejs/md/es/03b), or any other technology you have worked with in other modules of the course (but that uses JavaScript).
+> **ACTIVITY 1:** Create a small JavaScript client that consumes the MyFavouriteComposer API. Configure it to avoid CORS conflicts. You can do the exercise in the html file through the `<script>` tag (or an external `.js`), but if you prefer, you can use Express as a web server, as explained in these [**notes**](https://nachoiborraies.github.io/nodejs/md/es/03b), or any other technology you have worked with in other modules of the course (but that uses JavaScript).
 
 ## 2. Hybrid applications
 
