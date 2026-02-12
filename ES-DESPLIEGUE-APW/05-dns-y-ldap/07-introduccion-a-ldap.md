@@ -1,277 +1,194 @@
 # Introducción a LDAP
 
-Vamos a seguir [**este tutorial**](https://somebooks.es/category/ldap/), adaptado a Docker y Alpine. Intentaremos realizar hasta el punto 6, pero puedes seguir profundizando en los 10 capítulos que tiene (aunque está pensado en Ubuntu Server, para usarlo con una máquina virtual)
-
-> **ACTIVIDAD:** Sigue el tutorial y configura un contenedor con Open LDAP funcional.
-
 ## 1. LDAP - Lightweight Directory Access Protocol
 
-LDAP es un protocolo de acceso distribuido, con una estructura ordenada, que permite establecer un servicio de directorio, con información accesible a través de la red.
+LDAP es un protocolo de acceso distribuido, con una estructura ordenada, que permite establecer un servicio de directorio, con información accesible a través de la red. LDAP es un protocolo para:
 
-Como en otros casos más complejos, como Active Directory, LDAP permite la organización de datos  por ámbitos geográficos, estructurales, etc. Y suele utilizar un espacio de nombres basado en DNS.
+* Autenticación de usuarios
+* Directorios centralizados (usuarios, grupos, equipos)
+* Login único (SSO)
+* Integrarse con Linux, aplicaciones, correo, etc.
+
+Como en otros casos más complejos, como Active Directory, LDAP permite la organización de datos  por ámbitos geográficos, estructurales, etc. Y suele utilizar un espacio de nombres basado en DNS. Podemos pensar en él como una base de datos jerárquica para identidades.
 
 Las entradas del directorio pueden representar un amplio abanico de objetos, como usuarios, grupos, unidades organizativas, carpetas, archivos, impresoras, etc.
 
-Uno de los usos más interesantes que podemos darle, es el almacenamiento de la información de autenticación de los usuarios, que nos permitirá gestionarla de forma centralizada. Este es el uso que aprenderemos a hacer del protocolo LDAP.
+Como hemos visto en la lista de arriba, uno de los usos más interesantes que podemos darle, es el almacenamiento de la información de autenticación de los usuarios, que nos permitirá gestionarla de forma centralizada. Este es el uso que aprenderemos a hacer del protocolo LDAP.
 
-Por cierto, el nombre LDAP está formado por las siglas en inglés de Lightweight Directory Access Protocol (Protocolo Ligero de Acceso a Directorios).
+El nombre LDAP está formado por las siglas en inglés de Lightweight Directory Access Protocol (Protocolo Ligero de Acceso a Directorios).
 
 ## 2. Instalación de Open LDAP en Alpine Linux
 
-### 2.1 Configuración inicial
+Para poner a prueba la configuración y uso básico de ldap, vamos a usar OpenLDAP en varios contenedores de docker. Emplearemos un contenedor que hará de servidor ldap `ldap-server` y otro que nos servirá de cliente `ldap-client`. Ambos contenedores se deben comunicar entre ellos por una red de docker `ldap-net`. 
 
-Existen algunas cuestiones que deberemos tener en cuenta antes de instalar y configurar Alpine como servidor LDAP:
+### 2.1 Instalación de OpenLDAP en el contenedor servidor
 
-1. Lo primero será asegurarnos de que el sistema tiene asignada una dirección IP estática. Para ello, emplea el sistema que utilizamos con el servidor de DNS. 
-
-Para consultar la configuración de red y asegurarte de que es correcta, puedes ejecutar el siguiente comando:
+Lo primero es crear una red de docker:
 ```sh
-cat /etc/netplan/00-installer-config.yaml
+docker network create ldap-net
 ```
-
-2. También comprobaremos que los archivos/etc/hostname y /etc/hosts contienen los nombres adecuados para el servidor.
-
-En el caso de /etc/hostname, para asignar un nuevo nombre al servidor, bastará con ejecutar el siguiente comando:
-
+Lo siguiente es tener preparado nuestro espacio de trabajo. Creamos una carpeta `ldap` y dentro de ella una dedicada para el servidor (server) con subcarpetas para configuración y datos y otra para el cliente. El esquema podría ser algo así:
+```text
+-ldap/
+    |-server/
+        |-config/
+        |-data/
+    /client/
+```
+Después, creamos el primer contenedor, `ldap-server` y lo asociamos a la red.
 ```sh
-sudo hostnamectl set-hostname ldapserver.somebooks.local
+docker run -it --name ldap-server --network ldap-net -p 389:389 -v ./ldap/server/config:/etc/openldap -v ./ldap/server/data:/var/lib/openldap alpine:latest sh
 ```
-> **NOTA:** `somebooks` es el nombre de la página web de donde es original el tutorial, puedes poner el nombre que te apetezca o necesites.
-
-Con `/etc/hosts` el proceso es un poco más largo: debemos editar el archivo e incluir las líneas que relacionen la dirección IP estática del servidor con los nombres lógicos que tenemos previsto utilizar.
-
-Para lograrlo, comenzaremos usando, por ejemplo, el editor nano:
-```sh
-sudo nano /etc/hosts
-```
-
-Nano es un editor de terminal, como vi o vim. Si `nano` no está instalado, instálalo en el contenedor. Puedes consultar cómo funciona desde su [página web oficial](https://www.nano-editor.org/). También puedes elegir bindear esa carpeta y editar el archivo con otro editor cualquiera desde el ordenador host (por ejemplo, vs code).
-
-Una vez que nos encontramos en el entorno del editor, modificamos la línea que hace referencia al bucle local y añadimos una nueva línea que haga referencia a la dirección IP estática. En definitiva, algo como esto:
+389 es el puerto predeterminado para el protocolo LDAP, así que conviene rutearlo bien. Una vez dentro del contenedor, debemos instalar las herramientas de openldap
 
 ```sh
-127.0.1.1 ldapserver.somebooks.local ldapserver
-192.168.1.10 ldapserver.somebooks.local ldapserver
+apk update
+apk add openldap openldap-backend-all openldap-clients
 ```
-### 2.2 Instalar el software necesario
-*Información extraída del [**tutorial oficial**](https://wiki.alpinelinux.org/wiki/Configure_OpenLDAP) de Alpine.*
+Esto instala `slapd`, que es el servidor ldap y los clientes `ldapadd` y `ldapsearh`, así como backends para almacenamiento. Una vez hecho esto, deberíamos ver aparecer los archivos en `ldap/server/config`. Además, dentro del contenedor podemos ejecutar `slapd -V` para comprobar que funciona todo correcto.
 
-#### Instalación de paquetes
+### 2.2 Configuración del servidor
 
-Existe un paquete de Alpine para OpenLDAP. Sin embargo, simplemente añadir el paquete `openldap` no es suficiente para que todo funcione. También necesitarás instalar una base de datos backend y algunas herramientas de línea de comandos de LDAP.
-
-Así es como se hace:
-
+Lo siguiente es crear una contraseña de administrador:
 ```sh
-apk add openldap openldap-back-mdb openldap-clients
+slappasswd
+```
+Creamos nuestra contraseña y nos guardamos el hash generado, que será algo parecido a `{SSHA}vTwYCZEynArYA1qMF1JGPRCutU0BchpX`. Lo utilizaremos para la configuración.
+
+En la carpeta `/ldap/server/config` de nuestro host, debemos crear el archivo base.ldif y poner lo siguiente:
+```text
+# Entry 1: The Root Domain
+dn: dc=my-domain,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Example Org
+dc: my-domain
+
+# Entry 2: The Admin User (Child of the root)
+dn: cn=admin,dc=my-domain,dc=com
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+userPassword: {SSHA}vTwYCZEynArYA1qMF1JGPRCutU0BchpX
+
+# Entry 3: Organizational Unit
+dn: ou=users,dc=my-domain,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: users
+description: Unidad de usuarios del sistema
 ```
 
-Pero antes de iniciar el servicio `slapd`, es necesario realizar algo de configuración.
-
-#### Personalizar la configuración para OpenLDAP 2.3+
-
-El paquete OpenLDAP de Alpine puede usar un directorio de configuración (`slapd.d`) o un archivo de configuración (`slapd.conf`). Desde la versión 2.3 de OpenLDAP, el método preferido es utilizar el directorio de configuración `slapd.d`. Toda la documentación oficial de OpenLDAP, incluida la guía de inicio rápido, utiliza este método.
-
-Primero, crea el directorio `slapd.d` con la propiedad y permisos adecuados:
-
-```sh
-install -m 755 -o ldap -g ldap -d /etc/openldap/slapd.d
-```
-
-A continuación, edita la configuración de arranque de `slapd` para que use el directorio en lugar del archivo.
-
-1. Abre `/etc/conf.d/slapd` en tu editor favorito.
-2. Comenta la línea `cfgfile="/etc/openldap/slapd.conf"`.
-3. Descomenta la línea `cfgdir="/etc/openldap/slapd.d"`.
-
-Por último, elimina el archivo `slapd.conf` incluido:
-
-```sh
-rm /etc/openldap/slapd.conf
-```
-
-#### Actualizar los nombres de archivos de bibliotecas compartidas
-
-Abre `/etc/openldap/slapd.ldif` en tu editor favorito. Busca los nombres de archivo que terminan en `.la` y cambia la extensión a `.so`.
-
-#### Personalizar la configuración para tu dominio
-
-Tu dominio LDAP puede ser el mismo que tu dominio DNS o puede ser completamente diferente. Sea cual sea el que elijas, asegúrate de usar la convención de nombres LDAP `dc=dominio,dc=tld` en lugar del estilo DNS separado por puntos `dominio.tld`.
-
-Edita de nuevo `slapd.ldif`:
-
-* Busca la palabra clave `olcSuffix:`
-* Cambia su valor para que coincida con tu dominio
-* Busca `olcRootDN:`
-* Cambia su valor para que coincida con tu dominio
-
-Más adelante, este documento asumirá que el dominio es `dc=home` o `dc=contoso,dc=com`, lo que refleja un dominio `home` o `contoso.com`, respectivamente.
-
-#### Importar la configuración
-
-Verifica `slapd.ldif` por última vez y utiliza el comando `slapadd` para importarlo en la base de datos backend.
-
-```sh
-slapadd -n 0 -F /etc/openldap/slapd.d -l /etc/openldap/slapd.ldif
-```
-
-No debería haber errores, solo un mensaje de **“Closing DB…”**.
-
-A continuación, cambia la propiedad de los archivos resultantes en `/etc/openldap/slapd.d`.
-
-Si omites este paso, el servicio `slapd` se negará a arrancar.
-
-```sh
-# chown -R ldap:ldap /etc/openldap/slapd.d/*
-```
-
-#### Configurar el servicio slapd
-
-Falta el directorio del PID. Será necesario crearlo o el servicio no se iniciará, así que este paso debe realizarse primero.
-
-```sh
-install -m 755 -o ldap -g ldap -d /var/lib/openldap/run
-```
-
-Después, puedes iniciar el servicio y habilitarlo para que arranque al inicio del sistema:
-
-```sh
-rc-service slapd start
-rc-update add slapd
-```
-
-#### Pruebas
-
-La guía de inicio rápido de OpenLDAP utiliza la utilidad `ldapsearch` para probar la configuración.
-
-```sh
-$ ldapsearch -x -b "" -s base '(objectclass=*)' namingContexts
-```
-
-Deberías ver tu dominio.
-
-También puedes probar con `slapcat`:
-
-```sh
-$ slapcat -n 0
-```
-
-Esto mostrará toda la base de datos de configuración en formato LDIF. También puedes redirigir la salida a `grep` y especificar el nombre de tu dominio para verificar que todo es correcto. Al usar `grep`, recuerda que LDAP utiliza el formato `dc=dominio,dc=com` y no el más habitual `dominio.com`.
-
-Más adelante, cuando empieces a poblar tu base de datos LDAP, puedes usar `slapcat -n 1` para ver tu información. (El número cero corresponde a la base de datos de configuración. Los números mayores que cero son bases de datos definidas por el usuario).
-
-Por último, puedes ejecutar `netstat -tln` y buscar el puerto LDAP **389** en la salida.
-
-
-## 3. Iniciar la estructura del directorio
-
-Aquí tienes la traducción al castellano:
+En el campo de `userPassword`, pega el hash obtenido en el paso anterior, tal y como está hecho en el ejemplo.
 
 ---
 
-## Creación de una estructura organizativa
+**LDIF** (*LDAP Data Interchange Format*) es el formato estándar para importar o modificar datos en un directorio LDAP (como OpenLDAP o Active Directory).
 
-Ahora que la instalación está completa, puedes empezar a utilizar tu base de datos LDAP. Como mínimo, necesitarás crear una organización dentro de tu directorio LDAP.
+En este archivo, se define el esquema inicial de la base de datos de directorio de la siguiente forma:
 
-## Añadir entradas iniciales a tu directorio
+### 2.3 Estructura del Archivo
 
-Puedes usar **ldapadd(1)** para añadir entradas a tu directorio LDAP. `ldapadd` espera la entrada en formato **LDIF**. Lo haremos en dos pasos:
+Los archivos LDIF se leen de forma jerárquica. Se trata de una estructura de árbol, donde cada bloque es una rama o una hoja. Vamos a desgranar el archivo de antes:
 
-1. Crear un archivo LDIF
-2. Ejecutar `ldapadd`
-
-Usa tu editor favorito y crea un archivo LDIF que contenga:
-
-```
-dn: dc=<MI-DOMINIO>,dc=<COM>
-objectclass: dcObject
-objectclass: organization
-o: <MI ORGANIZACIÓN>
-dc: <MI-DOMINIO>
-
-dn: cn=Manager,dc=<MI-DOMINIO>,dc=<COM>
-objectclass: organizationalRole
-cn: Manager
-```
-
-Asegúrate de sustituir `<MI-DOMINIO>` y `<COM>` por los componentes de dominio adecuados de tu nombre de dominio. `<MI ORGANIZACIÓN>` debe reemplazarse por el nombre de tu organización. Al copiar y pegar, asegúrate de eliminar cualquier espacio en blanco al principio y al final del ejemplo.
-
-**Ejemplo**:
-
-```
-dn: dc=example,dc=com
-objectclass: dcObject
-objectclass: organization
-o: Example Company
-dc: example
-
-dn: cn=Manager,dc=example,dc=com
-objectclass: organizationalRole
-cn: Manager
-```
-
-Ahora puedes ejecutar **ldapadd(1)** para insertar estas entradas en tu directorio:
-
-```sh
-ldapadd -x -D "cn=Manager,dc=<MI-DOMINIO>,dc=<COM>" -W -f example.ldif
-```
-
-Asegúrate de reemplazar `<MI-DOMINIO>` y `<COM>` por los componentes de dominio adecuados de tu nombre de dominio. Se te pedirá la contraseña (“secret”) especificada en `slapd.conf`. Por ejemplo, para **example.com**, usa:
-
-```sh
-ldapadd -x -D "cn=Manager,dc=example,dc=com" -W -f example.ldif
-```
-
-donde **example.ldif** es el archivo que creaste anteriormente.
-
-
-Aquí tienes un ejemplo que utiliza el dominio **contoso.com** como organización y **home / dc=home** como DN base (actualiza el `baseDN` si el tuyo es diferente):
-
-```sh
-cat <<EOF >org.ldif
-dn: dc=contoso,dc=com
-objectclass: dcObject
-objectclass: organization
-o: Fictional Company
-dc: contoso
-
-dn: cn=Manager,dc=contoso,dc=com
-objectclass: organizationalRole
-cn: Manager
-EOF
-
-ldapadd -x -D "cn=Manager,dc=home" -w secret -f org.ldif
-```
-
-También puede que quieras crear **unidades organizativas (OU)** para ayudar a mantener tu directorio ordenado.
-
-Aquí tienes un LDIF para crear **People** y **Groups** como OUs:
+#### 2.3.1. La Raíz del Dominio (The Root)
 
 ```ldif
-# Unidad organizativa para usuarios
-dn: ou=People,dc=home
-changetype: add
-objectClass: organizationalUnit
-ou: People
-
-# Unidad organizativa para grupos
-dn: ou=Groups,dc=home
-changetype: add
-objectClass: organizationalUnit
-ou: Groups
+# Entry 1: The Root Domain
+dn: dc=my-domain,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Example Org
+dc: my-domain
 ```
 
-Importa las OUs con un comando `ldapadd` similar al utilizado para crear la organización.
+Esta entrada es la base de todo. Define que el dominio se llama `my-domain.com`. Con objectClass, se define qué tipo de objeto es (un bloque puede, y suele, tener varias clases) y con `o` definimos el nombre de la organización.
 
-Una vez hecho esto, ya estás listo para conectarte al servidor LDAP con la herramienta de administración que prefieras y empezar a añadir usuarios, grupos, etc. **LDAPAdmin** es una herramienta veterana, pero muy útil para usuarios de Windows.
+#### 2.3.2. El Administrador (The Admin User)
+
+```ldif
+dn: cn=admin,dc=my-domain,dc=com
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+userPassword: {SSHA}...
+
+```
+En la siguiente entrada definimos el usuario administrador. Nota que su DN (*Distinguished Name*) indica que vive directamente "colgado" de la raíz.
+
+Dispone de la clase `organizationalRole`, que indica que no es una persona física necesariamente, sino un rol de gestión.
+
+Además, cuenta con el campo `userPassword`, donde le adjuntamos la contraseña cifrada (en este caso con el algoritmo SSHA). Nunca se debe colocar aquí el texto plano por seguridad.
 
 
-## 4. Añadir usuarios y grupos de forma manual
+#### 2.3.3. Unidad Organizativa (OU)
 
-## 5. Buscar, modificar y eliminar elementos del directorio
+```ldif
+dn: ou=users,dc=my-domain,dc=com
+objectClass: organizationalUnit
+ou: users
+description: Unidad de usuarios del sistema
 
-## 6. Importar los usuarios y grupos locales
+```
 
-## 7. Configurar un cliente para autenticarse en Open LDAP
+Una vez creados los dos primeros, puntos, podemos añadir más elementos a la base de datos. Funcionan como carpetas dentro del dominio. En este caso, se ha creado una unidad de organización (`organizationalUnit`) para organizar a los futuros usuarios que se puedan crear.
 
-> **ACTIVIDAD AMPLIACIÓN:** Realiza el tutorial completo (o parcial) usando una máquina virtual con Ubuntu Server.
+
+Repasemos los conceptos clave de los archivos ldif:
+
+* **DN (Distinguished Name):** Es la "dirección completa" y única de un objeto. Se lee de derecha a izquierda (desde la raíz hasta el objeto específico).
+* **objectClass:** Son las plantillas. Le dicen a LDAP: "Este objeto debe tener estas características obligatoriamente".
+* **DC / OU / CN:** * `dc`: Domain Component (ej. com).
+* `ou`: Organizational Unit (ej. usuarios).
+* `cn`: Common Name (ej. nombre de una persona o rol).
+
+# 2.4 Inicialización del servidor
+
+Volvemos al contenedor e inicializamos la base de datos con los siguientes comandos:
+```sh
+mkdir -p /var/lib/openldap/openldap-data
+mkdir -p /etc/openldap/slapd.d
+```
+Luego, inicializamos el directorio slapd.d:
+```sh
+slaptest -f /etc/openldap/slapd.conf -F /etc/openldap/slapd.d
+```
+Y, finalmente, añadimos la base de datos:
+```sh
+slapadd -n 1 -F /etc/openldap/slapd.d -l /etc/openldap/base.ldif
+chown -R ldap:ldap /var/lib/openldap
+```
+
+No debería reportar ningún error, simplemente dar un mensaje de `Closing DB...`. Para comprobar que está todo bien, debemos emplear el siguiente comando:
+
+```sh
+ldapsearch -x -H ldap://localhost -b "dc=my-domain,dc=com"
+```
+Y nos devolverá el texto con la base de datos.
+
+Ahora pasamos a iniciar slapd con el siguiente comando:
+```sh
+slapd -h "ldap://0.0.0.0:389" -d 1
+```
+Este comando arranca slapd, con la opción host `-h` define las interfaces de red y los puertos en los que el servidor aceptará conexiones (en este caso usamos la red comodín 0.0.0.0 y el puerto por defecto de LDAP) y, gracias al parámetro `-d` (de debug) el servidor debería quedarse funcionando y podemos pasar a realizar las pruebas con un programa externo desde el Host. De esta forma, podremos ver en el terminal todo lo que ocurre y cerrar el proceso con `CTRL+C` si queremos modificar algo.
+
+## 3 Configuración de Apache Directory Studio para pruebas desde el host
+
+Para probar que todo funciona, podemos descargar la versión portable de [Apache Directory Studio](https://directory.apache.org/studio/download/download-windows.html) o cualquier otra.
+
+Una vez instalado, ejecutamos el archivo y nos metemos en el apartado workbench.
+
+Arriba a la izquierda tenemos que elegir crear una nueva conexión LDAP:
+![alt text](image-8.png)
+
+Después, configuramos según necesario:
+![alt text](image-9.png)
+Y ponemos en Bind DN or user los datos del apartado `dn` que teníamos en el #Entry2 del archivo de configuración, así como la contraseña (no el hash) que habíamos elegido:
+![alt text](image-11.png)
+Con esto, debería funcionar y verse así:
+![alt text](image-12.png)
+
+> **ACTIVIDAD 1:** Configura el servidor ldap y Apache Directory Studio y haz las siguientes verificaciones:
+> - Abre el dn (se debería ver en el browser `DIT/Root DSE  (3)/dc=my-domain,dc=com(1)/cn=admin`) y comprueba que la conexión es correcta. Observa lo que contiene cn=admin y haz una captura de pantalla.
