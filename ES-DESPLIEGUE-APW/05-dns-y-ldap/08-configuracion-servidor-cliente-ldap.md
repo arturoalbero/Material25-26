@@ -89,6 +89,22 @@ ldapsearch -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin
 
 ## 2. Operaciones LDAP características
 
+#### Introducción muy básica al editor VI
+
+Para crear archivos de texto en la línea de comandos, sin salir del contenedor, usaremos el editor vi que viene incluido en todas las distribuciones de Alpine. Vi es un editor en línea de comandos y, como tal, no dispone de entrada de ratón. Esto obliga al editor a disponer de dos modos distintos, uno para introducir comandos (NORMAL) y otro para insertar (INSERT MODE). Para acceder al modo INSERTAR pulsamos i desde el modo NORMAL y para salir pulsamos la tecla ESC. Si queremos salir del programa, en el modo normal escribimos `:q!` (salir sin guardar) o `:wq` (salir guardando).
+
+Crea o abre el archivo:
+```sh
+vi holamundo.txt
+```
+
+Pulsa `i` para entrar al modo insertar. Escribe cualquier cosa y pulsa ESC. Pulsa `:` y luego el comando `wq` para salir guardando el progreso. Compruébalo:
+```sh
+cat holamundo.txt
+```
+
+La ventaja de Vi es que está integrado en la consola y, por lo tanto, no requiere más que del teclado para funcionar. Es un editor muy antiguo (1976), pero que continúa vigente a día de hoy, ya sea en su versión vi o su versión expandida vim. Su mayor rival es emacs
+
 ### 2.1 Estructura y unidades organizativas
 
 Antes de añadir usuarios y grupos necesitamos crear la estructura base del árbol:
@@ -101,7 +117,7 @@ dc=empresa,dc=com
 └── ou=Computers     → equipos
 ```
 
-Creamos el **archivo: `base_structure.ldif`** en el cliente, con la ruta `/ldif/base_structure.ldif`. Utiliza vim o vi (sigue [**este tutorial**](https://opensource.com/article/19/3/getting-started-vim) para iniciarte en el programa) para crearlo:
+Creamos el **archivo: `base_structure.ldif`** en el cliente, con la ruta `/ldif/base_structure.ldif`. Utiliza [**vi**](https://es.wikipedia.org/wiki/Vi) para crearlo:
 
 ```ldif
 # 1. Entrada raíz de la organización
