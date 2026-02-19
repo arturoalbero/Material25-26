@@ -54,6 +54,24 @@ HOST Windows
 
 ### 1.2. Creación de un cliente OpenLDAP en Docker y Alpine
 
+#### Inicialización del servidor
+
+Primero hay que lanzar el servidor openldap, para ello:
+```sh
+docker start ldap-server
+```
+Y nos metemos en el contenedor:
+```sh
+docker exec -it ldap-server sh
+```
+
+Una vez dentro del contenedor servidor, arrancamos el servidor ldap (en modo debug si quieres ver cómo se comporta):
+```sh
+slapd -h "ldap://0.0.0.0:389" -d 1
+```
+
+#### Configuración del cliente
+
 Debemos crear una imagen igual que la anterior, pero no hace falta bindear ningún archivo ni exponer los puertos
 
 ```sh
@@ -61,6 +79,9 @@ docker run -it --name ldap-client --network ldap-net alpine sh
 ```
 
 Así, entramos en el modo iterativo e instalamos `openldap-clients`.
+```sh
+apk add openldap-clients
+```
 
 Con los dos contenedores corriendo, dentro del cliente podemos probar:
 
@@ -72,15 +93,17 @@ Con los dos contenedores corriendo, dentro del cliente podemos probar:
 ldapsearch -x -H ldap://ldap-server:389  -b '' -s base '(objectclass=*)' namingContexts
 
 # Test con autenticación:
-ldapsearch -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'dc=empresa,dc=com' '(objectclass=*)'
+ldapsearch -x -H ldap://ldap-server:389 -D 'cn=admin,dc=my-domain,dc=com' -w 1234 -b 'dc=my-domain,dc=com' '(objectclass=*)'
 ```
+
+Observa cómo se comportan las salidas tanto del servidor en modo debug como del cliente. 
 
 > **SABÍAS QUÉ...** si queremos simplificar el proceso, podemos crear variables de entorno de la siguiente forma:
 > 
 > ```bash
 > export LDAP_HOST='ldap://ldap-server:389'
 > export LDAP_BASE='dc=empresa,dc=com'
-> export LDAP_ADMIN='cn=admin,dc=empresa,dc=com'
+> export LDAP_ADMIN='cn=admin,dc=my-domain,dc=com'
 > export LDAP_PASS='admin123'
 >
 > # Ahora los comandos son más cortos:
@@ -118,47 +141,67 @@ dc=empresa,dc=com
 ```
 
 Creamos el **archivo: `base_structure.ldif`** en el cliente, con la ruta `/ldif/base_structure.ldif`. Utiliza [**vi**](https://es.wikipedia.org/wiki/Vi) para crearlo:
+```sh
+mkdir ldif
+cd ldif
+vi base_structure.ldif
+```
 
 ```ldif
-# 1. Entrada raíz de la organización
-dn: dc=empresa,dc=com
-objectClass: top
-objectClass: dcObject
-objectClass: organization
-o: Empresa S.L.
-dc: empresa
-
-# 2. OU para usuarios
-dn: ou=People,dc=empresa,dc=com
+# OU para usuarios
+dn: ou=People,ou=users,dc=my-domain,dc=com
 objectClass: top
 objectClass: organizationalUnit
 ou: People
 description: Usuarios de la organizacion
 
-# 3. OU para grupos
-dn: ou=Groups,dc=empresa,dc=com
+# OU para grupos
+dn: ou=Groups,ou=users,dc=my-domain,dc=com
 objectClass: top
 objectClass: organizationalUnit
 ou: Groups
 description: Grupos de la organizacion
 
-# 4. OU para servicios
-dn: ou=Services,dc=empresa,dc=com
+# OU para servicios
+dn: ou=Services,ou=users,dc=my-domain,dc=com
 objectClass: top
 objectClass: organizationalUnit
 ou: Services
 description: Cuentas de servicio
 
-# 5. OU para equipos
-dn: ou=Computers,dc=empresa,dc=com
+# OU para equipos
+dn: ou=Computers,ou=users,dc=my-domain,dc=com
 objectClass: top
 objectClass: organizationalUnit
 ou: Computers
 description: Equipos de la organizacion
+
 ```
 
 ```bash
-ldapadd -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 -f /ldif/base_structure.ldif
+ldapadd -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -f /ldif/base_structure.ldif
+```
+Si usáramos el admin que habíamos creado, tendríamos error de escritura ya que en el archivo de configuración, el verdadero admin está establecido como `Manager` por defecto:
+
+```ldif
+#######################################################################
+# MDB database definitions
+#######################################################################
+
+database	mdb
+maxsize		1073741824
+suffix		"dc=my-domain,dc=com"
+rootdn		"cn=Manager,dc=my-domain,dc=com"
+# Cleartext passwords, especially for the rootdn, should
+# be avoid.  See slappasswd(8) and slapd.conf(5) for details.
+# Use of strong authentication encouraged.
+rootpw		{SSHA}CuKyJpK2SqGoteLPfeaJ6EED56xdVgLD
+# The database directory MUST exist prior to running slapd AND 
+# should only be accessible by the slapd and slap tools.
+# Mode 700 recommended.
+directory	/var/lib/openldap/openldap-data
+# Indices to maintain
+index	objectClass	eq
 ```
 
 ### 2.2 Gestión de Usuarios
@@ -169,7 +212,7 @@ El objectClass `inetOrgPerson` es el más completo para usuarios. Combina atribu
 
 ```ldif
 # Usuario 1: Juan García (Administrador IT)
-dn: uid=jgarcia,ou=People,dc=empresa,dc=com
+dn: uid=jgarcia,ou=People,dc=my-domain,dc=com
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -194,7 +237,7 @@ loginShell: /bin/bash
 userPassword: {SSHA}HASH_AQUI
 
 # Usuario 2: María López (Desarrolladora)
-dn: uid=mlopez,ou=People,dc=empresa,dc=com
+dn: uid=mlopez,ou=People,dc=my-domain,dc=com
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -225,30 +268,19 @@ slappasswd -s Password123   # Para jgarcia
 slappasswd -s Secret456     # Para mlopez
 
 # Reemplaza HASH_AQUI en el LDIF con los valores generados, luego importa:
-ldapadd -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 -f /ldif/users.ldif
+ldapadd -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -f /ldif/users.ldif
 ```
 
 #### Listar todos los usuarios
 
 ```bash
-ldapsearch -x \
-  -H ldap://ldap-server:389 \
-  -D 'cn=admin,dc=empresa,dc=com' \
-  -w admin123 \
-  -b 'ou=People,dc=empresa,dc=com' \
-  '(objectClass=inetOrgPerson)' \
-  uid cn mail title
+ldapsearch -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'ou=People,dc=my-domain,dc=com' '(objectClass=inetOrgPerson)' uid cn mail title
 ```
 
 #### Buscar un usuario específico
 
 ```bash
-ldapsearch -x \
-  -H ldap://ldap-server:389 \
-  -D 'cn=admin,dc=empresa,dc=com' \
-  -w admin123 \
-  -b 'ou=People,dc=empresa,dc=com' \
-  '(uid=jgarcia)'
+ldapsearch -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'ou=People,dc=my-domain,dc=com' '(uid=jgarcia)'
 ```
 
 ### 2.3 Gestión de Grupos
@@ -265,7 +297,7 @@ ldapsearch -x \
 
 ```ldif
 # Grupo IT (posixGroup - estilo Unix)
-dn: cn=it,ou=Groups,dc=empresa,dc=com
+dn: cn=it,ou=Groups,dc=my-domain,dc=com
 objectClass: top
 objectClass: posixGroup
 cn: it
@@ -274,15 +306,15 @@ description: Departamento de IT
 memberUid: jgarcia
 
 # Grupo Developers (groupOfNames - estilo LDAP)
-dn: cn=developers,ou=Groups,dc=empresa,dc=com
+dn: cn=developers,ou=Groups,dc=my-domain,dc=com
 objectClass: top
 objectClass: groupOfNames
 cn: developers
 description: Equipo de Desarrollo
-member: uid=mlopez,ou=People,dc=empresa,dc=com
+member: uid=mlopez,ou=People,dc=my-domain,dc=com
 
 # Grupo Admins (con varios miembros)
-dn: cn=admins,ou=Groups,dc=empresa,dc=com
+dn: cn=admins,ou=Groups,dc=my-domain,dc=com
 objectClass: top
 objectClass: posixGroup
 cn: admins
@@ -293,7 +325,7 @@ memberUid: mlopez
 ```
 
 ```bash
-ldapadd -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 -f /ldif/groups.ldif
+ldapadd -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=empresa,dc=com' -w 1234 -f /ldif/groups.ldif
 ```
 
 ### 2.4 Búsquedas LDAP (ldapsearch)
@@ -339,22 +371,22 @@ Los filtros LDAP usan notación prefija con paréntesis:
 
 ```bash
 # 1. Todos los usuarios con email:
-ldapsearch -x -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'ou=People,dc=empresa,dc=com' '(mail=*)' uid cn mail
+ldapsearch -x -H ldap://ldap-server -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'ou=People,dc=my-domain,dc=com' '(mail=*)' uid cn mail
 
 # 2. Usuarios de un departamento (IT):
-ldapsearch -x -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'ou=People,dc=empresa,dc=com' '(ou=IT)' uid cn title
+ldapsearch -x -H ldap://ldap-server -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'ou=People,dc=my-domain,dc=com' '(ou=IT)' uid cn title
 
 # 3. Grupos a los que pertenece un usuario:
-ldapsearch -x -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'ou=Groups,dc=empresa,dc=com' '(memberUid=jgarcia)' cn description
+ldapsearch -x -H ldap://ldap-server -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'ou=Groups,dc=my-domain,dc=com' '(memberUid=jgarcia)' cn description
 
 # 4. Búsqueda por nombre parcial:
-ldapsearch -x -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'dc=empresa,dc=com' '(cn=Juan*)'
+ldapsearch -x -H ldap://ldap-server -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'dc=my-domain,dc=com' '(cn=Juan*)'
 
 # 5. Scope one — solo hijos directos, no recursivo:
-ldapsearch -x -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'dc=empresa,dc=com' -s one '(objectClass=organizationalUnit)' ou
+ldapsearch -x -H ldap://ldap-server -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'dc=my-domain,dc=com' -s one '(objectClass=organizationalUnit)' ou
 
 # 6. Salida limpia LDIF sin comentarios:
-ldapsearch -x -LLL -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'ou=People,dc=empresa,dc=com' '(objectClass=inetOrgPerson)' uid cn mail
+ldapsearch -x -LLL -H ldap://ldap-server -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'ou=People,dc=my-domain,dc=com' '(objectClass=inetOrgPerson)' uid cn mail
 ```
 
 ### 2.5 Modificación de Entradas (ldapmodify)
@@ -364,20 +396,20 @@ ldapsearch -x -LLL -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admi
 #### Cambiar el correo de un usuario
 
 ```ldif
-dn: uid=jgarcia,ou=People,dc=empresa,dc=com
+dn: uid=jgarcia,ou=People,dc=my-domain,dc=com
 changetype: modify
 replace: mail
 mail: j.garcia.nuevo@empresa.com
 ```
 
 ```bash
-ldapmodify -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 -f modify_mail.ldif
+ldapmodify -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -f modify_mail.ldif
 ```
 
 #### Añadir un atributo nuevo
 
 ```ldif
-dn: uid=jgarcia,ou=People,dc=empresa,dc=com
+dn: uid=jgarcia,ou=People,dc=my-domain,dc=com
 changetype: modify
 add: description
 description: Administrador principal de sistemas Linux
@@ -386,7 +418,7 @@ description: Administrador principal de sistemas Linux
 #### Eliminar un atributo
 
 ```ldif
-dn: uid=jgarcia,ou=People,dc=empresa,dc=com
+dn: uid=jgarcia,ou=People,dc=my-domain,dc=com
 changetype: modify
 delete: telephoneNumber
 ```
@@ -394,7 +426,7 @@ delete: telephoneNumber
 #### Múltiples cambios en una sola operación
 
 ```ldif
-dn: uid=mlopez,ou=People,dc=empresa,dc=com
+dn: uid=mlopez,ou=People,dc=my-domain,dc=com
 changetype: modify
 replace: title
 title: Lead Developer
@@ -410,26 +442,26 @@ departmentNumber: DEV-002
 
 ```bash
 # Con ldappasswd (herramienta específica):
-ldappasswd -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 -s NuevaPassword789 'uid=jgarcia,ou=People,dc=empresa,dc=com'
+ldappasswd -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -s NuevaPassword789 'uid=jgarcia,ou=People,dc=my-domain,dc=com'
 
 # Un usuario puede cambiar su propia contraseña:
-ldappasswd -x -H ldap://ldap-server:389 -D 'uid=jgarcia,ou=People,dc=empresa,dc=com' -w Password123 -a Password123 -s NuevoPassword999
+ldappasswd -x -H ldap://ldap-server:389 -D 'uid=jgarcia,ou=People,dc=my-domain,dc=com' -w Password123 -a Password123 -s NuevoPassword999
 ```
 
 ### 2.6 Eliminación de Entradas (ldapdelete)
 
 ```bash
 # Eliminar un usuario:
-ldapdelete -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 'uid=jgarcia,ou=People,dc=empresa,dc=com'
+ldapdelete -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 'uid=jgarcia,ou=People,dc=my-domain,dc=com'
 
 # Eliminar múltiples entradas desde un archivo
 # (un DN por línea, sin cabecera LDIF):
 cat > delete_list.txt << 'EOF'
-uid=jgarcia,ou=People,dc=empresa,dc=com
-cn=it,ou=Groups,dc=empresa,dc=com
+uid=jgarcia,ou=People,dc=my-domain,dc=com
+cn=it,ou=Groups,dc=my-domain,dc=com
 EOF
 
-ldapdelete -x -H ldap://ldap-server:389 -D 'cn=admin,dc=empresa,dc=com' -w admin123 -f delete_list.txt
+ldapdelete -x -H ldap://ldap-server:389 -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -f delete_list.txt
 ```
 
 > **CUIDADO:** No se puede eliminar una entrada que tenga entradas hijas. Elimina siempre de abajo a arriba (hojas primero).
@@ -445,7 +477,7 @@ La autenticación LDAP (*bind*) verifica que un DN conoce su contraseña. Los do
 
 ```bash
 # Intentar bind con credenciales de un usuario (no admin):
-ldapsearch -x -H ldap://ldap-server:389 -D 'uid=mlopez,ou=People,dc=empresa,dc=com' -w Secret456 -b 'uid=mlopez,ou=People,dc=empresa,dc=com' '(objectClass=*)' cn mail
+ldapsearch -x -H ldap://ldap-server:389 -D 'uid=mlopez,ou=People,dc=my-domain,dc=com' -w Secret456 -b 'uid=mlopez,ou=People,dc=my-domain,dc=com' '(objectClass=*)' cn mail
 
 # Si devuelve datos      → autenticación exitosa
 # Código 49             → credenciales inválidas
@@ -456,10 +488,10 @@ ldapsearch -x -H ldap://ldap-server:389 -D 'uid=mlopez,ou=People,dc=empresa,dc=c
 
 ```bash
 # Paso 1: Bind como admin para localizar el DN del usuario
-ldapsearch -x -H ldap://ldap-server -D 'cn=admin,dc=empresa,dc=com' -w admin123 -b 'ou=People,dc=empresa,dc=com' '(uid=mlopez)' dn
+ldapsearch -x -H ldap://ldap-server -D 'cn=Manager,dc=my-domain,dc=com' -w 1234 -b 'ou=People,dc=my-domain,dc=com' '(uid=mlopez)' dn
 
 # Paso 2: Bind con el DN encontrado y la contraseña del usuario
-ldapsearch -x -H ldap://ldap-server -D 'uid=mlopez,ou=People,dc=empresa,dc=com' -w Secret456 -b 'uid=mlopez,ou=People,dc=empresa,dc=com' '(objectClass=*)' cn
+ldapsearch -x -H ldap://ldap-server -D 'uid=mlopez,ou=People,dc=my-domain,dc=com' -w Secret456 -b 'uid=mlopez,ou=People,dc=my-domain,dc=com' '(objectClass=*)' cn
 ```
 
 ### 2.8 Control de Acceso (ACLs)
@@ -472,7 +504,7 @@ access to <qué>
   by <quién>  <nivel>
 ```
 
-Los **niveles de acceso** de menor a mayor son: `none` → `auth` → `compare` → `search` → `read` → `write` → `manage`.
+Los **niveles de acceso** de menor a mayor son: `none` -> `auth` -> `compare` -> `search` -> `read` -> `write` -> `manage`.
 
 #### Ejemplos de ACL
 
@@ -481,7 +513,7 @@ Los **niveles de acceso** de menor a mayor son: `none` → `auth` → `compare` 
 access to attrs=userPassword
   by self                                 write
   by anonymous                            auth
-  by dn.exact="cn=admin,dc=empresa,dc=com" write
+  by dn.exact="cn=admin,dc=my-domain,dc=com" write
   by *                                    none
 
 # 2. Datos personales: el usuario puede editar los suyos
@@ -491,17 +523,18 @@ access to attrs=mail,telephoneNumber,description
   by *             none
 
 # 3. OU completa: solo lectura para usuarios autenticados
-access to dn.subtree="ou=People,dc=empresa,dc=com"
-  by dn.exact="cn=admin,dc=empresa,dc=com" write
+access to dn.subtree="ou=People,dc=my-domain,dc=com"
+  by dn.exact="cn=admin,dc=my-domain,dc=com" write
   by users         read
   by *             none
 
 # 4. Todo lo demás: lectura general
 access to *
-  by dn.exact="cn=admin,dc=empresa,dc=com" write
+  by dn.exact="cn=admin,dc=my-domain,dc=com" write
   by users         read
   by *             read
 ```
 
 > **ATENCIÓN:** Las ACLs se evalúan en orden. La primera que coincide con `<qué>` se aplica. Si ninguna coincide, se deniega el acceso.
 
+> **ACTIVIDAD DE AMPLIACIÓN:** Crea tu propio entorno con open LDAP siguiendo los pasos vistos en esta página y la anterior.
